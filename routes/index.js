@@ -6,6 +6,7 @@
  * @param server
  */
 exports.init = function(server) {
+  require('./laborant')(server);
   require('./events')(server);
   require('./demo')(server);
 };

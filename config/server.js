@@ -9,6 +9,9 @@ module.exports = {
     origin: ['*'],
     isOriginExposed: false
   },
+  validation : {
+    allowUnknown : true
+  },
   views: {
     engines: {
       jade: require("jade")

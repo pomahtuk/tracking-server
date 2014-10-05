@@ -4,10 +4,13 @@ var Hapi        = require('hapi'),
   Mongoose      = require('mongoose'),
   routes 	      = require('./routes'),
   methods 	    = require('./methods'),
-  server        = new Hapi.Server(3000, 'localhost', serverConfig);
+  server        = new Hapi.Server(3000, 'localhost', serverConfig),
+  mongoURI;
+
+  mongoURI = process.env.MONGOLAB_URI? process.env.MONGOLAB_URI : 'mongodb://localhost/tracking_tool';
 
 // MongoDB Connection
-Mongoose.connect('mongodb://localhost/tracking_tool');
+Mongoose.connect(mongoURI);
 
 routes.init(server);
 methods.init(server);

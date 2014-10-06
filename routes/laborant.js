@@ -29,7 +29,7 @@ exports.jsonp = function(server) {
                   headers: request.headers
                 }) + ')';
 
-            reply(text);
+            reply(text).header('Content-Type: application/json; charset=utf-8');
           }
         })
       },

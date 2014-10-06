@@ -32,6 +32,7 @@ exports.init = function(server) {
         ClientAccount.findOne(apiKey, function (err, client) {
           if (err) {
             next(err, null);
+          // this check should be far more complicated
           } else if (clinet && client.domain === request.headers.host) {
             next(null, client);
           } else {

@@ -11,6 +11,7 @@ var Hapi        = require('hapi'),
 
 // MongoDB Connection
 Mongoose.connect(mongoURI);
+Mongoose.set('debug', true);
 
 routes.init(server);
 methods.init(server);

@@ -1,4 +1,3 @@
-var Experiment = require('../models/experiment').Experiment; // Mongoose ODM
 var ClientAccount = require('../models/clientAccount').ClientAccount; // Mongoose ODM
 
 /**

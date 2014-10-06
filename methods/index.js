@@ -22,7 +22,7 @@ exports.init = function(server) {
     if (apiKey && request.headers.host) {
       if (apiKey === 'laborant_development_key' || request.headers.host.indexOf('localhost') !== -1 ) {
         ClientAccount
-          .findOne()
+          .findOne({name: 'pman'})
           .populate('experiments')
           .exec(function(err, client) {
             if (err) {

@@ -7,6 +7,10 @@ module.exports = exports = function (server) {
   exports.jsonp(server);
 };
 
+function wrapJsonp (callbackName, data) {
+  return callbackName + '(' + JSON.stringify(data) + ')';
+}
+
 exports.jsonp = function(server) {
   server.route({
     path: "/laborant",
@@ -18,16 +22,17 @@ exports.jsonp = function(server) {
           if (err) {
             reply(Boom.badRequest("Incorrect apiKey"));
           } else {
-            var callback = request.query.callback,
-                text = callback + '(' + JSON.stringify({
-                  status: 'success',
-                  experiments: {
-                    'green_button': 1,
-                    'footer_text': 0
-                  },
-                  client: client,
-                  headers: request.headers
-                }) + ')';
+            var callbackName = request.query.callback,
+              text = wrapJsonp(callbackName, {
+                status: 'success',
+                experiments: {
+                  'green_button': 1,
+                  'footer_text': 0
+                },
+                client: client,
+                // headers: request.headers,
+                data: request.query.experiments
+              });
 
             reply(text).header('Content-Type: application/json; charset=utf-8');
           }

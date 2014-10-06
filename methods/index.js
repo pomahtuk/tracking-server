@@ -21,24 +21,30 @@ exports.init = function(server) {
     var apiKey = request.query.apiKey;
     if (apiKey && request.headers.host) {
       if (apiKey === 'laborant_development_key' || request.headers.host.indexOf('localhost') !== -1 ) {
-        ClientAccount.findOne({}, {}, { sort: { 'dateCreated' : -1 } }, function(err, client) {
-          if (err) {
-            next(err, null);
-          } else {
-            next(null, client);
-          }
-        })
+        ClientAccount
+          .findOne({}, {}, { sort: { 'dateCreated' : -1 } })
+          .populate('experiments')
+          .exec(function(err, client) {
+            if (err) {
+              next(err, null);
+            } else {
+              next(null, client);
+            }
+          })
       } else {
-        ClientAccount.findOne(apiKey, function (err, client) {
-          if (err) {
-            next(err, null);
-          // this check should be far more complicated
-          } else if (clinet && client.domain === request.headers.host) {
-            next(null, client);
-          } else {
-            next(new Error('No client found for this API key'), null);
-          }
-        })
+        ClientAccount
+          .findOne(apiKey)
+          .populate('experiments')
+          .exec(function (err, client) {
+            if (err) {
+              next(err, null);
+            // this check should be far more complicated
+            } else if (clinet && client.domain === request.headers.host) {
+              next(null, client);
+            } else {
+              next(new Error('No client found for this API key'), null);
+            }
+          })
       }
     } else {
       next(new Error('no query params or wrong headers'), null);

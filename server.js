@@ -1,5 +1,5 @@
 var Hapi        = require('hapi'),
-  Good          = require('good'),
+  // Good          = require('good'),
   serverConfig  = require('./config/server'),
   Mongoose      = require('mongoose'),
   routes 	      = require('./routes'),
@@ -11,17 +11,17 @@ var Hapi        = require('hapi'),
 
 // MongoDB Connection
 Mongoose.connect(mongoURI);
-Mongoose.set('debug', true);
+//Mongoose.set('debug', true);
 
 routes.init(server);
 methods.init(server);
 
-server.pack.register(Good, function (err) {
-  if (err) {
-    throw err; // something bad happened loading the plugin
-  }
-
-  server.start(function () {
-    server.log('info', 'Server running at: ' + server.info.uri);
-  });
+server.start(function () {
+  server.log('info', 'Server running at: ' + server.info.uri);
 });
+
+//server.pack.register(Good, function (err) {
+//  if (err) {
+//    throw err; // something bad happened loading the plugin
+//  }
+//});

@@ -13,7 +13,7 @@ var experimentSchema = new Schema({
   trackPercent  : { type: Number,   required: true},
   fullOn        : { type: Boolean,  required: true, default: false},
   dateCreated   : { type: Date,     required: true, default: Date.now }
-  // experiment variant should be referenced here ideally by subcollection;
+  // experiment variant should be referenced here ideally by Embedded document;
 });
 
 var experiment = Mongoose.model('experiment', experimentSchema);

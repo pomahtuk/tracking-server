@@ -8,5 +8,5 @@
 exports.init = function(server) {
   require('./laborant')(server);
   require('./events')(server);
-  require('./demo')(server);
+  // require('./demo')(server);
 };

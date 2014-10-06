@@ -13,18 +13,24 @@ exports.jsonp = function(server) {
     method: "GET",
     config: {
       handler: function(request, reply) {
-        // console.log(request.headers);
-        var callback = request.query.callback,
-            text = callback + '('+JSON.stringify({
-              status: 'success',
-              experiments: {
-                'green_button' : 1,
-                'footer_text': 0
-              }
-            })+')';
+        server.methods.ensureCorrectDomain(request, function(err, client) {
+          // console.log(request.headers);
+          if (err) {
+            reply(Boom.badRequest("Incorrect apiKey"));
+          } else {
+            var callback = request.query.callback,
+                text = callback + '(' + JSON.stringify({
+                  status: 'success',
+                  experiments: {
+                    'green_button': 1,
+                    'footer_text': 0
+                  },
+                  client: client
+                }) + ')';
 
-        reply(text);
-
+            reply(text);
+          }
+        })
       },
       validate: {
         query: {

@@ -7,7 +7,7 @@ var Hapi        = require('hapi'),
   server        = new Hapi.Server(process.env.PORT || 3000, serverConfig),
   mongoURI;
 
-  mongoURI = process.env.MONGOLAB_URI? process.env.MONGOLAB_URI : 'mongodb://localhost/tracking_tool';
+  mongoURI = process.env.MONGOLAB_URI ? process.env.MONGOLAB_URI : 'mongodb://localhost/tracking_tool';
 
 // MongoDB Connection
 Mongoose.connect(mongoURI);

@@ -18,10 +18,9 @@ exports.init = function(server) {
   });
 
   server.method("ensureCorrectDomain", function(request, next) {
-    var apiKey;
-    if (request.query) {
-      apiKey = request.query.apiKey;
-      if (apiKey === 'laborant_development_key') {
+    var apiKey = request.query.apiKey;
+    if (apiKey && request.headers.host) {
+      if (apiKey === 'laborant_development_key' || request.headers.host.indexOf('localhost') !== -1 ) {
         ClientAccount.findOne({}, {}, { sort: { 'dateCreated' : -1 } }, function(err, client) {
           if (err) {
             next(err, null);
@@ -33,7 +32,7 @@ exports.init = function(server) {
         ClientAccount.findOne(apiKey, function (err, client) {
           if (err) {
             next(err, null);
-          } else if (clinet && client._id) {
+          } else if (clinet && client.domain === request.headers.host) {
             next(null, client);
           } else {
             next(new Error('No client found for this API key'), null);
@@ -41,7 +40,7 @@ exports.init = function(server) {
         })
       }
     } else {
-      next(new Error('no query params'), null);
+      next(new Error('no query params or wrong headers'), null);
     }
   });
 

@@ -25,7 +25,8 @@ exports.jsonp = function(server) {
                     'green_button': 1,
                     'footer_text': 0
                   },
-                  client: client
+                  client: client,
+                  headers: request.headers
                 }) + ')';
 
             reply(text);

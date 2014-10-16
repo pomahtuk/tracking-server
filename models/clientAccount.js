@@ -3,7 +3,10 @@
  */
 var Mongoose  = require('mongoose'),
   Schema      = Mongoose.Schema,
-  Experiment = require('../models/experiment').Experiment; // Mongoose ODM
+  Experiment  = require('../models/experiment').Experiment,
+  Goal        = require('../models/goal').Goal,
+  Target      = require('../models/target').Target,
+  Visitor     = require('../models/visitor').Visitor;
 
 // The data schema for an event that we're tracking in our analytics engine
 var clientAccountSchema = new Schema({
@@ -12,7 +15,8 @@ var clientAccountSchema = new Schema({
   password      : { type: String, required: true, trim: true },
   domain        : { type: String, required: true, trim: true },
   dateCreated   : { type: Date,   required: true, default: Date.now },
-  experiments   : [ {type : Schema.ObjectId, ref : 'experiment'}]
+  experiments   : [ {type : Schema.ObjectId, ref : 'experiment'}],
+  goals         : [ {type : Schema.ObjectId, ref : 'goal'}]
 });
 
 var clientAccount = Mongoose.model('client_account', clientAccountSchema);

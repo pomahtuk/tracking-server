@@ -12,8 +12,8 @@ var experimentSchema = new Schema({
   variantCount  : { type: Number,   required: true},
   trackPercent  : { type: Number,   required: true},
   fullOn        : { type: Boolean,  required: true, default: false},
+  goal          : { type : Schema.ObjectId, ref : 'goal' },
   dateCreated   : { type: Date,     required: true, default: Date.now }
-  // experiment variant should be referenced here ideally by Embedded document;
 });
 
 var experiment = Mongoose.model('experiment', experimentSchema);

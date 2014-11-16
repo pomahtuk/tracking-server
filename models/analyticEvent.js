@@ -1,3 +1,5 @@
+/*jslint node: true, es5: true*/
+
 var Mongoose   = require('mongoose');
 var Schema     = Mongoose.Schema;
 

@@ -1,14 +1,41 @@
-var Boom            = require('boom');                                  // HTTP Errors
-var Joi             = require('joi');                                   // Validation
-var AnalyticEvent   = require('../models/analyticEvent').AnalyticEvent; // Mongoose ODM
+/*jslint node: true, es5: true, nomen: true*/
 
-// Exports = exports? Huh? Read: http://stackoverflow.com/a/7142924/5210
-module.exports = exports = function (server) {
-  exports.index(server);
-  exports.create(server);
-  exports.show(server);
-  exports.remove(server);
-};
+'use strict';
+
+var Boom            = require('boom'),                                // HTTP Errors
+  Joi             = require('joi'),                                   // Validation
+  AnalyticEvent   = require('../models/analyticEvent').AnalyticEvent, // Mongoose ODM
+  exports = function (server) {
+    exports.index(server);
+    exports.create(server);
+    exports.show(server);
+    exports.remove(server);
+  };
+
+module.exports = exports;
+
+/**
+ * Formats an error message that is returned from Mongoose.
+ *
+ * @param err The error object
+ * @returns {string} The error message string.
+ */
+function getErrorMessageFrom(err) {
+  var errorMessage = '', prop;
+
+  if (err.errors) {
+    for (prop in err.errors) {
+      if (err.errors.hasOwnProperty(prop)) {
+        errorMessage += err.errors[prop].message + ' ';
+      }
+    }
+
+  } else {
+    errorMessage = err.message;
+  }
+
+  return errorMessage;
+}
 
 /**
  * GET /events
@@ -97,7 +124,7 @@ exports.show = function (server) {
         }
       });
     }
-  })
+  });
 };
 
 /**
@@ -111,11 +138,11 @@ exports.remove = function (server) {
     method: 'DELETE',
     path: '/events/{id}',
     handler: function (request, reply) {
-      AnalyticEvent.findById(request.params.id, function(err, event) {
-        if(!err && event) {
+      AnalyticEvent.findById(request.params.id, function (err, event) {
+        if (!err && event) {
           event.remove();
           reply({ message: "Event deleted successfully"});
-        } else if(!err) {
+        } else if (!err) {
           // Couldn't find the object.
           reply(Boom.notFound());
         } else {
@@ -131,28 +158,5 @@ exports.remove = function (server) {
         }
       }
     }
-  })
+  });
 };
-
-/**
- * Formats an error message that is returned from Mongoose.
- *
- * @param err The error object
- * @returns {string} The error message string.
- */
-function getErrorMessageFrom(err) {
-  var errorMessage = '';
-
-  if (err.errors) {
-    for (var prop in err.errors) {
-      if(err.errors.hasOwnProperty(prop)) {
-        errorMessage += err.errors[prop].message + ' '
-      }
-    }
-
-  } else {
-    errorMessage = err.message;
-  }
-
-  return errorMessage;
-}

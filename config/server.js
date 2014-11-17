@@ -1,3 +1,5 @@
+/*jslint node: true, es5: true, indent: 2*/
+
 // Config for server instace
 module.exports = {
   cache: {

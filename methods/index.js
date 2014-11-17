@@ -11,16 +11,6 @@ var ClientAccount = require('../models/clientAccount').ClientAccount; // Mongoos
  */
 exports.init = function (server) {
 
-  server.method("getColour", function (name, next) {
-    var colours = ["red", "blue", "indigo", "violet", "green"],
-      colour = colours[Math.floor(Math.random() * colours.length)];
-    next(null, colour);
-  }, {
-    cache: {
-      expiresIn: 30000
-    }
-  });
-
   server.method("ensureCorrectDomain", function (request, next) {
     var apiKey = request.query.apiKey;
     if (apiKey && request.headers.host) {
@@ -53,6 +43,10 @@ exports.init = function (server) {
     } else {
       next(new Error('no query params or wrong headers'), null);
     }
+  });
+
+  server.method("getUserFromCookies", function (request, next) {
+    next('placeholder', null);
   });
 
 };

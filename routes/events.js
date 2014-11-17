@@ -1,8 +1,8 @@
-/*jslint node: true, es5: true, nomen: true*/
+/*jslint node: true, es5: true, nomen: true, indent: 2*/
 
 'use strict';
 
-var Boom            = require('boom'),                                // HTTP Errors
+var Boom          = require('boom'),                                  // HTTP Errors
   Joi             = require('joi'),                                   // Validation
   AnalyticEvent   = require('../models/analyticEvent').AnalyticEvent, // Mongoose ODM
   exports = function (server) {

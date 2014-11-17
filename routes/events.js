@@ -40,6 +40,7 @@ function getErrorMessageFrom(err) {
 /**
  * GET /events
  * Gets all the events from MongoDb and returns them.
+ * TODO: add pagination
  *
  * @param server - The Hapi Server
  */

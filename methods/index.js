@@ -46,7 +46,10 @@ exports.init = function (server) {
   });
 
   server.method("getUserFromCookies", function (request, next) {
-    next('placeholder', null);
+    console.log(request.state);
+    // if present - request a visitor with sessionId from cookie
+    // if not - create new visitor
+    next(null, 'placeholder');
   });
 
 };

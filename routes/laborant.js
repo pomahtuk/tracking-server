@@ -17,6 +17,13 @@ function wrapJsonp(callbackName, data) {
   return callbackName + '(' + JSON.stringify(data) + ')';
 }
 
+/**
+ * GET /laborant
+ * Gets all running experiments and their variants,
+ * returns JSONP response
+ *
+ * @param server - The Hapi Server
+ */
 exports.jsonp = function (server) {
   server.route({
     path: "/laborant",
@@ -28,19 +35,26 @@ exports.jsonp = function (server) {
           if (err) {
             reply(Boom.badRequest("Incorrect apiKey"));
           } else {
-            var callbackName = request.query.callback,
-              text = wrapJsonp(callbackName, {
-                status: 'success',
-                experiments: {
-                  'green_button': 1,
-                  'footer_text': 0
-                },
-                client: client,
-                // headers: request.headers,
-                data: request.query.experiments
-              });
+            server.methods.getUserFromCookies(request, function (err, user) {
+              if (err) {
+                reply(Boom.badRequest("Error getting user"));
+              } else {
+                var callbackName = request.query.callback,
+                  // TODO: roll a dice for each user experiment stated!
+                  text = wrapJsonp(callbackName, {
+                    status: 'success',
+                    experiments: {
+                      'green_button': 1,
+                      'footer_text': 0
+                    },
+                    client: client,
+                    cookies: request.state,
+                    data: request.query.experiments
+                  });
 
-            reply(text).header('Content-Type: application/json; charset=utf-8');
+                reply(text).header('Content-Type: application/json; charset=utf-8');
+              }
+            });
           }
         });
       },

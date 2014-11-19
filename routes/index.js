@@ -23,4 +23,16 @@ exports.init = function (server) {
     }
   });
 
+  // check for ua string
+  server.route({
+    method: 'GET',
+    path: '/user-info',
+    handler: function (request, reply) {
+      server.methods.getUserFromCookies(request, function (err, user) {
+        return reply(user);
+      });
+    }
+  });
+
+
 };

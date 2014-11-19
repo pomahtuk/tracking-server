@@ -2,7 +2,8 @@
 
 'use strict';
 
-var ClientAccount = require('../models/clientAccount').ClientAccount,
+var geoip = require('geoip-lite'),
+  ClientAccount = require('../models/clientAccount').ClientAccount,
   Visitor = require('../models/visitor').Visitor; // Mongoose ODM
 
 /**
@@ -52,11 +53,17 @@ exports.init = function (server) {
   });
 
   server.method("getUserFromCookies", function (request, next) {
-    console.log(request.state);
+    console.log(request.state, request.headers, request.info);
     var sessionId = request.state.laborantSession,
+      visitorUaData = request.plugins.scooter,
+      visitorBrowser = visitorUaData.family + ' ' + visitorUaData.major + '.' + visitorUaData.minor + '.' + visitorUaData.patch || 'unknown',
+      visitorDevice = visitorUaData.device.family || 'unknown',
+      visitorOs = visitorUaData.os.family + ' ' + visitorUaData.os.major + '.' + visitorUaData.os.minor + '.' + visitorUaData.os.patch || 'unknown',
+      visitorCountry,
       newVisitor;
 
     function visitorCallback(err, visitor) {
+      console.log(err);
       if (err) {
         next(err, null);
       } else {
@@ -70,13 +77,16 @@ exports.init = function (server) {
     } else {
       // if not - create new visitor
       // TODO: gather all visitor info!
+      visitorCountry = geoip.lookup(request.info.remoteAddress);
+
       newVisitor = new Visitor({
-        sessionKey: 'key',
-        browser: 'browser',
-        lang: 'lang',
-        ip: 'ip',
-        referrer: 'referrer',
-        country: 'country'
+        browser: visitorBrowser,
+        device: visitorDevice,
+        os: visitorOs,
+        lang: request.headers['accept-language'].split(';')[0].split(',')[0], //find a way to determine this
+        ip: request.info.remoteAddress,
+        referrer: request.info.referrer,
+        country: visitorCountry ? visitorCountry.country + ', ' + visitorCountry.region + ', ' + visitorCountry.city : 'unknown'
       });
       newVisitor.save(visitorCallback);
     }

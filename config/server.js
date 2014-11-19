@@ -13,13 +13,5 @@ module.exports = {
   },
   validation : {
     allowUnknown : true
-  },
-  views: {
-    engines: {
-      jade: require("jade")
-    },
-    path: "./views",
-    // TODO: remove on deploy
-    isCached: false
   }
 };

@@ -13,4 +13,14 @@ exports.init = function (server) {
   require('./laborant')(server);
   require('./events')(server);
   require('./static')(server);
+
+  // check for ua string
+  server.route({
+    method: 'GET',
+    path: '/user-agent',
+    handler: function (request, reply) {
+      return reply(request.plugins.scooter.toJSON());
+    }
+  });
+
 };

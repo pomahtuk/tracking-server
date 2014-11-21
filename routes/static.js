@@ -10,7 +10,7 @@ module.exports = exports;
 
 exports.staticFiles = function (server) {
   server.route({
-    path: "/static/{path*}",
+    path: "/public/{path*}",
     method: "GET",
     handler: {
       directory: {

@@ -13,6 +13,7 @@ exports.init = function (server) {
   require('./laborant')(server);
   require('./events')(server);
   require('./static')(server);
+  require('./frontend')(server);
   require('./experiments')(server);
 
   // check for ua string

@@ -2,25 +2,21 @@ doctype html
 
 html
   head
-    title Hello, #{first} #{last}!
+    title Hello there!
     link(rel="stylesheet", href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css")
     // bower:css
     link(rel='stylesheet', href='../public/bower_components/angular-material/angular-material.css')
     // endbower
   body
     div.container
-      h1 Hey there, #{first}!
+      h1 Hey there!
       p.
-        According to my data, your name is #{first} #{last}.
-        You're #{age || "unknown"} years old, and I predict you're fond of the
-        colour #{colour}... Correct? At the moment you appear to
-        be #{mood}.
+        Lorem ipsum dolor sit amet
       p That's all I know...
 
   // bower:js
   script(src='../public/bower_components/jquery/jquery.js')
   script(src='../public/bower_components/modernizr/modernizr.js')
-  script(src='../public/bower_components/angularjs/angular.js')
   script(src='../public/bower_components/angular/angular.js')
   script(src='../public/bower_components/angular-animate/angular-animate.js')
   script(src='../public/bower_components/angular-aria/angular-aria.js')

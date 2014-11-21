@@ -4,6 +4,9 @@ html
   head
     title Hello, #{first} #{last}!
     link(rel="stylesheet", href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css")
+    // bower:css
+    link(rel='stylesheet', href='../public/bower_components/angular-material/angular-material.css')
+    // endbower
   body
     div.container
       h1 Hey there, #{first}!
@@ -13,3 +16,14 @@ html
         colour #{colour}... Correct? At the moment you appear to
         be #{mood}.
       p That's all I know...
+
+  // bower:js
+  script(src='../public/bower_components/jquery/jquery.js')
+  script(src='../public/bower_components/modernizr/modernizr.js')
+  script(src='../public/bower_components/angularjs/angular.js')
+  script(src='../public/bower_components/angular/angular.js')
+  script(src='../public/bower_components/angular-animate/angular-animate.js')
+  script(src='../public/bower_components/angular-aria/angular-aria.js')
+  script(src='../public/bower_components/hammerjs/hammer.js')
+  script(src='../public/bower_components/angular-material/angular-material.js')
+  // endbower

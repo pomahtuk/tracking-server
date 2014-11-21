@@ -13,6 +13,7 @@ exports.init = function (server) {
   require('./laborant')(server);
   require('./events')(server);
   require('./static')(server);
+  require('./experiments')(server);
 
   // check for ua string
   server.route({
@@ -23,7 +24,7 @@ exports.init = function (server) {
     }
   });
 
-  // check for ua string
+  // return gathered user info
   server.route({
     method: 'GET',
     path: '/user-info',

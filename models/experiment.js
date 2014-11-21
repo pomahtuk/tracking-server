@@ -1,4 +1,4 @@
-/*jslint node: true, es5: true*/
+/*jslint node: true, es5: true, indent: 2*/
 
 /**
  * Created by pman on 06.10.14.

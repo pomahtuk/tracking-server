@@ -52,9 +52,16 @@ exports.init = function (server) {
     }
   });
 
+  /**
+   * Looks up for visitor with particular cookies in DB
+   * and returns one, or creates new visitor determining all data
+   * @param {Object}   request HAPI.Request object
+   * @param {Function} next    Callback to return control over process to server method
+   * return {Visitor} instance of visitor
+   */
   server.method("getUserFromCookies", function (request, next) {
-    console.log(request.state, request.headers, request.info);
-    var sessionId = request.state.laborantSession,
+    console.log(request.state);
+    var sessionId = request.state.laborantSession || '',
       visitorUaData = request.plugins.scooter,
       visitorBrowser = visitorUaData.family + ' ' + visitorUaData.major + '.' + visitorUaData.minor + '.' + visitorUaData.patch || 'unknown',
       visitorDevice = visitorUaData.device.family || 'unknown',
@@ -76,14 +83,13 @@ exports.init = function (server) {
       Visitor.findOne(sessionId).exec(visitorCallback);
     } else {
       // if not - create new visitor
-      // TODO: gather all visitor info!
       visitorCountry = geoip.lookup(request.info.remoteAddress);
 
       newVisitor = new Visitor({
         browser: visitorBrowser,
         device: visitorDevice,
         os: visitorOs,
-        lang: request.headers['accept-language'].split(';')[0].split(',')[0], //find a way to determine this
+        lang: request.headers['accept-language'].split(';')[0].split(',')[0],
         ip: request.info.remoteAddress,
         referrer: request.info.referrer,
         country: visitorCountry ? visitorCountry.country + ', ' + visitorCountry.region + ', ' + visitorCountry.city : 'unknown'

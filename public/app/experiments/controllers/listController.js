@@ -5,9 +5,9 @@
 
   'use strict';
 
-  var experimentsList = angular.module('ExperimentsList', []);
+  var experiments = angular.module('laborant/Experiments');
 
-  experimentsList.controller('ExperimentsListController', [
+  experiments.controller('laborant/Experiments/List', [
     '$scope',
     function ($scope) {
       console.log('ololo');

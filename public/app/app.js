@@ -5,15 +5,19 @@
   'use strict';
 
   var laborantAdmin = angular.module('laborantAdmin', [
-    'ngRoute'
+    'ngRoute',
+    'laborant/Experiments'
   ]);
 
-  laborantAdmin.config(['$routeProvider', '$locationProvider', '$httpProvider',
+  laborantAdmin.config([
+    '$routeProvider',
+    '$locationProvider',
+    '$httpProvider',
     function ($routeProvider, $locationProvider, $httpProvider) {
       $routeProvider
         .when('/', {
-          templateUrl: 'templates/experimentsList/list.html'//,
-//          controller: 'ExperimentsListController'
+          templateUrl: 'templates/experiments/list.html',
+          controller: 'laborant/Experiments/List'
         })
         .otherwise({
           redirectTo: '/'

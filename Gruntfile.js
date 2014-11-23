@@ -50,8 +50,13 @@ module.exports = function (grunt) {
             }
           },
           sort: function (a, b) {
-            // reverse length sorting to ensure that app.js allways last
-            return b.length - a.length;
+            if (a === '/public/app/app.js') {
+              return 10000;
+            } else if (b === '/public/app/app.js') {
+              return -10000;
+            } else {
+              return a.length - b.length;
+            }
           }
         },
         files: {

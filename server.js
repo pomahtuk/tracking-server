@@ -18,8 +18,10 @@ Mongoose.connect(mongoURI);
 //Mongoose.set('debug', true);
 
 server.views({
-  engines: { jade: require('jade') },
-  path: __dirname + '/views',
+  engines: {
+    jade: require('jade')
+  },
+  path: __dirname,
   isCached: false
 });
 

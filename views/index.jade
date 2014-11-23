@@ -1,0 +1,30 @@
+doctype html
+
+html(ng-app="laborantAdmin")
+  head
+    title Hello there!
+    base(href='/')
+    link(rel="stylesheet", href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css")
+    // bower:css
+    link(rel='stylesheet', href='/public/bower_components/angular-material/angular-material.css')
+    // endbower
+    // injector:css
+    // endinjector
+  body
+    div(ng-view)
+
+  // bower:js
+  script(src='/public/bower_components/jquery/jquery.js')
+  script(src='/public/bower_components/modernizr/modernizr.js')
+  script(src='/public/bower_components/angular/angular.js')
+  script(src='/public/bower_components/angular-animate/angular-animate.js')
+  script(src='/public/bower_components/angular-aria/angular-aria.js')
+  script(src='/public/bower_components/hammerjs/hammer.js')
+  script(src='/public/bower_components/angular-material/angular-material.js')
+  script(src='/public/bower_components/angular-route/angular-route.js')
+  // endbower
+
+  // injector:js
+  script(src="/public/app/experimentsList/controller.js")
+  script(src="/public/app/app.js")
+  // endinjector

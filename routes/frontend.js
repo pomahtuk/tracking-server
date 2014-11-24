@@ -30,15 +30,7 @@ exports.templates = function (server) {
 
       pathString = pathString.split('.html').join('.jade');
 
-      console.log(pathString);
-
       reply.view(pathString);
-
-//      reply({
-//        params: request.params,
-//        path: pathString,
-//        module: moduleName
-//      });
     }
   });
 };

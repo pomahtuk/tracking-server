@@ -4,28 +4,49 @@ html(ng-app="laborantAdmin")
   head
     title Hello there!
     base(href='/')
-    link(rel="stylesheet", href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css")
+    link(href='http://fonts.googleapis.com/css?family=Roboto:400,300,500&subset=cyrillic,latin' rel='stylesheet' type='text/css')
     // bower:css
-    link(rel='stylesheet', href='/public/bower_components/angular-material/angular-material.css')
     // endbower
     // injector:css
+    link(rel="stylesheet" href="/public/common/styles/main.css")
+    link(rel="stylesheet" href="/public/common/styles/components.css")
+    link(rel="stylesheet" href="/public/app/experiments/styles/main.css")
     // endinjector
   body
-    div(ng-view)
+
+    header(class="app-bar promote-layer")
+      .app-bar-container
+          button.menu
+            img(src="public/common/images/hamburger.svg" alt=Menu)
+          h1.logo
+            | Web
+            strong Starter Kit
+          section.app-bar-actions
+            // anything here
+
+    nav.navdrawer-container.promote-layer
+      h4 Navigation
+      ul
+        li
+          a(href="#hello") Hello
+        li
+          a(href="#get-started") Get Started
+        li
+          a(href="styleguide.html") Style Guide
+
+    main(ng-view)
 
   // bower:js
   script(src='/public/bower_components/jquery/jquery.js')
   script(src='/public/bower_components/modernizr/modernizr.js')
   script(src='/public/bower_components/angular/angular.js')
-  script(src='/public/bower_components/angular-animate/angular-animate.js')
-  script(src='/public/bower_components/angular-aria/angular-aria.js')
-  script(src='/public/bower_components/hammerjs/hammer.js')
-  script(src='/public/bower_components/angular-material/angular-material.js')
   script(src='/public/bower_components/angular-route/angular-route.js')
+  script(src='/public/bower_components/angular-animate/angular-animate.js')
   // endbower
 
   // injector:js
   script(src="/public/app/experiments/index.js")
+  script(src="/public/common/scripts/starter.js")
   script(src="/public/app/experiments/controllers/listController.js")
   script(src="/public/app/app.js")
   // endinjector

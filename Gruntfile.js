@@ -60,7 +60,12 @@ module.exports = function (grunt) {
           }
         },
         files: {
-          'views/index.jade': ['public/app/**/*.js', 'public/app/**/*.js']
+          'views/index.jade': [
+            'public/app/**/*.js',
+            'public/common/**/*.js',
+            'public/app/**/*.css',
+            'public/common/**/*.css'
+          ]
         }
       }
     }

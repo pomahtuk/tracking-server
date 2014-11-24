@@ -102,21 +102,16 @@ module.exports = function (grunt) {
       }
     },
 
+
+    // separate js and css
     injector: {
       options: {},
-      app: {
+      js: {
         options: {
           starttag: '// injector:{{ext}}',
           endtag: '// endinjector',
           transform: function (filepath) {
-            var e = ext(filepath);
-            if (e === 'css') {
-              return 'link(rel="stylesheet" href="' + filepath + '")';
-            } else if (e === 'js') {
-              return 'script(src="' + filepath + '")';
-            } else if (e === 'html') {
-              return 'link(rel="import" href="' + filepath + '")';
-            }
+            return 'script(src="' + filepath + '")';
           },
           sort: function (a, b) {
             if (a === '/public/app/app.js') {
@@ -131,9 +126,34 @@ module.exports = function (grunt) {
         files: {
           'views/index.jade': [
             'public/app/**/*.js',
-            'public/common/**/*.js',
+            'public/common/**/*.js'
+          ]
+        }
+      },
+      css: {
+        options: {
+          transform: function (filepath) {
+            return 'link(rel="stylesheet" href="' + filepath + '")';
+          },
+        },
+        files: {
+          'views/index.jade': [
             'public/app/**/*.css',
             'public/common/**/*.css'
+          ]
+        }
+      },
+      livereload: {
+        options: {
+          starttag: '// injector:livereload',
+          endtag: '// endinjector',
+          transform: function (filepath) {
+            return 'script(src="' + filepath + '")';
+          }
+        },
+        files: {
+          'views/index.jade': [
+            'public/livereload.js'
           ]
         }
       }

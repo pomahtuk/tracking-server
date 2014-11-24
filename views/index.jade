@@ -8,9 +8,9 @@ html(ng-app="laborantAdmin")
     // bower:css
     // endbower
     // injector:css
-    link(rel="stylesheet" href="/public/common/styles/main.css")
-    link(rel="stylesheet" href="/public/common/styles/components.css")
     link(rel="stylesheet" href="/public/app/experiments/styles/main.css")
+    link(rel="stylesheet" href="/public/common/styles/components.css")
+    link(rel="stylesheet" href="/public/common/styles/main.css")
     // endinjector
   body
 
@@ -19,8 +19,7 @@ html(ng-app="laborantAdmin")
           button.menu
             img(src="public/common/images/hamburger.svg" alt=Menu)
           h1.logo
-            | Web
-            strong Starter Kit
+            | Web Starter Kit
           section.app-bar-actions
             // anything here
 
@@ -49,4 +48,8 @@ html(ng-app="laborantAdmin")
   script(src="/public/common/scripts/starter.js")
   script(src="/public/app/experiments/controllers/listController.js")
   script(src="/public/app/app.js")
+  // endinjector
+
+  // injector:livereload
+  script(src="/public/livereload.js")
   // endinjector

@@ -11,16 +11,85 @@ console.log(__dirname);
 
 module.exports = function (grunt) {
 
-  grunt.loadNpmTasks('grunt-wiredep');
-  grunt.loadNpmTasks('grunt-injector');
-  grunt.loadNpmTasks('grunt-debug-task');
+  // Time how long tasks take. Can help when optimizing build times
+  require('time-grunt')(grunt);
+
+  // Load grunt tasks automatically
+  require('load-grunt-tasks')(grunt);
 
   grunt.initConfig({
 
-    // Project settings
-    laborant: {
-      // configurable paths
-      client: __dirname
+    watch: {
+      bower: {
+        files: ['bower.json'],
+        tasks: ['wiredep']
+      },
+      sass: {
+        files: ['public/**/*.{scss,sass}'],
+        tasks: ['sass:dist', 'autoprefixer']
+      },
+      styles: {
+        files: [
+          'public/app/**/*.css',
+          'public/common/**/*.css'
+        ],
+        tasks: ['autoprefixer']
+      },
+      server: {
+        files: ['.rebooted'],
+        options: {
+          livereload: true
+        }
+      },
+      livereload: {
+        options: {
+          livereload: true
+        },
+        files: [
+          'views/{,*/}*.jade',
+          'public/app/**/*.jade',
+          'public/app/**/*.css',
+          'public/common/**/*.css',
+          'public/app/**/*.js',
+          'public/common/**/*.js',
+          '.tmp/styles/{,*/}*.css',
+          'public/app/**/*.{png, jpg, jpeg, svg, gif}',
+          'public/common/**/*.{png, jpg, jpeg, svg, gif}'
+        ]
+      }
+    },
+
+    sass: {
+      options: {
+        sourceMap: true,
+        includePaths: ['bower_components']
+      },
+      dist: {
+        files: [{
+          expand: true,
+          cwd: 'public',
+          src: ['**/*.{scss,sass}'],
+          dest: '.tmp/styles',
+          ext: '.css'
+        }]
+      },
+    },
+
+    autoprefixer: {
+      options: {
+        browsers: ['> 1%', 'last 2 versions', 'Firefox ESR', 'Opera 12.1'],
+        map: {
+          prev: '.tmp/styles/'
+        }
+      },
+      dist: {
+        files: [{
+          expand: true,
+          cwd: '.tmp/styles/',
+          src: '{,*/}*.css',
+          dest: '.tmp/styles/'
+        }]
+      }
     },
 
     wiredep: {
@@ -68,12 +137,54 @@ module.exports = function (grunt) {
           ]
         }
       }
+    },
+
+    nodemon: {
+      dev: {
+        script: 'server.js',
+        options: {
+          ignore: [
+            'node_modules/**',
+            'public/**'
+          ],
+          callback: function (nodemon) {
+            // refreshes browser when server reboots
+            nodemon.on('restart', function () {
+              // Delay before server listens on port
+              setTimeout(function () {
+                require('fs').writeFileSync('.rebooted', 'rebooted');
+              }, 1000);
+            });
+          },
+        }
+      },
+      exec: {
+        options: {
+          exec: 'less'
+        }
+      }
+    },
+
+    concurrent: {
+      server: {
+        tasks: ['nodemon', 'watch'],
+        options: {
+          logConcurrentOutput: true
+        }
+      }
     }
+
   });
 
   grunt.registerTask('default', [
     'wiredep',
     'injector'
+  ]);
+
+  grunt.registerTask('serve', [
+    'wiredep',
+    'injector',
+    'concurrent:server'
   ]);
 
 };

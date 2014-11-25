@@ -6,6 +6,7 @@
 
   var laborantAdmin = angular.module('laborantAdmin', [
     'ngRoute',
+    'laborant/Common',
     'laborant/Experiments'
   ]);
 

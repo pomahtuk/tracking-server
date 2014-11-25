@@ -1,4 +1,4 @@
-/*jslint browser: true */
+/*jslint browser: true, indent: 2 */
 /*global angular, console*/
 
 (function (window, angular) {

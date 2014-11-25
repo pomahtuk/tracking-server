@@ -5,6 +5,6 @@
 
   'use strict';
 
-  var experiments = angular.module('laborant/Experiments', []);
+  var common = angular.module('laborant/Common', []);
 
 }(window, angular));

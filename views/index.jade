@@ -1,6 +1,6 @@
 doctype html
 
-html(ng-app="laborantAdmin")
+html(ng-app="laborantAdmin" ng-controller="commonController")
   head
     title Hello there!
     base(href='/')
@@ -12,28 +12,25 @@ html(ng-app="laborantAdmin")
     link(rel="stylesheet" href="/public/common/styles/components.css")
     link(rel="stylesheet" href="/public/common/styles/main.css")
     // endinjector
-  body
+  body(ng-class="{'open': navOpened}")
 
-    header(class="app-bar promote-layer")
+    header.app-bar.promote-layer(ng-class="{'open': navOpened}")
       .app-bar-container
-          button.menu
+          button.menu(ng-click="navOpened = !navOpened")
             img(src="public/common/images/hamburger.svg" alt=Menu)
           h1.logo
             | Web Starter Kit
           section.app-bar-actions
             // anything here
 
-    nav.navdrawer-container.promote-layer
+    nav.navdrawer-container.promote-layer(ng-class="{'open': navOpened}")
       h4 Navigation
       ul
-        li
-          a(href="#hello") Hello
-        li
-          a(href="#get-started") Get Started
-        li
-          a(href="styleguide.html") Style Guide
+        li(ng-repeat="action in actions")
+          a(ng-href="{{action.link}}") {{action.title}}
 
-    main(ng-view)
+    main(ng-click="navOpened = false")
+      div(ng-view="")
 
   // bower:js
   script(src='/public/bower_components/jquery/jquery.js')
@@ -44,8 +41,9 @@ html(ng-app="laborantAdmin")
   // endbower
 
   // injector:js
+  script(src="/public/app/common/index.js")
   script(src="/public/app/experiments/index.js")
-  script(src="/public/common/scripts/starter.js")
+  script(src="/public/app/common/controllers/commonController.js")
   script(src="/public/app/experiments/controllers/listController.js")
   script(src="/public/app/app.js")
   // endinjector

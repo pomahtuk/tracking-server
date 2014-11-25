@@ -25,15 +25,18 @@ module.exports = function (grunt) {
         tasks: ['wiredep']
       },
       sass: {
-        files: ['public/**/*.{scss,sass}'],
-        tasks: ['sass:dist', 'autoprefixer']
+        files: [
+          'public/app/**/*.{sass,scss}',
+          'public/common/**/*.{sass,scss}'
+        ],
+        tasks: ['newer:sass:dist', 'newer:injector:css']
       },
       styles: {
         files: [
           'public/app/**/*.css',
           'public/common/**/*.css'
         ],
-        tasks: ['autoprefixer']
+        tasks: ['newer:injector:css']
       },
       server: {
         files: ['.rebooted'],
@@ -75,23 +78,6 @@ module.exports = function (grunt) {
       },
     },
 
-    autoprefixer: {
-      options: {
-        browsers: ['> 1%', 'last 2 versions', 'Firefox ESR', 'Opera 12.1'],
-        map: {
-          prev: '.tmp/styles/'
-        }
-      },
-      dist: {
-        files: [{
-          expand: true,
-          cwd: '.tmp/styles/',
-          src: '{,*/}*.css',
-          dest: '.tmp/styles/'
-        }]
-      }
-    },
-
     wiredep: {
       options: {
         cwd: './',
@@ -102,8 +88,6 @@ module.exports = function (grunt) {
       }
     },
 
-
-    // separate js and css
     injector: {
       options: {},
       js: {

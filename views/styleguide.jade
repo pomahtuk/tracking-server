@@ -1,0 +1,941 @@
+doctype html
+
+html.no-js.no-touch(lang='en', itemscope='itemscope', itemtype='http://schema.org/Article')
+  head
+    meta(charset='utf-8')
+    meta(name='description', content='Visual style guide used by this site.')
+    meta(http-equiv='X-UA-Compatible', content='IE=edge')
+    meta#viewport(name='viewport', content='width=device-width, initial-scale=1')
+    meta(itemprop='name', content='Visual Style Guide — Web Starter Kit')
+    meta(itemprop='description', content='Visual style guide used by this site.')
+
+    link(rel="stylesheet" href="/public/common/styles/components.css")
+    link(rel="stylesheet" href="/public/common/styles/main.css")
+
+    title Visual Style Guide — Web Starter Kit
+
+  body.page--styleguide
+    .container
+      h1
+        | Web
+        strong Starter Kit
+    .summary-header
+      .container
+        h2.summary-header__title Visual Style Guide
+        ol.summary-header__anchor-list.list-links
+          li.summary-header__anchors-item
+            a(href='#typography') Typography
+          li.summary-header__anchors-item
+            a(href='#buttons') Buttons
+          li.summary-header__anchors-item
+            a(href='#lists') Lists
+          li.summary-header__anchors-item
+            a(href='#links') Links
+          li.summary-header__anchors-item
+            a(href='#icons') Icons
+          li.summary-header__anchors-item
+            a(href='#breadcrumbs') Breadcrumbs
+          li.summary-header__anchors-item
+            a(href='#table') Table
+          li.summary-header__anchors-item
+            a(href='#grid') Grid
+          li.summary-header__anchors-item
+            a(href='#colors') Colors
+          li.summary-header__anchors-item
+            a(href='#highlights') Highlights
+          li.summary-header__anchors-item
+            a(href='#editorial-header') Editorial header
+          li.summary-header__anchors-item
+            a(href='#article-section') Article section
+          li.summary-header__anchors-item
+            a(href='#guides-section') Guides section
+          li.summary-header__anchors-item
+            a(href='#page-header') Page header
+          li.summary-header__anchors-item
+            a(href='#quote') Quote
+          li.summary-header__anchors-item
+            a(href='#guides-intro') Featured icons
+          li.summary-header__anchors-item
+            a(href='#featured-spotlight') Featured spotlight
+          li.summary-header__anchors-item
+            a(href='#featured-list') Featured list
+          li.summary-header__anchors-item
+            a(href='#next-lessons') Featured block
+          li.summary-header__anchors-item
+            a(href='#article-navigation') Article navigation
+
+    .container
+      //
+         Typography Start
+      a(name='typography')
+      section.styleguide__typography
+        h2.subsection-title
+          strong.subsection-number #01
+          | Typography
+        .code-sample
+          p.small Lorem ipsum dolor sit amet.
+        .code-sample
+          p.base Lorem ipsum dolor sit amet.
+        .code-sample
+          p.medium Lorem ipsum dolor sit amet.
+        .code-sample
+          p.large Lorem ipsum dolor sit amet.
+        .code-sample
+          p.xlarge Lorem ipsum dolor sit amet.
+        .code-sample
+          p.xxlarge Lorem ipsum dolor sit amet.
+        .code-sample
+          p.huge Lorem ipsum dolor sit amet.
+      //
+         Typography End
+      //
+         Buttons Start
+      a(name='buttons')
+      section.styleguide__buttons
+        h2.subsection-title
+          strong.subsection-number #02
+          | Buttons
+        div
+          h4 Primary
+          .code-sample
+            a.button--primary(href='#ignore-click') Use our tool
+        div
+          h4 Secondary
+          div
+            .code-sample
+              a.button--secondary(href='#ignore-click') Use our tool
+          .code-sample
+            .styleguide__inverted-block
+              a.button--secondary-variation(href='#ignore-click') Use our tool
+      //
+         Buttons End
+      //
+         Lists Start
+      a(name='lists')
+      section.styleguide__lists
+        h2.subsection-title
+          strong.subsection-number #03
+          | Lists
+        h3 Default lists
+        h4 ul
+        .code-sample
+          ul
+            li Lorem ipsum dolor sit amet.
+            li Dicta optio cumque dolore hic ea facilis
+            li Minus, possimus, veniam, incidunt eligendi
+        h4 ol
+        .code-sample
+          ol
+            li Lorem ipsum dolor sit amet
+            li Dicta optio cumque dolore hic ea facilis
+            li Minus, possimus, veniam, incidunt eligendi
+        h3 Default lists of links
+        h4 ul
+        .code-sample
+          ul.list-links
+            li.list__item
+              a(href='#ignore-click') Lorem ipsum dolor sit amet
+            li.list__item
+              a(href='#ignore-click') Dicta optio cumque dolore hic ea facilis
+            li.list__item
+              a(href='#ignore-click') Minus, possimus, veniam, incidunt eligendi
+        .code-sample
+          ul.list-links.list-links--primary
+            li.list__item
+              a(href='#ignore-click') Lorem ipsum dolor sit amet
+            li.list__item
+              a(href='#ignore-click') Dicta optio cumque dolore hic ea facilis
+            li.list__item
+              a(href='#ignore-click') Minus, possimus, veniam, incidunt eligendi
+        h4 ol
+        .code-sample
+          ol.list-links
+            li
+              a(href='#ignore-click') Lorem ipsum dolor sit amet
+            li.current
+              a(href='#ignore-click') Dicta optio cumque dolore hic ea facilis
+            li
+              a(href='#ignore-click') Minus, possimus, veniam, incidunt eligendi
+        .code-sample
+          ol.list-anchor
+            li
+              a(href='#ignore-click') Lorem ipsum dolor sit amet
+            li
+              a(href='#ignore-click') Dicta optio cumque dolore hic ea facilis
+            li
+              a(href='#ignore-click') Minus, possimus, veniam, incidunt eligendi
+        .code-sample
+          ol.list-anchor.list-small
+            li
+              a(href='#ignore-click') Lorem ipsum dolor sit amet
+            li
+              a(href='#ignore-click') Dicta optio cumque dolore hic ea facilis
+            li
+              a(href='#ignore-click') Minus, possimus, veniam, incidunt eligendi
+        .code-sample
+          ol.list-links.list-links--secondary
+            li
+              a(href='#ignore-click') Layout basics
+            li
+              a(href='#ignore-click') Basics layouts
+            li
+              a(href='#ignore-click') Layout patterns
+        .code-sample
+          ol.list-links.list-links--secondary.list-small
+            li
+              a(href='#ignore-click') Layout basics
+            li
+              a(href='#ignore-click') Basics layouts
+            li
+              a(href='#ignore-click') Layout patterns
+      //
+         Lists End
+      //
+         Links Start
+      a(name='links')
+      section.styleguide__links
+        h2.subsection-title
+          strong.subsection-number #04
+          | Links
+        div
+          h4 Primary
+          .code-sample
+            a.cta--primary(href='#ignore-click') Use our tool
+        div
+          h4 Secondary
+          .code-sample
+            a.cta--secondary(href='#ignore-click') Use our tool
+        .code-sample
+          p
+            | Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+            a.cta(href='#ignore-click') use our tool
+            | Fugiat, quam alias voluptatem tempora minus dolor facere cumque necessitatibus placeat velit aliquid ab dolore beatae. Neque ipsam in a illum repellendus?
+      //
+         Links End
+      //
+         Icons Start
+      a(name='icons')
+      section.styleguide__icons
+        h2.styleguide__icons
+          strong.subsection-number #05
+          | Icons
+        .clear
+          .g--third
+            p
+              .code-sample
+                i.icon.icon-minus
+          .g--third
+            p
+              .code-sample
+                i.icon.icon-plus
+          .g--third.g--last
+            p
+              .code-sample
+                i.icon.icon-star
+          .g--third
+            p
+              .code-sample
+                i.icon.icon-chevron-right
+          .g--third
+            p
+              .code-sample
+                i.icon.icon-chevron-left
+          .g--third.g--last
+            p
+              .code-sample
+                i.icon.icon-chevron-up
+          .g--third
+            p
+              .code-sample
+                i.icon.icon-chevron-down
+          .g--third
+            p
+              .code-sample
+                i.icon.icon-slash
+          .g--third.g--last
+            p
+              .code-sample
+                i.icon.icon-google-dev
+          .g--third
+            p
+              .code-sample
+                i.icon.icon-lessons
+          .g--third
+            p
+              .code-sample
+                i.icon.icon-multi-device-layouts
+          .g--third.g--last
+            p
+              .code-sample
+                i.icon.icon-user-input
+          .g--third
+            p
+              .code-sample
+                i.icon.icon-introduction-to-media
+          .g--third
+            p
+              .code-sample
+                i.icon.icon-performance
+          .g--third.g--last
+            p
+              .code-sample
+                i.icon.icon-bullet
+          .g--third
+            p
+              .code-sample
+                i.icon.icon-chevron-large
+          .g--third
+            p
+              .code-sample
+                i.icon.icon-close
+          .g--third.g--last
+            p
+              .code-sample
+                i.icon.icon-cog
+          .g--third
+            p
+              .code-sample
+                i.icon.icon-diamond
+          .g--third
+            p
+              .code-sample
+                i.icon.icon-exclamation
+          .g--third.g--last
+            p
+              .code-sample
+                i.icon.icon-hash
+          .g--third
+            p
+              .code-sample
+                i.icon.icon-menu
+          .g--third
+            p
+              .code-sample
+                i.icon.icon-question
+          .g--third.g--last
+            p
+              .code-sample
+                i.icon.icon-tick
+        h4 Icon Circles
+        .clear
+          .g--half
+            p
+              .code-sample
+                span.icon-circle
+                  i.icon.icon-lessons
+          .g--half.g--last
+            p
+              .code-sample
+                span.icon-circle
+                  i.icon.icon-lessons
+        h4 Icon Circles - Themed
+        .clear
+          .g--half
+            .code-sample
+              p.theme--multi-device-layouts
+                span.icon-circle.themed--background
+                  i.icon.icon-multi-device-layouts
+          .g--half.g--last
+            .code-sample
+              p.theme--user-input
+                span.icon-circle.themed--background
+                  i.icon.icon-user-input
+          .g--half
+            .code-sample
+              p.theme--introduction-to-media
+                span.icon-circle.themed--background
+                  i.icon.icon-introduction-to-media
+          .g--half.g--last
+            .code-sample
+              p.theme--performance
+                span.icon-circle.themed--background
+                  i.icon.icon-performance
+        h4 Icon Circles - Large
+        .clear
+          .g--half
+            .code-sample
+              p.theme--multi-device-layouts
+                span.icon-circle--large.themed--background
+                  i.icon.icon-multi-device-layouts
+          .g--half.g--last
+            .code-sample
+              p.theme--user-input
+                span.icon-circle--large.themed--background
+                  i.icon.icon-user-input
+          .g--half
+            .code-sample
+              p.theme--introduction-to-media
+                span.icon-circle--large.themed--background
+                  i.icon.icon-introduction-to-media
+          .g--half.g--last
+            .code-sample
+              p.theme--performance
+                span.icon-circle--large.themed--background
+                  i.icon.icon-performance
+      //
+         Icons End
+      //
+         Breadcrumbs Start
+      a(name='breadcrumbs')
+      section.styleguide__breadcrumb
+        h2.subsection-title
+          strong.subsection-number #06
+          | Breadcrumbs
+        .code-sample
+          nav.breadcrumbs
+            p
+              a.breadcrumbs__link(href='#ignore-click') Link 1
+              | /
+              a.breadcrumbs__link(href='#ignore-click') Link 2
+              | /
+              a.breadcrumbs__link(href='#ignore-click') Link 3
+              | /
+              a.breadcrumbs__link(href='#ignore-click') Link 4
+      //
+         Breadcrumbs End
+      //
+         Tables Start
+      a(name='table')
+      section.styleguide__table
+        h2.subsection-title
+          strong.subsection-number #07
+          | Table
+        .code-sample
+          table.table-4
+            colgroup
+              col(span='1')
+              col(span='1')
+              col(span='1')
+              col(span='1')
+            thead
+              tr
+                th Element
+                th Availability
+                th Description
+                th Description
+              tr
+                td(data-th='element')
+                  code src
+                td(data-th='availability') All browsers
+                td(data-th='description') Gives the address (URL) of the video.
+                td(data-th='description') Gives the address (URL) of the video.
+              tr
+                td(data-th='element')
+                  code poster
+                td(data-th='availability') All browsers
+                td(data-th='description')
+                  | Gives the address (URL) of an image file that the browser can show as soon as the video element loads, before playback begins.
+                td(data-th='description')
+                  | Gives the address (URL) of an image file that the browser can show as soon as the video element loads, before playback begins.
+        .code-sample
+          table.table-3
+            colgroup
+              col(span='1')
+              col(span='1')
+              col(span='1')
+            thead
+              tr
+                th Element
+                th Availability
+                th Description
+            tbody
+              tr
+                td(data-th='element')
+                  code src
+                td(data-th='availability') All browsers
+                td(data-th='description') Gives the address (URL) of the video.
+              tr
+                td(data-th='element')
+                  code poster
+                td(data-th='availability') All browsers
+                td(data-th='description')
+                  | Gives the address (URL) of an image file that the browser can show as soon as the video element loads, before playback begins.
+        .code-sample
+          table.table-2
+            colgroup
+              col(span='1')
+              col(span='1')
+            thead
+              tr
+                th Element
+                th Availability
+            tbody
+              tr
+                td(data-th='element')
+                  code src
+                td(data-th='availability') Rules applied for any browser width over the value defined in the query.
+              tr
+                td(data-th='element')
+                  code poster
+                td(data-th='availability') Rules applied for any browser width over the value defined in the query.
+        p
+          b Note:
+          code markdown
+          | isn't recognized in tables, therefore any code
+          | blocks should be wrapped in <code> tags.
+      //
+         Tables End
+      //
+         Grid Start
+      a(name='grid')
+      section.styleguide__grid
+        h2.subsection-title
+          strong.subsection-number #08
+          | Grid
+        .clear.demo
+          .code-sample
+            .g-medium--half.g-wide--1
+            .g-medium--half.g-medium--last.g-wide--1
+            .g-medium--half.g-wide--1
+            .g-medium--half.g-medium--last.g-wide--1.g-wide--last
+        .clear.demo
+          .code-sample
+            .g-wide--1.g-medium--half
+            .g-wide--3.g-wide--last.g-medium--half.g--last
+        .clear.demo
+          .code-sample
+            .g-wide--3.g-medium--half
+            .g-wide--1.g-wide--last.g-medium--half.g--last
+        .clear.demo
+          .code-sample
+            .g-medium--full.g-wide--full
+        .clear.demo
+          .code-sample
+            .g-medium--2.g-medium--last.g-wide--3
+        .clear.demo
+          .code-sample
+            .g-medium--1.g-medium--last.g-wide--2
+        .clear.demo
+          .code-sample
+            .g-medium--1.g-medium--last.g-wide--1
+        .clear.demo
+          .code-sample
+            .g-medium--1.g-medium--push-2.g-medium--last.g-wide--1.g-wide--push-3.g-wide--last
+        .clear.demo
+          .code-sample
+            .g-medium--1.g-medium--push-2.g-medium--last.g-wide--2.g-wide--push-2.g-wide--last
+        .clear.demo
+          .code-sample
+            .g-medium--2.g-medium--push-1.g-medium--last.g-wide--3.g-wide--push-1.g-wide--last
+        h4 Consistent grid classes
+        .clear.demo
+          .code-sample
+            .g--third
+            .g--third
+            .g--third.g--last
+        .clear.demo
+          .code-sample
+            .g--half
+            .g--half.g--last
+        .clear.demo
+          .code-sample
+            .g--half.g--centered
+            .g--third.g--centered
+      //
+         Grid End
+      //
+         Colors Start
+      a(name='colors')
+      section.styleguide__colors
+        h2.subsection-title
+          strong.subsection-number #09
+          | Colours
+        h3 Blacks
+        .code-sample
+          ul.styleguide__color-list.list--reset.clear
+            li.color--gray-background.g--half gray-background
+            li.color--gray-keyline.g--half.g--last gray-keyline
+            li.color--gray.g--half gray
+            li.color--gray-dark.g--half.g--last gray-dark
+        h3 Themes
+        .code-sample
+          ul.styleguide__color-list.list--reset.clear
+            li.color--layouts.g--half layouts
+            li.color--layouts-secondary.g--half.g--last layouts secondary
+            li.color--user.g--half user
+            li.color--user-secondary.g--half.g--last user secondary
+            li.color--media.g--half media
+            li.color--media-secondary.g--half.g--last media secondary
+            li.color--performance.g--half performance
+            li.color--performance-secondary.g--half.g--last performance secondary
+        h3 Google
+        .code-sample
+          ul.styleguide__color-list.list--reset.clear
+            li.color--blue.g--half blue
+            li.color--blue-secondary.g--half.g--last blue secondary
+            li.color--green.g--half green
+            li.color--green-secondary.g--half.g--last green secondary
+            li.color--red.g--half red
+            li.color--red-secondary.g--half.g--last red secondary
+            li.color--yellow.g--half yellow
+            li.color--yellow-secondary.g--half.g--last yellow secondary
+        h3 Helpers
+        .code-sample
+          ul.styleguide__color-list.list--reset.clear
+            li.color--text.g--half text
+            li.color--highlight.g--half.g--last highlight
+            li.color--warning.g--half warning
+            li.color--danger.g--half.g--last danger
+            li.color--muted.g--half muted
+            li.color--remember.g--half.g--last remember
+            li.color--learning.g--half learning
+      //
+         Colors End
+    //
+       // closing container
+    //
+       Highlights Start
+    .container
+      a(name='highlights')
+      h2.subsection-title
+        strong.subsection-number #10
+        | Highlights
+
+    section.styleguide__highlights
+      .code-sample
+        .highlight-module.highlight-module--right.highlight-module--remember
+          .highlight-module__container.icon-exclamation
+            .highlight-module__content.g-wide--push-1.g-wide--pull-1.g-medium--pull-1
+              p.highlight-module__title  Remember
+              p.highlight-module__text  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+      .code-sample
+        .highlight-module.highlight-module--left.highlight-module--learning
+          .highlight-module__container.icon-star
+            .highlight-module__content.g-wide--push-1.g-wide--pull-1.g-medium--push-1
+              p.highlight-module__title  Key Takeaways
+              p.highlight-module__text  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+      .code-sample
+        .highlight-module.highlight-module--right.highlight-module--remember
+          .highlight-module__container.icon-exclamation
+            .highlight-module__content.g-wide--push-1.g-wide--pull-1.g-medium--pull-1
+              p.highlight-module__title  Remember
+              ul.highlight-module__list
+                li Lorem ipsum dolor sit amet
+                li Fugit itaque sapiente earum quo expedita
+                li labore aliquam cupiditate veritatis nihil
+      .code-sample
+        .highlight-module.highlight-module--left.highlight-module--remember
+          .highlight-module__container.icon-exclamation
+            .highlight-module__content.g-wide--push-1.g-wide--pull-1.g-medium--push-1
+              p.highlight-module__title  Remember
+              p.highlight-module__text  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+    .container
+      h3 Code Samples
+
+    .code-sample
+      .highlight-module.highlight-module--left.highlight-module--learning.highlight-module--inline
+        .highlight-module__container.icon-star
+          .highlight-module__content.g-wide--pull-1
+            p.highlight-module__title  Key Takeaways
+            ul.highlight-module__list
+              li Lorem ipsum dolor sit amet
+              li Fugit itaque sapiente earum quo expedita
+              li labore aliquam cupiditate veritatis nihil
+    .code-sample
+      .highlight-module.highlight-module--right.highlight-module--remember.highlight-module--inline
+        .highlight-module__container.icon-exclamation
+          .highlight-module__content.g-wide--pull-1
+            p.highlight-module__title  Remember
+            ul.highlight-module__list
+              li Lorem ipsum dolor sit amet
+              li Fugit itaque sapiente earum quo expedita
+              li labore aliquam cupiditate veritatis nihil
+    // Highlights End
+
+    // Editorial Header Start
+    .container
+      a(name='editorial-header')
+      h2.subsection-title
+        strong.subsection-number #11
+        | Editorial header
+    .code-sample
+      section.styleguide__editorial-header
+        .editorial-header
+          .container
+            nav.breadcrumbs
+              p
+                a.breadcrumbs__link(href='#ignore-click') The Essentials
+                a.breadcrumbs__link(href='#ignore-click')  Multi-screen layouts
+
+            h1.tag.editorial-header__title Layout Basics
+            h2.editorial-header__subtitle What is the viewport?
+            p.editorial-header__excerpt.g-wide--pull-1
+              | Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vitae varius augue, eu varius dolor. Sed vitae varius augue, eu varius dolor.
+            p.g-wide--pull-1
+              | Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vitae varius augue, eu varius dolor. Donec augue diam, scelerisque eget lectus in, posuere aliquet mi. Pellentesque suscipit nisl gravida sem tincidunt, id blandit turpis commodo.
+            .toc
+              p.toc__title In this lesson
+              ol#toc.toc__list.list-anchor
+                li
+                  a(href='#ignore-click') Lorem ipsum dolor sit amet
+                li.current
+                  a(href='#ignore-click') Dicta optio cumque dolore hic ea facilis
+                li
+                  a(href='#ignore-click') Minus, possimus, veniam, incidunt eligendi
+                li
+                  a(href='#ignore-click') Lorem ipsum dolor sit amet
+                li
+                  a(href='#ignore-click') Dicta optio cumque dolore hic ea facilis
+                li
+                  a(href='#ignore-click') Minus, possimus, veniam, incidunt eligendi
+    .container
+      a(name='article-section')
+      h2.subsection-title
+        strong.subsection-number #12
+        | Article section
+    .code-sample
+      section.styleguide__articles-section
+        .articles-section
+          .container
+            p.articles-count 4 guides
+            ol.articles-list
+              li.articles-list__item
+                h3.xlarge
+                  a(href='#ignore-click') Layout basics
+                p.g-wide--push-1.g-wide--pull-1
+                  | Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores, distinctio blanditiis quos porro harum nemo.
+                a.cta--primary(href='#ignore-click') See all lessons
+              li.articles-list__item
+                h3.xlarge
+                  a(href='#ignore-click') Basic layouts
+                p.g-wide--push-1.g-wide--pull-1
+                  | Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores, distinctio blanditiis quos porro harum nemo.
+                a.cta--primary(href='#ignore-click') See all lessons
+              li.articles-list__item
+                h3.xlarge
+                  a(href='#ignore-click') Layout patterns
+                p.g-wide--push-1.g-wide--pull-1
+                  | Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores, distinctio blanditiis quos porro harum nemo.
+                a.cta--primary(href='#ignore-click') See all lessons
+              li.articles-list__item
+                h3.xlarge
+                  a(href='#ignore-click') UI Elements
+                p.g-wide--push-1.g-wide--pull-1
+                  | Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores, distinctio blanditiis quos porro harum nemo.
+                a.cta--primary(href='#ignore-click') See all lessons
+    .container
+      a(name='guides-section')
+      h2.subsection-title
+        strong.subsection-number #13
+        | Guides section
+    .code-sample
+      section.styleguide__guides-section
+        .guides-section
+          header.container
+            h2.xxlarge Documentation
+            p
+              | Follow these guides and build web content users can access on any device they choose.
+          ul.guides-list.container-medium
+            li.guides-list__item.g--half.theme--multi-device-layouts
+              .primary-content
+                h3.xlarge
+                  a.themed(href='#ignore-click', title='Go to Multi-Device Layouts') Multi-Device Layouts
+                p
+                  | Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloremque, velit, illum iure id in saepe laborum. Doloribus, eaque, assumenda inventore eos iusto tenetur error dolorem suscipit molestiae natus ullam aliquam?
+              .secondary-content
+                span.icon-circle.themed--background
+                  i.icon.icon-lessons
+                ol.list-links.list-links--secondary
+                  li
+                    a(href='#ignore-click', title='Read the lesson Responsive Web Design Fundamentals') Responsive Web Design Fundamentals
+                  li
+                    a(href='#ignore-click', title='Read the lesson Responsive Web Design Patterns') Responsive Web Design Patterns
+                  li
+                    a(href='#ignore-click', title='Read the lesson Navigation and Action Patterns') Navigation and Action Patterns
+            li.guides-list__item.g--half.theme--introduction-to-media.g--last
+              .primary-content
+                h3.xlarge
+                  a.themed(href='#ignore-click', title='Go to Images, Audio and Video') Images, Audio and Video
+                p
+                  | Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corporis, fugit ea maiores omnis ad iste autem sed reiciendis amet quam deleniti sapiente laboriosam voluptate pariatur veniam quod beatae sunt architecto?
+              .secondary-content
+                span.icon-circle.themed--background
+                  i.icon.icon-lessons
+                ol.list-links.list-links--secondary
+                  li
+                    a(href='#ignore-click', title='Read the lesson Images') Images
+                  li
+                    a(href='#ignore-click', title='Read the lesson Video') Video
+                  li
+                    a(href='#ignore-click', title='Read the lesson Audio') Audio
+            li.guides-list__item.g--half.theme--user-input
+              .primary-content
+                h3.xlarge
+                  a.themed(href='#ignore-click', title='Go to Forms and User Input') Forms and User Input
+                p
+                  | Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptate, adipisci, aspernatur. Velit, consequatur, temporibus, neque minus obcaecati dolor officia architecto voluptatem et pariatur quo vitae saepe laborum ratione eum. Soluta.
+              .secondary-content
+                span.icon-circle.themed--background
+                  i.icon.icon-lessons
+                ol.list-links.list-links--secondary
+                  li
+                    a(href='#ignore-click', title='Read the lesson Create Amazing Forms') Create Amazing Forms
+                  li
+                    a(href='#ignore-click', title='Read the lesson Add Touch to Your Site') Add Touch to Your Site
+            li.guides-list__item.g--half.theme--performance.g--last
+              .primary-content
+                h3.xlarge
+                  a.themed(href='#ignore-click', title='Go to Optimizing Performance') Optimizing Performance
+                p
+                  | Lorem ipsum dolor sit amet, consectetur adipisicing elit. A, ratione officia officiis natus illum quos cumque quis! Optio, dolore, eligendi ea culpa quod esse atque architecto reprehenderit at tempora itaque!
+              .secondary-content
+                span.icon-circle.themed--background
+                  i.icon.icon-lessons
+                ol.list-links.list-links--secondary
+                  li
+                    a(href='#ignore-click', title='Read the lesson Critical Rendering Path') Critical Rendering Path
+                  li
+                    a(href='#ignore-click', title='Read the lesson Optimizing Content Efficiency') Optimizing Content Efficiency
+    .container
+      a(name='page-header')
+      h2.subsection-title
+        strong.subsection-number #14
+        | Page header
+    .code-sample
+      section.styleguide__page-header
+        .page-header
+          .container
+            nav.breadcrumbs
+              p
+                a.breadcrumbs__link(href='#ignore-click')  The Essentials
+            h3.xxlarge.text-divider Multi-screen layouts
+            p.page-header__excerpt.g-wide--push-1.g-wide--pull-1
+              | Lorem ipsum dolor sit amet, consectetur adipisicing elit. Natus, optio, ad, voluptates repudiandae at excepturi error delectus explicabo nulla eum provident quibusdam ipsum sapiente culpa sequi quia unde fuga id.
+    .container
+      a(name='quote')
+      h2.subsection-title
+        strong.subsection-number #15
+        | Quote
+    .code-sample
+      section.styleguide__quote
+        .quote
+          .container
+            blockquote.quote__content.g-wide--push-1.g-wide--pull-1.g-medium--push-1
+              | Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deleniti, illum, at quis vero nam minus incidunt consequatur reprehenderit aliquid blanditiis fugiat nihil dolor tempora distinctio ipsum quisquam debitis excepturi magni.
+              p Name / Details
+    .container
+      a(name='guides-intro')
+      h2.subsection-title
+        strong.subsection-number #16
+        | Featured icons
+    .code-sample
+      section.styleguide__centered-list
+        .container
+          ul.list-guides-intro.list-centered.list--reset.clear
+            li.g-medium--half.g-wide--1.theme--multi-device-layouts
+              a.themed(href='#ignore-click')
+                span.icon-circle--large.themed--background
+                  i.icon.icon-multi-device-layouts
+                h3.large.text-divider Multi-Device Layouts
+              p Create flexible, not fixed, layouts.
+            li.g-medium--half.g-wide--1.theme--introduction-to-media.g-medium--last
+              a.themed(href='#ignore-click')
+                span.icon-circle--large.themed--background
+                  i.icon.icon-introduction-to-media
+                h3.large.text-divider Images, Audio and Video
+              p Only use media that loads fast and scales.
+            li.g-medium--half.g-wide--1.theme--user-input
+              a.themed(href='#ignore-click')
+                span.icon-circle--large.themed--background
+                  i.icon.icon-user-input
+                h3.large.text-divider Forms and User Input
+              p Touch, tap, click, and submit.
+            li.g-medium--half.g-wide--1.theme--performance.g-medium--last.g-wide--last
+              a.themed(href='#ignore-click')
+                span.icon-circle--large.themed--background
+                  i.icon.icon-performance
+                h3.large.text-divider Optimizing Performance
+              p Performance is a feature.
+    .container
+      a(name='featured-spotlight')
+      h2.subsection-title
+        strong.subsection-number #17
+        | Featured spotlight
+    a(name='feature-spotlight')
+    .code-sample
+      section.styleguide__feature-spotlight
+        .featured-spotlight
+          .container-medium
+            .featured-spotlight__container.g--pull-half
+              .featured-spotlight__img
+                img(src='public/common/images/icons/placeholder--wide.png', alt='wide image placeholder example')
+              .container-small
+                h3.xxlarge Featured spotlight
+                p
+                  | Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sed vitae varius augue, eu varius dolor.
+                a.cta--primary(href='#ignore-click') View Google
+    .container
+      a(name='featured-list')
+      h2.subsection-title
+        strong.subsection-number #18
+        | Featured list
+    .code-sample
+      section.styleguide__featured-section
+        .featured-section
+          .container-medium
+            ul.featured-list
+              li.featured-list__item.clear
+                .container-small
+                  .featured-list__content.g--half
+                    h3 Case study
+                    p
+                      | Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium, incidunt harum aut quae eaque sequi sunt molestiae tenetur vitae.
+                    a.cta--primary(href='#ignore-click') View Google
+                  .featured-list__img-wrapper.g--half.g--last
+                    .featured-list__img
+                      img(src='public/common/images/icons/placeholder--small.png', alt='small image placeholder example')
+              li.featured-list__item.clear
+                .container-small
+                  .featured-list__content.g--half
+                    h3 Case study
+                    p
+                      | Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium, incidunt harum aut quae eaque sequi sunt molestiae tenetur vitae.
+                    a.cta--primary(href='#ignore-click') View Google
+                  .featured-list__img-wrapper.g--half.g--last
+                    .featured-list__img
+                      img(src='public/common/images/icons/placeholder--small.png', alt='small image placeholder example')
+    .container
+      a(name='next-lessons')
+      h2.subsection-title
+        strong.subsection-number #19
+        | Featured block
+    .code-sample
+      section.styleguide__next-lessons
+        .next-lessons.container-medium(data-current-lesson='03')
+          h3
+            i.icon.icon-lessons
+            | Next Lessons
+          ol.list-lessons.list-links
+            li
+              a(href='#ignore-click') Lesson title one
+            li.current
+              a(href='#ignore-click')
+                | Lesson title two
+                i.icon.icon-tick
+            li
+              a(href='#ignore-click') Lesson title three
+            li
+              a(href='#ignore-click') Lesson title four
+            li
+              a(href='#ignore-click') Lesson title five
+    .container
+      a(name='article-navigation')
+      h2.subsection-title
+        strong.subsection-number #20
+        | Article navigation
+    .code-sample
+      section.styleguide__article-nav
+        .container-medium
+          nav.article-nav
+            a.article-nav-link.article-nav-link--prev(href='#ignore-click')
+              p.article-nav-count 02
+              p A need for responsive pages
+            a.article-nav-link.article-nav-link--next(href='#ignore-click')
+              p.article-nav-count 04
+              p Create images for multiple resolutions
+
+
+    footer#gc-footer
+      .container
+        p
+          a(href='#') Back to top

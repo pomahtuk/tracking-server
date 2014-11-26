@@ -4,6 +4,7 @@
 
 var exports = function (server) {
   exports.index(server);
+  exports.styleguide(server);
   exports.templates(server);
 };
 
@@ -15,6 +16,16 @@ exports.index = function (server) {
     method: "GET",
     handler: function (request, reply) {
       reply.view('views/index');
+    }
+  });
+};
+
+exports.styleguide = function (server) {
+  server.route({
+    path: "/styleguide.html",
+    method: "GET",
+    handler: function (request, reply) {
+      reply.view('views/styleguide');
     }
   });
 };

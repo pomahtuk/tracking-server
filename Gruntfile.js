@@ -116,6 +116,8 @@ module.exports = function (grunt) {
       },
       css: {
         options: {
+          starttag: '// injector:{{ext}}',
+          endtag: '// endinjector',
           transform: function (filepath) {
             return 'link(rel="stylesheet" href="' + filepath + '")';
           },

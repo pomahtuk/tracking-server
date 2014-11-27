@@ -1,0 +1,37 @@
+.container
+  .row
+    .col-xs-12
+      #login-box
+        #login-box-holder
+          .row
+            .col-xs-12
+
+              #login-box-inner
+                form(role="form", action="index.html")
+                  .input-group
+                    span.input-group-addon
+                      i.fa.fa-user
+                    input.form-control(type="text", placeholder="Email address")
+                  .input-group
+                    span.input-group-addon
+                      i.fa.fa-key
+                    input.form-control(type="password", placeholder="Password")
+                  #remember-me-wrapper
+                    .row
+                      .col-xs-6
+                        .checkbox-nice
+                          input#remember-me(type="checkbox", checked="checked")
+                          label(for="remember-me")
+                            | Remember me
+                      a#login-forget-link.col-xs-6(href="forgot-password.html")
+                        | Forgot password?
+                  .row
+                    .col-xs-12
+                      button.btn.btn-success.col-xs-12(type="submit") Login
+
+        #login-box-footer
+          .row
+            .col-xs-12
+              | Do not have an account?
+              a(href="registration.html")
+                | Register now

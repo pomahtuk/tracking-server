@@ -1421,16 +1421,16 @@ input[type="radio"] {
 .pwdindicator.pw-very-strong .pwdstrength-label {
 	color:#2ecc71;
 }
-#login-page {
+.login-page {
 	background-color:#e7ebee;
 }
-#login-page-full {
+.login-page-full {
 	background-color:#e7ebee;
 }
 #login-box {
 	max-width:350px;
 	min-width:280px;
-	margin:60px auto 20px;
+	margin:160px auto 20px;
 	overflow:hidden;
 	-webkit-border-radius:4px 4px 0 0;
 	-moz-border-radius:4px 4px 0 0;
@@ -1483,30 +1483,6 @@ input[type="radio"] {
 #login-box-inner .reset-pass-input {
 	padding:15px 0;
 	margin-bottom:0;
-}
-#login-logo {
-	background:none repeat scroll 0 0 #34495e;
-	color:#fff;
-	display:block;
-	font-size:2em;
-	font-weight:400;
-	padding:35px 0;
-	text-align:center;
-	text-transform:uppercase;
-}
-#login-logo>img {
-	display:block;
-	height:40px;
-	margin:0 auto;
-}
-#login-logo>span {
-	display:block;
-	font-size:0.6em;
-	font-weight:300;
-	text-transform:none;
-}
-#login-box .input-group {
-	margin-bottom:10px;
 }
 #login-box .input-group input {
 	font-weight:300;
@@ -3866,7 +3842,7 @@ ul#email-list {
 	}
 }
 @media (max-width:420px) {
-	#content-wrapper.email-inbox-wrapper {
+	.content-wrapper.email-inbox-wrapper {
 			padding-left:5px;
 			padding-right:5px;
 	}
@@ -4540,11 +4516,11 @@ ul#email-list {
 .theme-whbl .graph-box {
 	background-color:#3498db !important;
 }
-.theme-whbl #content-wrapper {
+.theme-whbl .content-wrapper {
 	background-color:#f1f3f7;
 	border-left:2px solid #dce1e4;
 }
-.rtl.theme-whbl #content-wrapper {
+.rtl.theme-whbl .content-wrapper {
 	border-left:0;
 	border-right:2px solid #dce1e4;
 }

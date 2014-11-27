@@ -7,7 +7,8 @@
   var laborantAdmin = angular.module('laborantAdmin', [
     'ngRoute',
     'laborant/Common',
-    'laborant/Experiments'
+    'laborant/Experiments',
+    'laborant/Auth'
   ]);
 
   laborantAdmin.config([
@@ -19,6 +20,10 @@
         .when('/', {
           templateUrl: 'templates/experiments/list.html',
           controller: 'laborant/Experiments/List'
+        })
+        .when('/auth', {
+          templateUrl: 'templates/auth/login.html',
+          controller: 'laborant/Auth/Login'
         })
         .otherwise({
           redirectTo: '/'

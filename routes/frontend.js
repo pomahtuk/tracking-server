@@ -18,6 +18,13 @@ exports.index = function (server) {
       reply.view('views/index');
     }
   });
+  server.route({
+    path: "/auth",
+    method: "GET",
+    handler: function (request, reply) {
+      reply.view('views/index');
+    }
+  });
 };
 
 exports.styleguide = function (server) {

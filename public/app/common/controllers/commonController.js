@@ -10,16 +10,7 @@
   common.controller('commonController', [
     '$scope',
     function ($scope) {
-      $scope.actions = [
-        {
-          title: 'Home',
-          link: '/'
-        },
-        {
-          title: 'Experiments',
-          link: '/experiments'
-        }
-      ];
+      return true;
     }
   ]);
 

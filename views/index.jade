@@ -23,8 +23,8 @@ html(ng-app="laborantAdmin" ng-controller="commonController")
     link(rel="stylesheet" href="/public/common/styles/centaurus_elements.css")
     link(rel="stylesheet" href="/public/common/styles/centaurus_layout.css")
     // endinjector
-  body.theme-whbl.theme-wrapper
-    header#header-navbar.navbar
+  body.theme-whbl(ng-class="{'login-page': authPages, 'theme-wrapper': !authPages}")
+    header#header-navbar.navbar(ng-if="!authPages")
       .container
         #header-nav.nav-no-collapse.pull-right
             ul.nav.navbar-nav.pull-right
@@ -36,6 +36,7 @@ html(ng-app="laborantAdmin" ng-controller="commonController")
                     .form-group
                       input.form-control(type="text", placeholder="Search...")
                       i.fa.fa-search.nav-search-icon
+
               li.dropdown.hidden-xs
                 a.btn.dropdown-toggle(data-toggle="dropdown")
                   i.fa.fa-warning
@@ -55,6 +56,7 @@ html(ng-app="laborantAdmin" ng-controller="commonController")
                   li.item-footer
                     a(href="#")
                       | View all notifications
+
 
               li.hidden-xs
                 a.btn
@@ -87,7 +89,7 @@ html(ng-app="laborantAdmin" ng-controller="commonController")
 
 
     #page-wrapper.container
-      #content-wrapper(ng-view="")
+      div(ng-view="" ng-class="{'content-wrapper': !authPages}")
 
 
   // bower:js
@@ -100,8 +102,10 @@ html(ng-app="laborantAdmin" ng-controller="commonController")
   // endbower
 
   // injector:js
+  script(src="/public/app/auth/index.js")
   script(src="/public/app/common/index.js")
   script(src="/public/app/experiments/index.js")
+  script(src="/public/app/auth/controllers/loginController.js")
   script(src="/public/app/common/controllers/commonController.js")
   script(src="/public/app/experiments/controllers/listController.js")
   script(src="/public/app/app.js")

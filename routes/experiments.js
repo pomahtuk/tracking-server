@@ -4,7 +4,8 @@
 
 var Boom          = require('boom'),                                  // HTTP Errors
   Joi             = require('joi'),                                   // Validation
-  Experiment      = require('../models/experiment').Experiment, // Mongoose ODM
+  Experiment      = require('../models/experiment').Experiment,       // Mongoose ODM
+  _               = require('lodash'),
   exports = function (server) {
     exports.index(server);
     exports.create(server);
@@ -52,7 +53,9 @@ exports.index = function (server) {
     handler: function (request, reply) {
       Experiment.find({}, function (err, experiments) {
         if (!err) {
-          reply(experiments);
+          reply({
+            experiments: experiments
+          });
         } else {
           reply(Boom.badImplementation(err)); // 500 error
         }
@@ -69,24 +72,25 @@ exports.index = function (server) {
  */
 exports.create = function (server) {
   // POST /experiments
-  var experiment;
+  var experiment, reqExp;
 
   server.route({
     method: 'POST',
     path: '/experiments',
     handler: function (request, reply) {
 
+      reqExp = request.payload.experiment;
       experiment = new Experiment();
+
       // real data!
-      experiment.category = request.payload.category;
-      experiment.action = request.payload.action;
-      experiment.label = request.payload.label;
-      experiment.source = request.info.remoteAddress;
+      _.assign(experiment, reqExp);
+      // some validation may be?
 
       experiment.save(function (err) {
         if (!err) {
-          reply(experiment).created('/experiments/' + experiment._id);    // HTTP 201
+          reply({experiment: experiment}).created('/experiments/' + experiment._id);    // HTTP 201
         } else {
+          console.log(err);
           reply(Boom.forbidden(getErrorMessageFrom(err))); // HTTP 403
         }
       });
@@ -115,7 +119,7 @@ exports.show = function (server) {
     handler: function (request, reply) {
       Experiment.findById(request.params.id, function (err, experiment) {
         if (!err && experiment) {
-          reply(experiment);
+          reply({experiment: experiment});
         } else if (err) {
           // Log it, but don't show the user, don't want to expose ourselves (think security)
           console.log(err);

@@ -15,7 +15,7 @@ var experimentSchema = new Schema({
   trackPercent  : { type: Number,   required: true},
   fullOn        : { type: Boolean,  required: true, default: false},
   goal          : { type : Schema.ObjectId, ref : 'goal' },
-  dateCreated   : { type: Date,     required: true, default: Date.now }
+  dateCreated   : { type: Date,     default: new Date() }
 });
 
 var experiment = Mongoose.model('experiment', experimentSchema);

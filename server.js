@@ -28,8 +28,12 @@ server.views({
 routes.init(server);
 methods.init(server);
 
-server.pack.register({ plugin: Scooter }, function (err) {
-  server.start(function () {
-    server.log('info', 'Server running at: ' + server.info.uri);
+if (!module.parent) {
+  server.pack.register({ plugin: Scooter }, function (err) {
+    server.start(function () {
+      server.log('info', 'Server running at: ' + server.info.uri);
+    });
   });
-});
+}
+
+module.exports = server;

@@ -8,6 +8,7 @@ var Mongoose  = require('mongoose'),
 
 var goalSchema = new Schema({
   name          : { type: String,   required: true, trim: true },
+  tag           : { type: String,   required: true, trim: true },
   description   : { type: String,   required: true, trim: true },
   dateCreated   : { type: Date,     required: true, default: Date.now }
 });

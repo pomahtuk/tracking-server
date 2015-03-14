@@ -11,11 +11,13 @@
     "prestart": "npm install",
     "start": "nodemon server.js",
     "test": "lab -v",
-    "test-cov-html": "lab -r html -o coverage.html"
+    "test-cov-html": "lab -r html -o coverage.html",
+    "debug": "node-debug server.js"
   },
   "author": "pman",
   "license": "MIT",
   "dependencies": {
+    "bcrypt": "^0.8.1",
     "bell": "^2.2.0",
     "boom": ">=2.5.1",
     "catbox-memory": ">=1.1.1",

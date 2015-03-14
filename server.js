@@ -2,24 +2,20 @@
 
 'use strict';
 
-var Hapi        = require('hapi'),
-  serverConfig  = require('./config/server'),
-  Mongoose      = require('mongoose'),
-  routes        = require('./routes'),
-  methods       = require('./methods'),
-  Scooter       = require('scooter'),
-  Lout          = require('lout'),
-  port          = process.env.PORT || 3000,
-  server        = new Hapi.Server(serverConfig),
-  mongoURI;
+var Hapi          = require('hapi');
+var serverConfig  = require('./config/server');
+var Mongoose      = require('mongoose');
+var routes        = require('./routes');
+var methods       = require('./methods');
+var port          = process.env.PORT || 3000;
+var server        = new Hapi.Server(serverConfig);
+var mongoURI      = process.env.MONGOLAB_URI || 'mongodb://localhost/tracking_tool';
 
 server.connection({ port: port });
 
-mongoURI = process.env.MONGOLAB_URI || 'mongodb://localhost/tracking_tool';
-
 // MongoDB Connection
 Mongoose.connect(mongoURI);
-//Mongoose.set('debug', true);
+// Mongoose.set('debug', true);
 
 server.views({
   engines: {
@@ -41,23 +37,41 @@ server.views({
 // 'routeTemplate' - the name of the route template file. Default is 'route'.
 // 'filterRoutes' - a function that receives a route object containing method and path and returns a boolean value to exclude routes.
 
-routes.init(server);
-methods.init(server);
-
-if (!module.parent) {
-  server.register([
-    {
-      register: Scooter,
-      options: {} // options for Scooter
-    },{
-      register: Lout,
-      options: {} // options for Lout
-    }
-  ], function(err) {
-    server.start(function () {
-      console.log('Server started and listeting on port ' + port );
-    });
+server.register([
+  {
+    register: require('scooter'),
+    options: {} // options for Scooter
+  },{
+    register: require('lout'),
+    options: {} // options for Lout
+  }, {
+    register: require('bell'), // bell options
+    options: {}
+  }, {
+    register: require('hapi-auth-cookie'),
+    options: {}
+  }
+], function(err) {
+  server.auth.strategy('session', 'cookie', {
+    password: 'T7XxT3nnkX',
+    ttl: 14 * 24 * 60 * 60 * 1000, // 14 days
+    clearInvalid: true,
+    redirectOnTry: false,
+    cookie: 'sid',
+    mode: 'optional', // for a while, untill correct auth are not implemented
+    isSecure: false//,
+    // validateFunc: function(session, callback) {
+    //   callback(null, true, session);
+    // }
   });
-}
+
+  routes.init(server);
+  methods.init(server);
+
+  server.start(function () {
+    console.log('Server started and listeting on port ' + port );
+  });
+});
+
 
 module.exports = server;

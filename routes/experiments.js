@@ -5,15 +5,7 @@
 var Boom          = require('boom'),                                  // HTTP Errors
   Joi             = require('joi'),                                   // Validation
   Experiment      = require('../models/experiment').Experiment,       // Mongoose ODM
-  _               = require('lodash'),
-  exports = function (server) {
-    exports.index(server);
-    exports.create(server);
-    exports.show(server);
-    exports.remove(server);
-  };
-
-module.exports = exports;
+  _               = require('lodash');
 
 /**
  * Formats an error message that is returned from Mongoose.
@@ -22,17 +14,10 @@ module.exports = exports;
  * @returns {string} The error message string.
  */
 function getErrorMessageFrom(err) {
-  var errorMessage = '', prop;
+  var errorMessage = '';
 
   if (err.errors) {
-    // for (prop in err.errors) {
-    //   if (err.errors.hasOwnProperty(prop)) {
-    //     errorMessage += err.errors[prop].message + ' ';
-    //   }
-    // }
-
     errorMessage = JSON.stringify(err.errors);
-
   } else {
     errorMessage = err.message;
   }
@@ -47,11 +32,14 @@ function getErrorMessageFrom(err) {
  *
  * @param server - The Hapi Server
  */
-exports.index = function (server) {
+var index = function (server) {
   // GET /experiments
   server.route({
     method: 'GET',
     path: '/experiments',
+    config: {
+      description: "Gets all the experiments from MongoDb and returns them."
+    },
     handler: function (request, reply) {
       Experiment.find({}, function (err, experiments) {
         if (!err) {
@@ -66,13 +54,14 @@ exports.index = function (server) {
   });
 };
 
+
 /**
  * POST /new
  * Creates a new experiment in the datastore.
  *
  * @param server - The Hapi Serve
  */
-exports.create = function (server) {
+var create = function (server) {
   // POST /experiments
   var experiment, reqExp;
 
@@ -80,6 +69,7 @@ exports.create = function (server) {
     method: 'POST',
     path: '/experiments',
     config: {
+      description: "Creating a single experiment based on POST data",
       validate: {
         payload: {
           experiment: Joi.object().keys({
@@ -115,18 +105,20 @@ exports.create = function (server) {
   });
 };
 
+
 /**
  * GET /experiments/{id}
  * Gets the experiment based upon the {id} parameter.
  *
  * @param server
  */
-exports.show = function (server) {
+var show = function (server) {
 
   server.route({
     method: 'GET',
     path: '/experiments/{id}',
     config: {
+      description: "Gets the experiment based upon the {id} parameter.",
       validate: {
         params: {
           id: Joi.string().alphanum().min(5).required()
@@ -149,17 +141,19 @@ exports.show = function (server) {
   });
 };
 
+
 /**
  * DELETE /experiments/{id}
  * Deletes an experiment, based on the experiment id in the path.
  *
  * @param server - The Hapi Server
  */
-exports.remove = function (server) {
+var remove = function (server) {
   server.route({
     method: 'DELETE',
     path: '/experiments/{id}',
     config: {
+      description: "Deletes an experiment, based on the experiment id in the path.",
       validate: {
         params: {
           id: Joi.string().alphanum().min(5).required()
@@ -181,4 +175,12 @@ exports.remove = function (server) {
       });
     }
   });
+};
+
+
+module.exports = function (server) {
+  index(server);
+  create(server);
+  show(server);
+  remove(server);
 };

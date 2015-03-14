@@ -25,6 +25,8 @@ function wrapJsonp(callbackName, data) {
  * @param server - The Hapi Server
  */
 exports.jsonp = function (server) {
+  var callbackName;
+
   server.route({
     path: "/laborant",
     method: "GET",
@@ -39,18 +41,18 @@ exports.jsonp = function (server) {
               if (err) {
                 reply(Boom.badRequest("Error getting user"));
               } else {
-                var callbackName = request.query.callback,
-                  // TODO: roll a dice for each user experiment stated!
-                  text = wrapJsonp(callbackName, {
-                    status: 'success',
-                    experiments: {
-                      'green_button': 1,
-                      'footer_text': 0
-                    },
-                    client: client,
-                    cookies: request.state,
-                    data: request.query.experiments
-                  });
+                callbackName = request.query.callback,
+                // TODO: roll a dice for each user experiment stated!
+                text = wrapJsonp(callbackName, {
+                  status: 'success',
+                  experiments: {
+                    'green_button': 1,
+                    'footer_text': 0
+                  },
+                  client: client,
+                  cookies: request.state,
+                  data: request.query.experiments
+                });
 
                 reply(text).type('application/json;');
               }

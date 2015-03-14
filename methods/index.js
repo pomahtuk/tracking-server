@@ -16,7 +16,7 @@ exports.init = function (server) {
   server.method("ensureCorrectDomain", function (request, next) {
     var apiKey = request.query.apiKey;
 
-    function clientTestCallback(err, client) {
+    var clientTestCallback = function (err, client) {
       if (err) {
         next(err, null);
       } else {
@@ -61,15 +61,15 @@ exports.init = function (server) {
    */
   server.method("getUserFromCookies", function (request, next) {
     // console.log(request.state);
-    var sessionId = request.state.laborantSession || '',
-      visitorUaData = request.plugins.scooter,
-      visitorBrowser = visitorUaData.family + ' ' + visitorUaData.major + '.' + visitorUaData.minor + '.' + visitorUaData.patch || 'unknown',
-      visitorDevice = visitorUaData.device.family || 'unknown',
-      visitorOs = visitorUaData.os.family + ' ' + visitorUaData.os.major + '.' + visitorUaData.os.minor + '.' + visitorUaData.os.patch || 'unknown',
-      visitorCountry,
-      newVisitor;
+    var sessionId = request.state.laborantSession || '';
+    var visitorUaData = request.plugins.scooter;
+    var visitorBrowser = visitorUaData.family + ' ' + visitorUaData.major + '.' + visitorUaData.minor + '.' + visitorUaData.patch || 'unknown';
+    var visitorDevice = visitorUaData.device.family || 'unknown';
+    var visitorOs = visitorUaData.os.family + ' ' + visitorUaData.os.major + '.' + visitorUaData.os.minor + '.' + visitorUaData.os.patch || 'unknown';
+    var visitorCountry;
+    var newVisitor;
 
-    function visitorCallback(err, visitor) {
+    var visitorCallback = function (err, visitor) {
       console.log(err);
       if (err) {
         next(err, null);

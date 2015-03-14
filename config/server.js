@@ -11,6 +11,7 @@ module.exports = {
     routes: {
       cors: {
         origin: ['*'],
+        credentials: true,
         isOriginExposed: false
       }
     }

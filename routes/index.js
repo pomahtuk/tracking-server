@@ -14,6 +14,7 @@ exports.init = function (server) {
   require('./events')(server);
   require('./static')(server);
   require('./experiments')(server);
+  require('./auth')(server);
 
   // check for ua string
   server.route({

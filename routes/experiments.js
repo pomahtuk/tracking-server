@@ -25,11 +25,13 @@ function getErrorMessageFrom(err) {
   var errorMessage = '', prop;
 
   if (err.errors) {
-    for (prop in err.errors) {
-      if (err.errors.hasOwnProperty(prop)) {
-        errorMessage += err.errors[prop].message + ' ';
-      }
-    }
+    // for (prop in err.errors) {
+    //   if (err.errors.hasOwnProperty(prop)) {
+    //     errorMessage += err.errors[prop].message + ' ';
+    //   }
+    // }
+
+    errorMessage = JSON.stringify(err.errors);
 
   } else {
     errorMessage = err.message;
@@ -90,8 +92,7 @@ exports.create = function (server) {
         if (!err) {
           reply({experiment: experiment}).created('/experiments/' + experiment._id);    // HTTP 201
         } else {
-          console.log(err);
-          reply(Boom.forbidden(getErrorMessageFrom(err))); // HTTP 403
+          reply(Boom.badRequest(getErrorMessageFrom(err))); // HTTP 400
         }
       });
     }
@@ -123,7 +124,7 @@ exports.show = function (server) {
         } else if (err) {
           // Log it, but don't show the user, don't want to expose ourselves (think security)
           console.log(err);
-          reply(Boom.notFound());
+          reply(Boom.badRequest());
         } else {
           reply(Boom.notFound());
         }
@@ -149,7 +150,7 @@ exports.remove = function (server) {
           reply({ message: "Experiment deleted successfully"});
         } else if (!err) {
           // Couldn't find the object.
-          reply(Boom.notFound());
+          reply(Boom.notFound()); //404
         } else {
           console.log(err);
           reply(Boom.badRequest("Could not delete Experiment"));

@@ -52,7 +52,7 @@ exports.jsonp = function (server) {
                     data: request.query.experiments
                   });
 
-                reply(text).header('Content-Type: application/json; charset=utf-8');
+                reply(text).type('application/json;');
               }
             });
           }

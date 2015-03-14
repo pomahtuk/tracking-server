@@ -31,8 +31,8 @@ lab.suite('Experiments', function () {
       payload: {
         experiment: {
           name: 'lab experiment',
-          description: 'lab exp descr',
-          tag: 'lab_exp',
+          description: 'lab exp descr is pretty much too big',
+          tag: 'lab_exp_olo',
           variantCount: 2,
           trackPercent: 100,
           fullOn: false

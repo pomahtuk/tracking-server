@@ -79,6 +79,22 @@ exports.create = function (server) {
   server.route({
     method: 'POST',
     path: '/experiments',
+    config: {
+      validate: {
+        payload: {
+          experiment: Joi.object().keys({
+            name: Joi.string().min(3).max(255).required(),
+            description: Joi.string().min(3).max(3000).required(),
+            tag: Joi.string().min(3).max(100).required(),
+            variantCount: Joi.number().integer().min(2).max(10).required(),
+            trackPercent: Joi.number().integer().min(1).max(100).required(),
+            fullOn: Joi.boolean().optional(),
+            goal: Joi.optional(),
+            dateCreated: Joi.optional()
+          })
+        }
+      }
+    },
     handler: function (request, reply) {
 
       reqExp = request.payload.experiment;
@@ -143,6 +159,13 @@ exports.remove = function (server) {
   server.route({
     method: 'DELETE',
     path: '/experiments/{id}',
+    config: {
+      validate: {
+        params: {
+          id: Joi.string().alphanum().min(5).required()
+        }
+      }
+    },
     handler: function (request, reply) {
       Experiment.findById(request.params.id, function (err, experiment) {
         if (!err && experiment) {
@@ -156,13 +179,6 @@ exports.remove = function (server) {
           reply(Boom.badRequest("Could not delete Experiment"));
         }
       });
-    },
-    config: {
-      validate: {
-        params: {
-          id: Joi.string().alphanum().min(5).required()
-        }
-      }
     }
   });
 };

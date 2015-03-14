@@ -60,7 +60,7 @@ exports.init = function (server) {
    * return {Visitor} instance of visitor
    */
   server.method("getUserFromCookies", function (request, next) {
-    console.log(request.state);
+    // console.log(request.state);
     var sessionId = request.state.laborantSession || '',
       visitorUaData = request.plugins.scooter,
       visitorBrowser = visitorUaData.family + ' ' + visitorUaData.major + '.' + visitorUaData.minor + '.' + visitorUaData.patch || 'unknown',
@@ -94,6 +94,7 @@ exports.init = function (server) {
         referrer: request.info.referrer,
         country: visitorCountry ? visitorCountry.country + ', ' + visitorCountry.region + ', ' + visitorCountry.city : 'unknown'
       });
+
       newVisitor.save(visitorCallback);
     }
   });

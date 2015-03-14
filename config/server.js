@@ -7,11 +7,15 @@ module.exports = {
     shared: true,
     options: {}
   },
-  cors: {
-    origin: ['*'],
-    isOriginExposed: false
-  },
-  validation : {
-    allowUnknown : true
+  connections: {
+    routes: {
+      cors: {
+        origin: ['*'],
+        isOriginExposed: false
+      }
+    }
   }
+  // validation : {
+  //   allowUnknown : true
+  // }
 };

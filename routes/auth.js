@@ -52,7 +52,7 @@ var deleteAccount = function (request, reply) {
 
 var register = function (request, reply) {
     var ourUser = new User();
-    var theirUser = request.payload.user;
+    var theirUser = request.payload;
 
     // real data!
     _.assign(ourUser, theirUser);
@@ -139,11 +139,9 @@ module.exports = function (server) {
                 description: "Creating a single experiment based on POST data",
                 validate: {
                     payload: {
-                        user: Joi.object().keys({
-                            username: Joi.string().alphanum().min(3).required(),
-                            password: Joi.string().regex(/[a-zA-Z0-9]{3,30}/).required(),
-                            confirm: Joi.ref('password') // should be equal
-                        })
+                        username: Joi.string().alphanum().min(3).required(),
+                        password: Joi.string().regex(/[a-zA-Z0-9]{3,30}/).required(),
+                        confirm: Joi.ref('password') // should be equal
                     }
                 },
                 auth: {

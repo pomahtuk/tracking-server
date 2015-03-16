@@ -37,6 +37,9 @@ User-facing API for Laborant tracking solution
   - Add relation to session
   - Write all tests
 
+* Tests
+  - add more checks, test JOI validations and passing invalid params
+
 
 To be able to use it - run in browser console first (this will actuallu create a user for you)
 

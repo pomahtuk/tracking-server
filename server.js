@@ -68,6 +68,7 @@ models.sequelize.sync().then(function () {
     server.start(function () {
       console.log('Server started and listeting on port ' + port );
     });
+
   });
 });
 

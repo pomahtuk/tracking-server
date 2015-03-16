@@ -5,20 +5,29 @@ var expRecordId, originalExperiment,
   lab     = exports.lab = Lab.script();
 
 lab.suite('Experiments', function () {
-  // test index
-  lab.test('Experiments endpoint lists present experiments', function (done) {
+
+  // wait for models to be loaded
+  lab.before(function (done) {
+    setTimeout(function () { done(); }, 1000);
+  });
+
+  lab.test("Create experiment endpoint rejects invalid experiment", function(done) {
     var options = {
-      method: 'GET',
-      url: '/experiments'
+      method: "POST",
+      url: "/experiments",
+      payload: {
+        experiment: {
+          description: 'lab exp descr'
+        }
+      }
     };
 
     server.inject(options, function(response) {
       var result = response.result;
 
-      Code.expect(response.statusCode).to.equal(200);
+      Code.expect(response.statusCode).to.equal(400);
       Code.expect(result).to.be.an.object();
-      Code.expect(result.experiments).to.be.instanceof(Array);
-      Code.expect(result.experiments.length).to.be.above(0);
+      Code.expect(result.message).to.be.string();
 
       done();
     });
@@ -50,7 +59,7 @@ lab.suite('Experiments', function () {
 
       Code.expect(result.experiment).to.be.an.object();
 
-      expRecordId = result.experiment._id;
+      expRecordId = result.experiment.id;
 
       experiment = result.experiment;
       originalExperiment = payload.experiment;
@@ -66,23 +75,20 @@ lab.suite('Experiments', function () {
     });
   });
 
-  lab.test("Create experiment endpoint rejects invalid experiment", function(done) {
+  // test index
+  lab.test('Experiments endpoint lists present experiments', function (done) {
     var options = {
-      method: "POST",
-      url: "/experiments",
-      payload: {
-        experiment: {
-          description: 'lab exp descr'
-        }
-      }
+      method: 'GET',
+      url: '/experiments'
     };
 
     server.inject(options, function(response) {
       var result = response.result;
 
-      Code.expect(response.statusCode).to.equal(400);
+      Code.expect(response.statusCode).to.equal(200);
       Code.expect(result).to.be.an.object();
-      Code.expect(result.message).to.be.string();
+      Code.expect(result.experiments).to.be.instanceof(Array);
+      Code.expect(result.experiments.length).to.be.above(0);
 
       done();
     });
@@ -129,10 +135,10 @@ lab.suite('Experiments', function () {
     });
   });
 
-  lab.test('Delete experiment endpoint should return error if experiment with givenid doesn\'t exists', function (done) {
+  lab.test('Delete experiment endpoint should return error if experiment with given id doesn\'t exists', function (done) {
     var options = {
       method: 'DELETE',
-      url: '/experiments/00036acb9ea6953b8ef244d0'
+      url: '/experiments/0'
     };
 
     server.inject(options, function(response) {
@@ -144,7 +150,7 @@ lab.suite('Experiments', function () {
   lab.test('Delete experiment endpoint should return 400 error if experiment id is wrong', function (done) {
     var options = {
       method: 'DELETE',
-      url: '/experiments/' + 0000
+      url: '/experiments/-1'
     };
 
     server.inject(options, function(response) {

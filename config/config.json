@@ -7,11 +7,12 @@
     "dialect": "sqlite"
   },
   "test": {
-    "username": "root",
+    "username": null,
     "password": null,
-    "database": "database_test",
-    "host": "127.0.0.1",
-    "dialect": "mysql"
+    "database": "laborant_test",
+    "host": "devDb.sqlite",
+    "dialect": "sqlite",
+    "logging": false
   },
   "production": {
     "username": "root",

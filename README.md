@@ -1,40 +1,43 @@
-To be able to use it - run in browser console first
+## Laborant-server
 
 User-facing API for Laborant tracking solution
 
-To Be Done:
+### To Be Done:
+
 * General
-- Ensure all roles hidden under auth
+  - Ensure all roles hidden under auth
 
 * Auth
-- Do ot expose a password - use hashes
-- Use seeeions instead of users
-- Add endpoint returning current user for session
+  - Do ot expose a password - use hashes
+  - Use seeeions instead of users
+  - Add endpoint returning current user for session
 
 * Experiments:
-- Add goals relation
-- Add targets relation
-- Assign to Project instaed of user
-- write tests for thouse changes
+  - Add goals relation
+  - Add targets relation
+  - Assign to Project instaed of user
+  - write tests for thouse changes
 
 * Goals
-- Add relation to Project
-- Implement tests for current functionality
+  - Add relation to Project
+  - Implement tests for current functionality
 
 * Tags
-- Everything
+  - Everything
 
 * Projects
-- Everything
+  - Everything
 
 * Sessions
-- Evetything
+  - Evetything
 
 * Users
-- Add relation to projects
-- Add relation to session
-- Write all tests
+  - Add relation to projects
+  - Add relation to session
+  - Write all tests
 
+
+To be able to use it - run in browser console first (this will actuallu create a user for you)
 
 ```
 $.ajax({

@@ -5,6 +5,7 @@
 var Hapi          = require('hapi');
 var serverConfig  = require('./config/server');
 var Mongoose      = require('mongoose');
+var models        = require("./models");
 var routes        = require('./routes');
 var methods       = require('./methods');
 var port          = process.env.PORT || 3000;
@@ -17,13 +18,8 @@ server.connection({ port: port });
 Mongoose.connect(mongoURI);
 // Mongoose.set('debug', true);
 
-server.views({
-  engines: {
-    jade: require('jade')
-  },
-  path: __dirname,
-  isCached: false
-});
+// Or you can simply use a connection uri
+// var sequelizeConnection = new Sequelize('postgres://user:pass@example.com:5432/dbname');
 
 // Lout Options
 // 'engines' - an object where each key is a file extension (e.g. 'html', 'jade'), mapped to the npm module name (string) used for rendering the templates. Default is { html: 'handlebars' }.
@@ -37,41 +33,42 @@ server.views({
 // 'routeTemplate' - the name of the route template file. Default is 'route'.
 // 'filterRoutes' - a function that receives a route object containing method and path and returns a boolean value to exclude routes.
 
-server.register([
-  {
-    register: require('scooter'),
-    options: {} // options for Scooter
-  },{
-    register: require('lout'),
-    options: {} // options for Lout
-  }, {
-    register: require('bell'), // bell options
-    options: {}
-  }, {
-    register: require('hapi-auth-cookie'),
-    options: {}
-  }
-], function(err) {
-  server.auth.strategy('session', 'cookie', {
-    password: 'T7XxT3nnkX',
-    ttl: 14 * 24 * 60 * 60 * 1000, // 14 days
-    clearInvalid: true,
-    redirectOnTry: false,
-    cookie: 'sid',
-    mode: 'optional', // for a while, untill correct auth are not implemented
-    isSecure: false//,
-    // validateFunc: function(session, callback) {
-    //   callback(null, true, session);
-    // }
-  });
+models.sequelize.sync().then(function () {
+  server.register([
+    {
+      register: require('scooter'),
+      options: {} // options for Scooter
+    },{
+      register: require('lout'),
+      options: {} // options for Lout
+    }, {
+      register: require('bell'), // bell options
+      options: {}
+    }, {
+      register: require('hapi-auth-cookie'),
+      options: {}
+    }
+  ], function(err) {
+    server.auth.strategy('session', 'cookie', {
+      password: 'T7XxT3nnkX',
+      ttl: 14 * 24 * 60 * 60 * 1000, // 14 days
+      clearInvalid: true,
+      redirectOnTry: false,
+      cookie: 'sid',
+      mode: 'optional', // for a while, untill correct auth are not implemented
+      isSecure: false//,
+      // validateFunc: function(session, callback) {
+      //   callback(null, true, session);
+      // }
+    });
 
-  routes.init(server);
-  methods.init(server);
+    routes.init(server);
+    methods.init(server);
 
-  server.start(function () {
-    console.log('Server started and listeting on port ' + port );
+    server.start(function () {
+      console.log('Server started and listeting on port ' + port );
+    });
   });
 });
-
 
 module.exports = server;

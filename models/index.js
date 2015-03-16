@@ -12,7 +12,13 @@ var db        = {};
 fs
   .readdirSync(__dirname)
   .filter(function(file) {
-    return (file.indexOf(".") !== 0) && (file !== basename);
+    var condition = (file.indexOf(".") !== 0) && (file !== basename) && !(file.indexOf("sql") !== 0);;
+
+    if (condition && env === "development") {
+      console.log('loading model from', file);
+    }
+
+    return condition;
   })
   .forEach(function(file) {
     var model = sequelize["import"](path.join(__dirname, file));

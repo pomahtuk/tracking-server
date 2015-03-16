@@ -12,7 +12,6 @@
 exports.init = function (server) {
   require('./laborant')(server);
   require('./events')(server);
-  require('./static')(server);
   require('./experiments')(server);
   require('./auth')(server);
 

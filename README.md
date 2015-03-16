@@ -6,6 +6,7 @@ User-facing API for Laborant tracking solution
 
 * General
   - Ensure all roles hidden under auth
+  - Transition to SQL database
 
 * Auth
   - Do ot expose a password - use hashes

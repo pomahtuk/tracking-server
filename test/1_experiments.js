@@ -6,11 +6,6 @@ var expRecordId, originalExperiment,
 
 lab.suite('Experiments', function () {
 
-  // wait for models to be loaded
-  lab.before(function (done) {
-    setTimeout(function () { done(); }, 1000);
-  });
-
   lab.test("Create experiment endpoint rejects invalid experiment", function(done) {
     var options = {
       method: "POST",

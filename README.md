@@ -5,12 +5,14 @@ User-facing API for Laborant tracking solution
 ### To Be Done:
 
 * General
+  - nested routing
   - Ensure all roles hidden under auth
   - Transition to SQL database
 
 * Auth
   - Do ot expose a password - use hashes
   - Use seeeions instead of users
+  - Reset password and change password
   - Add endpoint returning current user for session
 
 * Experiments:
@@ -27,7 +29,7 @@ User-facing API for Laborant tracking solution
   - Everything
 
 * Projects
-  - Everything
+  - Everything, except model
 
 * Sessions
   - Evetything

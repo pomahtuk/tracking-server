@@ -15,7 +15,7 @@ var mongoURI      = process.env.MONGOLAB_URI || 'mongodb://localhost/tracking_to
 server.connection({ port: port });
 
 // MongoDB Connection
-Mongoose.connect(mongoURI);
+// Mongoose.connect(mongoURI);
 // Mongoose.set('debug', true);
 
 // Or you can simply use a connection uri

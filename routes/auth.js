@@ -37,9 +37,13 @@ var deleteAccount = function (request, reply) {
 var register = function (request, reply) {
     var theirUser = request.payload;
 
-    sqlUser.create(theirUser).then(function(user) {
-        request.auth.session.set(user); // authorize user
-        reply({user: user}).created(user.id);    // HTTP 201
+    sqlUser.create(theirUser).then(function(newUser, created) {
+        request.auth.session.set(newUser); // authorize user
+        reply({
+            user: {
+                username: newUser.username
+            }
+        }).created(newUser.id);    // HTTP 201
     }, function (err) {
         // console.log(err);
         reply(Boom.badRequest(err)); // HTTP 400
@@ -48,7 +52,9 @@ var register = function (request, reply) {
 
 
 var login = function (request, reply) {
+
     if (request.auth.isAuthenticated) {
+        console.log('auth');
         return reply({
             user: request.auth.credentials
         }); // 200 status
@@ -56,11 +62,12 @@ var login = function (request, reply) {
 
     // do a better comparsion - we need to hash passwords and store hashes
     sqlUser.findOne({username: request.payload.username}).then(function (ourUser) {
+        console.log(ourUser.username, request.payload.username);
         if (ourUser) {
             if (ourUser.password !== request.payload.password) {
                 // again, wrong
                 console.log('wrong password');
-                reply(Boom.unauthorized()); // 401
+                reply(Boom.unauthorized()); // 403
             } else {
                 // all ok, do magick
                 request.auth.session.set(ourUser);
@@ -72,7 +79,7 @@ var login = function (request, reply) {
                 }); // 200 status
             }
         } else {
-            reply(Boom.unauthorized());
+            reply(Boom.unauthorized()); //403
         }
     }, function (err) {
         // went wrong - reply 500

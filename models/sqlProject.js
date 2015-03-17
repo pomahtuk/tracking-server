@@ -12,7 +12,7 @@ module.exports = function(sequelize, DataTypes) {
       associate: function(models) {
         Project.hasMany(models.Goal);
         Project.hasMany(models.Experiment);
-        Project.hasMany(models.User);
+        Project.belongsToMany(models.User);
       }
     }
   });

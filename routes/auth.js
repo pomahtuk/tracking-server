@@ -1,69 +1,48 @@
-var Bcrypt  = require('bcrypt');
+var Bcrypt  = require('bcrypt');              // for future password comparison
 var Boom    = require('boom');                // HTTP Errors
 var Joi     = require('joi');                 // Validation
-var User    = require('../models/user').User; // Mongoose ODM
-var _       = require('lodash');
+var sqlUser = require('../models').User;      // Sequilize ORM
 
-// do a basic registration
-
-/**
- * Formats an error message that is returned from Mongoose.
- *
- * @param err The error object
- * @returns {string} The error message string.
- */
-var getErrorMessageFrom = function (err) {
-  var errorMessage = '';
-
-  if (err.errors) {
-    errorMessage = JSON.stringify(err.errors);
-  } else {
-    errorMessage = err.message;
-  }
-
-  return errorMessage;
-}
 
 var deleteAccount = function (request, reply) {
-    User.findById(request.auth.credentials._id, function (err, user) {
-        if (!err && user) {
+    sqlUser.findOne(request.auth.credentials.id).then(function (user) {
+        if (user) {
             if (user.password === request.payload.password) {
-                user.remove(function (err) {
-                    if (err) {
-                        reply(Boom.badImplementation(err));
+                sqlUser.destroy({
+                    where: {
+                      id: user.id
+                    },
+                    limit: 1
+                }).then(function (deleted) {
+                    if (deleted) {
+                      reply({ message: "User deleted successfully"});
                     } else {
-                        request.auth.session.clear();
-                        reply({ message: "Account deleted successfully"});
+                      reply(Boom.notFound("Could not delete user"));
                     }
+                }, function (err) {
+                    reply(Boom.badRequest(err));
                 });
             } else {
-                // wrong password provided
-                reply(Boom.unauthorized()); // 401 ??
-            }
-        } else if (!err) {
-            // Couldn't find the object.
-            eply(Boom.notFound()); //404
+                reply(Boom.unauthorized("Wrong password"));
+            } 
         } else {
-            console.log(err);
-            reply(Boom.badRequest("Could not delete account"));
+            reply(Boom.notFound()); //404
         }
+    }, function (err) {
+        // console.log(err);
+        reply(Boom.badRequest("Could not delete account"));
     });
 }
 
 var register = function (request, reply) {
-    var ourUser = new User();
     var theirUser = request.payload;
 
-    // real data!
-    _.assign(ourUser, theirUser);
-
-    ourUser.save(function (err) {
-        if (!err) {
-            request.auth.session.set(ourUser); // authorize user
-            reply({user: ourUser}).created(ourUser._id);  // HTTP 201
-        } else {
-            reply(Boom.badImplementation(err)); // HTTP 400
-        }
+    sqlUser.create(theirUser).then(function(user) {
+        request.auth.session.set(user); // authorize user
+        reply({user: user}).created(user.id);    // HTTP 201
+    }, function (err) {
+        // console.log(err);
+        reply(Boom.badRequest(err)); // HTTP 400
     });
 }
 
@@ -74,33 +53,32 @@ var login = function (request, reply) {
             user: request.auth.credentials
         }); // 200 status
     }
+
     // do a better comparsion - we need to hash passwords and store hashes
-    User.findOne({username: request.payload.username}, function(err, ourUser) {
-
-        console.log(ourUser);
-
-        if (err) {
-            // went wrong - reply 500
-            reply(Boom.badImplementation(err)); // 500 error
-        } else if (!ourUser) {
-            // reply 404
-            console.log('user not found');
-            reply(Boom.notFound());
-        } else if (ourUser.password !== request.payload.password) {
-            // again, wrong
-            console.log('wrong password');
-            reply(Boom.unauthorized()); // 401
+    sqlUser.findOne({username: request.payload.username}).then(function (ourUser) {
+        if (ourUser) {
+            if (ourUser.password !== request.payload.password) {
+                // again, wrong
+                console.log('wrong password');
+                reply(Boom.unauthorized()); // 401
+            } else {
+                // all ok, do magick
+                request.auth.session.set(ourUser);
+                // reply with propper status
+                reply({
+                    user: {
+                        username: ourUser.username
+                    }
+                }); // 200 status
+            }
         } else {
-            // all ok, do magick
-            request.auth.session.set(ourUser);
-            // reply with propper status
-            reply({
-                user: {
-                    username: ourUser.username
-                }
-            }); // 200 status
+            reply(Boom.unauthorized());
         }
+    }, function (err) {
+        // went wrong - reply 500
+        reply(Boom.badImplementation(err)); // 500 error
     })
+
 };
 
 var logout = function (request, reply) {

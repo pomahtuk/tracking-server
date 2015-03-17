@@ -19,6 +19,8 @@ com_crashlytics_export_strings.xml
 
 .rebooted
 
+devDb.sqlite
+
 public/bower_components/
 
 node_modules/

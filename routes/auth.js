@@ -24,7 +24,7 @@ var deleteAccount = function (request, reply) {
                 });
             } else {
                 reply(Boom.unauthorized("Wrong password"));
-            } 
+            }
         } else {
             reply(Boom.notFound()); //404
         }
@@ -61,8 +61,7 @@ var login = function (request, reply) {
     }
 
     // do a better comparsion - we need to hash passwords and store hashes
-    sqlUser.findOne({username: request.payload.username}).then(function (ourUser) {
-        console.log(ourUser.username, request.payload.username);
+    sqlUser.findOne({where: {username: request.payload.username}}).then(function (ourUser) {
         if (ourUser) {
             if (ourUser.password !== request.payload.password) {
                 // again, wrong

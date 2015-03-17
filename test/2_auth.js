@@ -31,8 +31,6 @@ lab.suite('Auth', function () {
         Code.expect(result.user.username).to.equal(valudUser.username);
         Code.expect(response.statusCode).to.equal(201);
 
-        console.log(result.user);
-
         done();
       });
 
@@ -68,7 +66,7 @@ lab.suite('Auth', function () {
         var result = response.result;
 
         Code.expect(response.statusCode).to.equal(200);
-        console.log(result.user);
+
         Code.expect(result.user.username).to.equal(valudUser.username);
         done();
       });
@@ -83,8 +81,8 @@ lab.suite('Auth', function () {
         payload: {
           password: '177591'
         },
-        headers: { 
-          cookie: 'sid=' + sessionCookie[1] 
+        headers: {
+          cookie: 'sid=' + sessionCookie[1]
         }
       };
 

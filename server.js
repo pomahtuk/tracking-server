@@ -49,9 +49,9 @@ models.sequelize.sync().then(function () {
     },{
       register: require('lout'),
       options: {} // options for Lout
-    }, {
-      register: require('bell'), // bell options
-      options: {}
+    // }, {
+    //   register: require('bell'), // bell options
+    //   options: {}
     }, {
       register: require('hapi-auth-cookie'),
       options: {}

@@ -126,6 +126,11 @@ var resetPasswordCnange = function (request, reply) {
 
 }
 
+
+var getCurrentUser = function (request, reply) {
+
+}
+
 module.exports = function (server) {
     server.route([
         {

@@ -54,7 +54,6 @@ var register = function (request, reply) {
 var login = function (request, reply) {
 
     if (request.auth.isAuthenticated) {
-        console.log('auth');
         return reply({
             user: request.auth.credentials
         }); // 200 status

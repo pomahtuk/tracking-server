@@ -36,6 +36,14 @@ server.connection({ port: port });
 models.sequelize.sync().then(function () {
   server.register([
     {
+      register: require('good'),
+      options: {
+       reporters: [{
+          reporter: require('good-console'),
+          args:[{ response: '*' }]
+        }]
+      }
+    }, {
       register: require('scooter'),
       options: {} // options for Scooter
     },{

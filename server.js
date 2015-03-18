@@ -36,14 +36,14 @@ server.connection({ port: port });
 models.sequelize.sync().then(function () {
   server.register([
     {
-      register: require('good'),
-      options: {
-       reporters: [{
-          reporter: require('good-console'),
-          args:[{ response: '*' }]
-        }]
-      }
-    }, {
+    //   register: require('good'),
+    //   options: {
+    //    reporters: [{
+    //       reporter: require('good-console'),
+    //       args:[{ response: '*' }]
+    //     }]
+    //   }
+    // }, {
       register: require('scooter'),
       options: {} // options for Scooter
     },{
@@ -64,10 +64,8 @@ models.sequelize.sync().then(function () {
       redirectOnTry: false,
       cookie: 'sid',
       mode: 'optional', // for a while, untill correct auth are not implemented
-      isSecure: false//,
-      // validateFunc: function(session, callback) {
-      //   callback(null, true, session);
-      // }
+      isSecure: false,
+      validateFunc: require('./helpers/sessionValidate.js')
     });
 
     routes.init(server);

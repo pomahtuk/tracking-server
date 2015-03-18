@@ -10,8 +10,8 @@ module.exports = function(sequelize, DataTypes) {
   }, {
     classMethods: {
       associate: function(models) {
-        Goal.hasMany(models.Experiment);
-        // Goal.belongsTo(models.Project);
+        Goal.belongsToMany(models.Experiment);
+        Goal.belongsTo(models.Project);
       }
     }
   });

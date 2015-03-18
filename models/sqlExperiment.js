@@ -13,7 +13,8 @@ module.exports = function(sequelize, DataTypes) {
   }, {
     classMethods: {
       associate: function(models) {
-        // Experiment.belongsTo(models.Project);
+        Experiment.belongsTo(models.Project);
+        Experiment.hasMany(models.Goal);
       }
     }
   });

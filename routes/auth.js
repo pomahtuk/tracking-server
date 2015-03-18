@@ -2,12 +2,13 @@ var Bcrypt  = require('bcrypt');              // for future password comparison
 var Boom    = require('boom');                // HTTP Errors
 var Joi     = require('joi');                 // Validation
 var sqlUser = require('../models').User;      // Sequilize ORM
+var uuid    = require('node-uuid');           // generate RFC UUID
 
 
 var deleteAccount = function (request, reply) {
     sqlUser.findOne(request.auth.credentials.id).then(function (user) {
         if (user) {
-            if (user.password === request.payload.password) {
+            if (Bcrypt.compareSync(request.payload.password, user.password)) {
                 sqlUser.destroy({
                     where: {
                       id: user.id
@@ -34,16 +35,28 @@ var deleteAccount = function (request, reply) {
     });
 }
 
+
 var register = function (request, reply) {
     var theirUser = request.payload;
 
+    theirUser.salt = Bcrypt.genSaltSync(10);
+    theirUser.password = Bcrypt.hashSync(theirUser.password, theirUser.salt);
+
     sqlUser.create(theirUser).then(function(newUser, created) {
-        request.auth.session.set(newUser); // authorize user
-        reply({
-            user: {
-                username: newUser.username
-            }
-        }).created(newUser.id);    // HTTP 201
+        newUser.createSession({
+            hash: uuid.v4()
+        }).then(function (session) {
+            // all ok, do magick
+            request.auth.session.set(session);
+            // reply with propper status
+            reply({
+                user: {
+                    username: newUser.username
+                }
+            }).created(newUser.id);    // HTTP 201
+        }, function (err) {
+            reply(Boom.badImplementation(err)); // 500 error
+        });
     }, function (err) {
         // console.log(err);
         reply(Boom.badRequest(err)); // HTTP 400
@@ -62,19 +75,25 @@ var login = function (request, reply) {
     // do a better comparsion - we need to hash passwords and store hashes
     sqlUser.findOne({where: {username: request.payload.username}}).then(function (ourUser) {
         if (ourUser) {
-            if (ourUser.password !== request.payload.password) {
+            if (!Bcrypt.compareSync(request.payload.password, ourUser.password)) {
                 // again, wrong
                 console.log('wrong password');
                 reply(Boom.unauthorized()); // 403
             } else {
-                // all ok, do magick
-                request.auth.session.set(ourUser);
-                // reply with propper status
-                reply({
-                    user: {
-                        username: ourUser.username
-                    }
-                }); // 200 status
+                ourUser.createSession({
+                    hash: uuid.v4()
+                }).then(function (session) {
+                    // all ok, do magick
+                    request.auth.session.set(session);
+                    // reply with propper status
+                    reply({
+                        user: {
+                            username: ourUser.username
+                        }
+                    }); // 200 status
+                }, function (err) {
+                    reply(Boom.badImplementation(err)); // 500 error
+                })
             }
         } else {
             reply(Boom.unauthorized()); //403
@@ -86,10 +105,26 @@ var login = function (request, reply) {
 
 };
 
+
 var logout = function (request, reply) {
     request.auth.session.clear();
     reply({ status: 'ok' });
 };
+
+// TBD!!!!
+var changePassword = function (request, reply) {
+
+}
+
+
+var resetPasswordStart = function (request, reply) {
+
+}
+
+
+var resetPasswordCnange = function (request, reply) {
+
+}
 
 module.exports = function (server) {
     server.route([

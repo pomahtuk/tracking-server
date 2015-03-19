@@ -149,7 +149,7 @@ var remove = function (server) {
 };
 
 
-module.exports = function (server) {
+module.exports = exports = function (server) {
   index(server);
   create(server);
   show(server);

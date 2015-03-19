@@ -13,6 +13,7 @@ exports.init = function (server) {
   require('./laborant')(server);
   require('./events')(server);
   require('./experiments')(server);
+  require('./projects')(server);
   require('./goals')(server);
   require('./auth')(server);
 

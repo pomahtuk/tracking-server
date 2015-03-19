@@ -5,21 +5,15 @@
 var Hapi          = require('hapi');
 var serverConfig  = require('./config/server');
 var Mongoose      = require('mongoose');
-var models        = require("./models");
+var models        = require('./models');
 var routes        = require('./routes');
 var methods       = require('./methods');
+var env           = process.env.NODE_ENV || 'development';
 var port          = process.env.PORT || 3000;
 var server        = new Hapi.Server(serverConfig);
 var mongoURI      = process.env.MONGOLAB_URI || 'mongodb://localhost/tracking_tool';
 
 server.connection({ port: port });
-
-// MongoDB Connection
-// Mongoose.connect(mongoURI);
-// Mongoose.set('debug', true);
-
-// Or you can simply use a connection uri
-// var sequelizeConnection = new Sequelize('postgres://user:pass@example.com:5432/dbname');
 
 // Lout Options
 // 'engines' - an object where each key is a file extension (e.g. 'html', 'jade'), mapped to the npm module name (string) used for rendering the templates. Default is { html: 'handlebars' }.
@@ -33,30 +27,32 @@ server.connection({ port: port });
 // 'routeTemplate' - the name of the route template file. Default is 'route'.
 // 'filterRoutes' - a function that receives a route object containing method and path and returns a boolean value to exclude routes.
 
-models.sequelize.sync().then(function () {
-  server.register([
-    {
-    //   register: require('good'),
-    //   options: {
-    //    reporters: [{
-    //       reporter: require('good-console'),
-    //       args:[{ response: '*' }]
-    //     }]
-    //   }
-    // }, {
-      register: require('scooter'),
-      options: {} // options for Scooter
-    },{
-      register: require('lout'),
-      options: {} // options for Lout
-    // }, {
-    //   register: require('bell'), // bell options
-    //   options: {}
-    }, {
-      register: require('hapi-auth-cookie'),
-      options: {}
+var packagesToRegister = [{
+    register: require('scooter'),
+    options: {} // options for Scooter
+  },{
+    register: require('lout'),
+    options: {} // options for Lout
+  }, {
+    register: require('hapi-auth-cookie'),
+    options: {}
+  }
+]
+
+if (env == 'development') {
+  packagesToRegister.push({
+    register: require('good'),
+    options: {
+     reporters: [{
+        reporter: require('good-console'),
+        args:[{ response: '*' }]
+      }]
     }
-  ], function(err) {
+  })
+}
+
+models.sequelize.sync().then(function () {
+  server.register(packagesToRegister, function(err) {
     server.auth.strategy('session', 'cookie', {
       password: 'T7XxT3nnkX',
       ttl: 14 * 24 * 60 * 60 * 1000, // 14 days

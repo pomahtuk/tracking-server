@@ -1,9 +1,13 @@
+"use strict";
+
 var projRecordId, originalProject;
 
 module.exports = exports = function (server, Code, lab, sessionCookie) {
+
   lab.suite('Projects', function () {
 
     lab.test("Create project endpoint rejects invalid project", function(done) {
+
       var options = {
         method: "POST",
         url: "/projects",
@@ -13,7 +17,7 @@ module.exports = exports = function (server, Code, lab, sessionCookie) {
           }
         },
         headers: {
-          cookie: 'sid=' + sessionCookie
+          cookie: 'sid=' + sessionCookie.value
         }
       };
 
@@ -40,7 +44,7 @@ module.exports = exports = function (server, Code, lab, sessionCookie) {
           }
         },
         headers: {
-          cookie: 'sid=' + sessionCookie
+          cookie: 'sid=' + sessionCookie.value
         }
       };
 
@@ -73,7 +77,7 @@ module.exports = exports = function (server, Code, lab, sessionCookie) {
         method: 'GET',
         url: '/projects',
         headers: {
-          cookie: 'sid=' + sessionCookie
+          cookie: 'sid=' + sessionCookie.value
         }
       };
 
@@ -94,7 +98,7 @@ module.exports = exports = function (server, Code, lab, sessionCookie) {
         method: 'GET',
         url: '/projects/' + projRecordId,
         headers: {
-          cookie: 'sid=' + sessionCookie
+          cookie: 'sid=' + sessionCookie.value
         }
       };
 
@@ -118,7 +122,7 @@ module.exports = exports = function (server, Code, lab, sessionCookie) {
         method: 'DELETE',
         url: '/projects/' + projRecordId,
         headers: {
-          cookie: 'sid=' + sessionCookie
+          cookie: 'sid=' + sessionCookie.value
         }
       };
 
@@ -138,7 +142,7 @@ module.exports = exports = function (server, Code, lab, sessionCookie) {
         method: 'DELETE',
         url: '/projects/0',
         headers: {
-          cookie: 'sid=' + sessionCookie
+          cookie: 'sid=' + sessionCookie.value
         }
       };
 
@@ -153,7 +157,7 @@ module.exports = exports = function (server, Code, lab, sessionCookie) {
         method: 'DELETE',
         url: '/projects/-1',
         headers: {
-          cookie: 'sid=' + sessionCookie
+          cookie: 'sid=' + sessionCookie.value
         }
       };
 

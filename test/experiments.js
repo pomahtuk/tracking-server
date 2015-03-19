@@ -1,3 +1,5 @@
+"use strict";
+
 var expRecordId, originalExperiment;
 
 module.exports = exports = function (server, Code, lab, sessionCookie) {
@@ -14,7 +16,7 @@ module.exports = exports = function (server, Code, lab, sessionCookie) {
           }
         },
         headers: {
-          cookie: 'sid=' + sessionCookie
+          cookie: 'sid=' + sessionCookie.value
         }
       };
 
@@ -44,7 +46,7 @@ module.exports = exports = function (server, Code, lab, sessionCookie) {
           }
         },
         headers: {
-          cookie: 'sid=' + sessionCookie
+          cookie: 'sid=' + sessionCookie.value
         }
       };
 
@@ -80,7 +82,7 @@ module.exports = exports = function (server, Code, lab, sessionCookie) {
         method: 'GET',
         url: '/experiments',
         headers: {
-          cookie: 'sid=' + sessionCookie
+          cookie: 'sid=' + sessionCookie.value
         }
       };
 
@@ -101,7 +103,7 @@ module.exports = exports = function (server, Code, lab, sessionCookie) {
         method: 'GET',
         url: '/experiments/' + expRecordId,
         headers: {
-          cookie: 'sid=' + sessionCookie
+          cookie: 'sid=' + sessionCookie.value
         }
       };
 
@@ -128,7 +130,7 @@ module.exports = exports = function (server, Code, lab, sessionCookie) {
         method: 'DELETE',
         url: '/experiments/' + expRecordId,
         headers: {
-          cookie: 'sid=' + sessionCookie
+          cookie: 'sid=' + sessionCookie.value
         }
       };
 
@@ -148,7 +150,7 @@ module.exports = exports = function (server, Code, lab, sessionCookie) {
         method: 'DELETE',
         url: '/experiments/0',
         headers: {
-          cookie: 'sid=' + sessionCookie
+          cookie: 'sid=' + sessionCookie.value
         }
       };
 
@@ -163,7 +165,7 @@ module.exports = exports = function (server, Code, lab, sessionCookie) {
         method: 'DELETE',
         url: '/experiments/-1',
         headers: {
-          cookie: 'sid=' + sessionCookie
+          cookie: 'sid=' + sessionCookie.value
         }
       };
 

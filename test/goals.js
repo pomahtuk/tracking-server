@@ -1,3 +1,5 @@
+"use strict";
+
 var goalRecordId, originalGoal;
 
 module.exports = exports = function (server, Code, lab, sessionCookie) {
@@ -18,7 +20,7 @@ module.exports = exports = function (server, Code, lab, sessionCookie) {
           }
         },
         headers: {
-          cookie: 'sid=' + sessionCookie
+          cookie: 'sid=' + sessionCookie.value
         }
       };
 
@@ -45,7 +47,7 @@ module.exports = exports = function (server, Code, lab, sessionCookie) {
           }
         },
         headers: {
-          cookie: 'sid=' + sessionCookie
+          cookie: 'sid=' + sessionCookie.value
         }
       };
 
@@ -81,7 +83,7 @@ module.exports = exports = function (server, Code, lab, sessionCookie) {
         method: 'GET',
         url: '/goals',
         headers: {
-          cookie: 'sid=' + sessionCookie
+          cookie: 'sid=' + sessionCookie.value
         }
       };
 
@@ -102,7 +104,7 @@ module.exports = exports = function (server, Code, lab, sessionCookie) {
         method: 'GET',
         url: '/goals/' + goalRecordId,
         headers: {
-          cookie: 'sid=' + sessionCookie
+          cookie: 'sid=' + sessionCookie.value
         }
       };
 
@@ -129,7 +131,7 @@ module.exports = exports = function (server, Code, lab, sessionCookie) {
         method: 'DELETE',
         url: '/goals/' + goalRecordId,
         headers: {
-          cookie: 'sid=' + sessionCookie
+          cookie: 'sid=' + sessionCookie.value
         }
       };
 
@@ -149,7 +151,7 @@ module.exports = exports = function (server, Code, lab, sessionCookie) {
         method: 'DELETE',
         url: '/goals/0',
         headers: {
-          cookie: 'sid=' + sessionCookie
+          cookie: 'sid=' + sessionCookie.value
         }
       };
 
@@ -164,7 +166,7 @@ module.exports = exports = function (server, Code, lab, sessionCookie) {
         method: 'DELETE',
         url: '/goals/-1',
         headers: {
-          cookie: 'sid=' + sessionCookie
+          cookie: 'sid=' + sessionCookie.value
         }
       };
 

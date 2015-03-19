@@ -1,3 +1,5 @@
+"use strict";
+
 var sessionCookie,
   valudUser = {
     username: 'pman' + Date.now(),

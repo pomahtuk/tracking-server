@@ -162,7 +162,7 @@ module.exports = function (server) {
                 description: "Creating a single experiment based on POST data",
                 validate: {
                     payload: {
-                        username: Joi.string().alphanum().min(3).required(),
+                        username: Joi.string().min(3).required(),
                         password: Joi.string().regex(/[a-zA-Z0-9]{3,30}/).required(),
                         confirm: Joi.ref('password') // should be equal
                     }
@@ -185,7 +185,7 @@ module.exports = function (server) {
                 description: "Creating a single experiment based on POST data",
                 validate: {
                     payload: {
-                        username: Joi.string().alphanum().min(3).required(),
+                        username: Joi.string().min(3).required(),
                         password: Joi.string().regex(/[a-zA-Z0-9]{3,30}/).required()
                     }
                 },

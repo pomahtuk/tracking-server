@@ -6,7 +6,7 @@ User-facing API for Laborant tracking solution
 
 * General
   - Nested routing
-  - Ensure all roles hidden under auth
+  - ~~Ensure all roles hidden under auth~~
   - Transition to SQL database
 
 * Auth
@@ -29,7 +29,8 @@ User-facing API for Laborant tracking solution
   - Everything
 
 * Projects
-  - Everything, except model
+  - ~~Evetything~~
+  - Testing
 
 * Sessions
   - ~~Evetything~~

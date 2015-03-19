@@ -10,7 +10,7 @@
   "scripts": {
     "prestart": "npm install",
     "start": "nodemon server.js",
-    "test": "lab -v",
+    "test": "lab -v ./test/index.js",
     "test-cov-html": "lab -r html -o coverage.html",
     "debug": "node-debug server.js"
   },

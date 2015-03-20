@@ -41,9 +41,9 @@ exports.jsonp = function (server) {
               if (err) {
                 reply(Boom.badRequest("Error getting user"));
               } else {
-                callbackName = request.query.callback,
+                callbackName = request.query.callback;
                 // TODO: roll a dice for each user experiment stated!
-                text = wrapJsonp(callbackName, {
+                var text = wrapJsonp(callbackName, {
                   status: 'success',
                   experiments: {
                     'green_button': 1,

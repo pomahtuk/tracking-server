@@ -1,19 +1,24 @@
-module.exports = exports = function highliteSQl (text) {
+/*jslint node: true, es5: true, nomen: true, indent: 2, vars: true, regexp: true */
+
+'use strict';
+
+var exports = function highliteSQl(text) {
 	var keyWords = [
-		"PRAGMA", "CREATE", "EXISTS", "INTEGER", "PRIMARY", "VARCHAR", 
+		"PRAGMA", "CREATE", "EXISTS", "INTEGER", "PRIMARY", "VARCHAR",
 		"DATETIME", "NULL", "REFERENCES", "AND", "AS", "ASC", "INDEX_LIST",
-		"BETWEEN", "BY", "CASE", "CURRENT_DATE", "CURRENT_TIME", "DELETE", 
-		"DESC", "DISTINCT", "EACH", "ELSE", "ELSEIF", "FALSE", "FOR", "FROM", 
-		"GROUP", "HAVING", "IF", "IN", "INSERT", "INTERVAL", "INTO", "IS", 
-		"JOIN", "KEY", "KEYS", "LEFT", "LIKE", "LIMIT", "MATCH", "NOT", 
+		"BETWEEN", "BY", "CASE", "CURRENT_DATE", "CURRENT_TIME", "DELETE",
+		"DESC", "DISTINCT", "EACH", "ELSE", "ELSEIF", "FALSE", "FOR", "FROM",
+		"GROUP", "HAVING", "IF", "IN", "INSERT", "INTERVAL", "INTO", "IS",
+		"JOIN", "KEY", "KEYS", "LEFT", "LIKE", "LIMIT", "MATCH", "NOT",
 		"ON", "OPTION", "OR", "ORDER", "OUT", "OUTER", "REPLACE", "TINYINT",
-		"RIGHT", "SELECT", "SET", "TABLE", "THEN", "TO", "TRUE", "UPDATE", 
+		"RIGHT", "SELECT", "SET", "TABLE", "THEN", "TO", "TRUE", "UPDATE",
 		"VALUES", "WHEN", "WHERE", "UNSIGNED", "CASCADE", "UNIQUE", "DEFAULT"
-	];
+	],
+    len = keyWords.length,
+    i;
 	
 	//adding lowercase keyword support
-	var len = keyWords.length;
-	for(var i = 0; i < len; i++) {
+	for (i = 0; i < len; i += 1) {
 		keyWords.push(keyWords[i].toLowerCase());
 	}
 	
@@ -47,12 +52,14 @@ module.exports = exports = function highliteSQl (text) {
 	newText = newText.replace(/([\(\)])/g, yellow + "$1" + clearStyle);
 	
 	//reserved mysql keywords
-	for(var i = 0; i < keyWords.length; i++) {
+	for (i = 0; i < keyWords.length; i += 1) {
 		//regex pattern will be formulated based on the array values surrounded by word boundaries. since the replace function does not accept a string as a regex pattern, we will use a regex object this time
-		regEx = new RegExp("\\b"+keyWords[i]+"\\b", "g");
+		regEx = new RegExp("\\b" + keyWords[i] + "\\b", "g");
 		newText = newText.replace(regEx, magenta + keyWords[i] + clearStyle);
 	}
 
-	console.log("Executing (default):", newText)
+	console.log("Executing (default):", newText);
 
-}
+};
+
+module.exports = exports;

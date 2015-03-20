@@ -63,7 +63,7 @@ var create = function (server) {
     handler: function (request, reply) {
       reqGoal = request.payload.goal;
 
-      sqlGoal.create(reqGoal).then(function(goal) {
+      sqlGoal.create(reqGoal).then(function (goal) {
         reply({goal: goal}).created('/goals/' + goal.id);    // HTTP 201
       }, function (err) {
         reply(Boom.badRequest(err)); // HTTP 400
@@ -96,7 +96,7 @@ var show = function (server) {
     handler: function (request, reply) {
       sqlGoal.findOne(request.params.id).then(function (goal) {
         reply({goal: goal});
-      }, function(err) {
+      }, function (err) {
         // Log it, but don't show the user, don't want to expose ourselves (think security)
         console.log(err);
         reply(Boom.badRequest(err));
@@ -138,7 +138,7 @@ var remove = function (server) {
         }
       }, function (err) {
         reply(Boom.badRequest(err));
-      })
+      });
     }
   });
 };

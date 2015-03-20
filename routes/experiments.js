@@ -68,7 +68,7 @@ var create = function (server) {
     handler: function (request, reply) {
       reqExp = request.payload.experiment;
 
-      sqlExperiment.create(reqExp).then(function(experiment) {
+      sqlExperiment.create(reqExp).then(function (experiment) {
         reply({experiment: experiment}).created('/experiments/' + experiment.id);    // HTTP 201
       }, function (err) {
         reply(Boom.badRequest(err)); // HTTP 400
@@ -101,7 +101,7 @@ var show = function (server) {
     handler: function (request, reply) {
       sqlExperiment.findOne(request.params.id).then(function (experiment) {
         reply({experiment: experiment});
-      }, function(err) {
+      }, function (err) {
         // Log it, but don't show the user, don't want to expose ourselves (think security)
         console.log(err);
         reply(Boom.badRequest(err));
@@ -143,15 +143,18 @@ var remove = function (server) {
         }
       }, function (err) {
         reply(Boom.badRequest(err));
-      })
+      });
     }
   });
 };
 
 
-module.exports = exports = function (server) {
+var exports = function (server) {
   index(server);
   create(server);
   show(server);
   remove(server);
 };
+
+
+module.exports = exports;

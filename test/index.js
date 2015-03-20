@@ -1,4 +1,6 @@
-"use strict";
+/*jslint node: true, es5: true, nomen: true, indent: 2, vars: true, regexp: true */
+
+'use strict';
 
 var Lab     = require('lab');
 var Code    = require('code');
@@ -34,9 +36,9 @@ lab.suite('Laborant Server', function () {
       };
 
       // creating a test user and getting auth cookie
-      server.inject(options, function(response) {
+      server.inject(options, function (response) {
 
-        if (response.statusCode !== 201 ) {
+        if (response.statusCode !== 201) {
           console.log('Wrong response', response.payload, 'with code', response.statusCode);
         }
 
@@ -57,16 +59,16 @@ lab.suite('Laborant Server', function () {
   // loading all tests within the same directory
   fs
     .readdirSync(__dirname)
-    .filter(function(file) {
+    .filter(function (file) {
       return (file.indexOf(".") !== 0) && (file !== basename);
     })
-    .forEach(function(file) {
+    .forEach(function (file) {
       var test = require(path.join(__dirname, file));
       testsObject[file] = test;
     });
 
   // and executing them with propper perematers
-  Object.keys(testsObject).forEach(function(testName) {
+  Object.keys(testsObject).forEach(function (testName) {
     testsObject[testName](server, Code, lab, sessionCookie);
   });
 

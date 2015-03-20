@@ -1,7 +1,11 @@
+/*jslint node: true, es5: true, nomen: true, indent: 2*/
+
+'use strict';
+
 var sqlSession = require('../models').Session;      // Sequilize ORM
 var sqlUser    = require('../models').User;         // Sequilize ORM
 
-module.exports = exports = function (session, callback) {
+var exports = function (session, callback) {
   if (session && session !== 'undefined') {
     sqlSession.findOne({
       include: [
@@ -18,8 +22,10 @@ module.exports = exports = function (session, callback) {
       }
     }, function (err) {
       callback(err, false, null);
-    })
+    });
   } else {
     callback(new Error('Session'), false, null);
   }
-}
+};
+
+module.exports = exports;

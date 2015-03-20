@@ -30,29 +30,28 @@ server.connection({ port: port });
 var packagesToRegister = [{
     register: require('scooter'),
     options: {} // options for Scooter
-  },{
+  }, {
     register: require('lout'),
     options: {} // options for Lout
   }, {
     register: require('hapi-auth-cookie'),
     options: {}
-  }
-]
+  }];
 
-if (env == 'development') {
+if (env === 'development') {
   packagesToRegister.push({
     register: require('good'),
     options: {
-     reporters: [{
+      reporters: [{
         reporter: require('good-console'),
-        args:[{ response: '*' }]
+        args: [{ response: '*' }]
       }]
     }
-  })
+  });
 }
 
 models.sequelize.sync().then(function () {
-  server.register(packagesToRegister, function(err) {
+  server.register(packagesToRegister, function (err) {
     server.auth.strategy('session', 'cookie', {
       password: 'T7XxT3nnkX',
       ttl: 14 * 24 * 60 * 60 * 1000, // 14 days
@@ -73,7 +72,7 @@ models.sequelize.sync().then(function () {
     methods.init(server);
 
     server.start(function () {
-      console.log('Server started and listeting on port ' + port );
+      console.log('Server started and listeting on port ' + port);
     });
 
   });

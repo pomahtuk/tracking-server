@@ -63,7 +63,7 @@ var create = function (server) {
     handler: function (request, reply) {
       reqProj = request.payload.project;
 
-      sqlProject.create(reqProj).then(function(project) {
+      sqlProject.create(reqProj).then(function (project) {
         reply({project: project}).created('/projects/' + project.id);    // HTTP 201
       }, function (err) {
         reply(Boom.badRequest(err)); // HTTP 400
@@ -96,7 +96,7 @@ var show = function (server) {
     handler: function (request, reply) {
       sqlProject.findOne(request.params.id).then(function (project) {
         reply({project: project});
-      }, function(err) {
+      }, function (err) {
         // Log it, but don't show the user, don't want to expose ourselves (think security)
         console.log(err);
         reply(Boom.badRequest(err));
@@ -138,7 +138,7 @@ var remove = function (server) {
         }
       }, function (err) {
         reply(Boom.badRequest(err));
-      })
+      });
     }
   });
 };

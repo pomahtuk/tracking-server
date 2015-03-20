@@ -2,7 +2,7 @@
 
 "use strict";
 
-module.exports = function(sequelize, DataTypes) {
+module.exports = function (sequelize, DataTypes) {
   var Experiment = sequelize.define("Experiment", {
     name          : { type: DataTypes.STRING, allowNull: false },
     description   : { type: DataTypes.STRING, allowNull: false },
@@ -12,7 +12,7 @@ module.exports = function(sequelize, DataTypes) {
     fullOn        : { type: DataTypes.BOOLEAN, allowNull: false, defaultValue: false}
   }, {
     classMethods: {
-      associate: function(models) {
+      associate: function (models) {
         Experiment.belongsTo(models.Project);
         Experiment.hasMany(models.Goal);
       }

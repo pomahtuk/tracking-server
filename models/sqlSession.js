@@ -2,12 +2,12 @@
 
 "use strict";
 
-module.exports = function(sequelize, DataTypes) {
+module.exports = function (sequelize, DataTypes) {
   var Session = sequelize.define("Session", {
     hash: { type: DataTypes.STRING, allowNull: false, unique: true }
   }, {
     classMethods: {
-      associate: function(models) {
+      associate: function (models) {
         Session.belongsTo(models.User);
       }
     }

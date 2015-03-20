@@ -1,12 +1,14 @@
-"use strict";
+/*jslint node: true, es5: true, nomen: true, indent: 2, vars: true, regexp: true */
+
+'use strict';
 
 var expRecordId, originalExperiment;
 
-module.exports = exports = function (server, Code, lab, sessionCookie) {
+var exports = function (server, Code, lab, sessionCookie) {
 
   lab.suite('Experiments', function () {
 
-    lab.test("Create experiment endpoint rejects invalid experiment", function(done) {
+    lab.test("Create experiment endpoint rejects invalid experiment", function (done) {
       var options = {
         method: "POST",
         url: "/experiments",
@@ -20,7 +22,7 @@ module.exports = exports = function (server, Code, lab, sessionCookie) {
         }
       };
 
-      server.inject(options, function(response) {
+      server.inject(options, function (response) {
         var result = response.result;
 
         Code.expect(response.statusCode).to.equal(400);
@@ -31,7 +33,7 @@ module.exports = exports = function (server, Code, lab, sessionCookie) {
       });
     });
 
-    lab.test("Create experiment endpoint creates valid experiment", function(done) {
+    lab.test("Create experiment endpoint creates valid experiment", function (done) {
       var options = {
         method: "POST",
         url: "/experiments",
@@ -50,7 +52,7 @@ module.exports = exports = function (server, Code, lab, sessionCookie) {
         }
       };
 
-      server.inject(options, function(response) {
+      server.inject(options, function (response) {
         var experiment,
           result = response.result,
           payload = options.payload;
@@ -86,7 +88,7 @@ module.exports = exports = function (server, Code, lab, sessionCookie) {
         }
       };
 
-      server.inject(options, function(response) {
+      server.inject(options, function (response) {
         var result = response.result;
 
         Code.expect(response.statusCode).to.equal(200);
@@ -107,7 +109,7 @@ module.exports = exports = function (server, Code, lab, sessionCookie) {
         }
       };
 
-      server.inject(options, function(response) {
+      server.inject(options, function (response) {
         var result = response.result;
 
         Code.expect(response.statusCode).to.equal(200);
@@ -134,7 +136,7 @@ module.exports = exports = function (server, Code, lab, sessionCookie) {
         }
       };
 
-      server.inject(options, function(response) {
+      server.inject(options, function (response) {
         var result = response.result;
 
         Code.expect(response.statusCode).to.equal(200);
@@ -154,7 +156,7 @@ module.exports = exports = function (server, Code, lab, sessionCookie) {
         }
       };
 
-      server.inject(options, function(response) {
+      server.inject(options, function (response) {
         Code.expect(response.statusCode).to.equal(404);
         done();
       });
@@ -169,7 +171,7 @@ module.exports = exports = function (server, Code, lab, sessionCookie) {
         }
       };
 
-      server.inject(options, function(response) {
+      server.inject(options, function (response) {
         Code.expect(response.statusCode).to.equal(400);
         done();
       });
@@ -177,4 +179,6 @@ module.exports = exports = function (server, Code, lab, sessionCookie) {
 
   });
 
-}
+};
+
+module.exports = exports;

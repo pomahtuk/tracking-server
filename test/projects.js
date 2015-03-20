@@ -1,12 +1,14 @@
-"use strict";
+/*jslint node: true, es5: true, nomen: true, indent: 2, vars: true, regexp: true */
+
+'use strict';
 
 var projRecordId, originalProject;
 
-module.exports = exports = function (server, Code, lab, sessionCookie) {
+var exports = function (server, Code, lab, sessionCookie) {
 
   lab.suite('Projects', function () {
 
-    lab.test("Create project endpoint rejects invalid project", function(done) {
+    lab.test("Create project endpoint rejects invalid project", function (done) {
 
       var options = {
         method: "POST",
@@ -21,7 +23,7 @@ module.exports = exports = function (server, Code, lab, sessionCookie) {
         }
       };
 
-      server.inject(options, function(response) {
+      server.inject(options, function (response) {
         var result = response.result;
 
         Code.expect(response.statusCode).to.equal(400);
@@ -32,7 +34,7 @@ module.exports = exports = function (server, Code, lab, sessionCookie) {
       });
     });
 
-    lab.test("Create project endpoint creates valid project", function(done) {
+    lab.test("Create project endpoint creates valid project", function (done) {
       var options = {
         method: "POST",
         url: "/projects",
@@ -48,7 +50,7 @@ module.exports = exports = function (server, Code, lab, sessionCookie) {
         }
       };
 
-      server.inject(options, function(response) {
+      server.inject(options, function (response) {
         var project,
           result = response.result,
           payload = options.payload;
@@ -81,7 +83,7 @@ module.exports = exports = function (server, Code, lab, sessionCookie) {
         }
       };
 
-      server.inject(options, function(response) {
+      server.inject(options, function (response) {
         var result = response.result;
 
         Code.expect(response.statusCode).to.equal(200);
@@ -102,7 +104,7 @@ module.exports = exports = function (server, Code, lab, sessionCookie) {
         }
       };
 
-      server.inject(options, function(response) {
+      server.inject(options, function (response) {
         var result = response.result;
 
         Code.expect(response.statusCode).to.equal(200);
@@ -126,7 +128,7 @@ module.exports = exports = function (server, Code, lab, sessionCookie) {
         }
       };
 
-      server.inject(options, function(response) {
+      server.inject(options, function (response) {
         var result = response.result;
 
         Code.expect(response.statusCode).to.equal(200);
@@ -146,7 +148,7 @@ module.exports = exports = function (server, Code, lab, sessionCookie) {
         }
       };
 
-      server.inject(options, function(response) {
+      server.inject(options, function (response) {
         Code.expect(response.statusCode).to.equal(404);
         done();
       });
@@ -161,11 +163,13 @@ module.exports = exports = function (server, Code, lab, sessionCookie) {
         }
       };
 
-      server.inject(options, function(response) {
+      server.inject(options, function (response) {
         Code.expect(response.statusCode).to.equal(400);
         done();
       });
     });
 
   });
-}
+};
+
+module.exports = exports;

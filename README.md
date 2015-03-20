@@ -13,7 +13,7 @@ User-facing API for Laborant tracking solution
   - ~~Do ot expose a password - use hashes~~
   - ~~Use seeeions instead of users~~
   - Reset password and change password
-  - Add endpoint returning current user for session
+  - ~~Add endpoint returning current user for session~~
 
 * Experiments:
   - ~~Add goals relation~~
@@ -42,6 +42,7 @@ User-facing API for Laborant tracking solution
   - Write all tests
 
 * Tests
+  - Test unauthentificated access to routes
   - add more checks, test JOI validations and passing invalid params
 
 

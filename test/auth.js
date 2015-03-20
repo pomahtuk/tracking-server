@@ -9,7 +9,7 @@ var sessionCookie,
     confirm: '177591'
   };
 
-var expoerts = function (server, Code, lab) {
+var exports = function (server, Code, lab) {
   lab.suite('Auth', function () {
 
     lab.test('Creates a user when valid data is provided', function (done) {
@@ -72,21 +72,34 @@ var expoerts = function (server, Code, lab) {
 
     });
 
-    lab.test('Deletes valid user with propper password', function (done) {
+    lab.test('Gets authentificated user details', function (done) {
 
       var options = {
-        method: "Delete",
-        url: "/account",
-        payload: {
-          password: '177591'
-        },
+        method: "GET",
+        url: "/me",
         headers: {
           cookie: 'sid=' + sessionCookie[1]
         }
       };
 
       server.inject(options, function (response) {
+        var result = response.result;
         Code.expect(response.statusCode).to.equal(200);
+        Code.expect(result.user.username).to.equal(valudUser.username);
+        done();
+      });
+
+    });
+
+    lab.test('Do not return any details to unauthorized user', function (done) {
+
+      var options = {
+        method: "GET",
+        url: "/me"
+      };
+
+      server.inject(options, function (response) {
+        Code.expect(response.statusCode).to.equal(401);
         done();
       });
 

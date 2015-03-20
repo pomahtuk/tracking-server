@@ -69,12 +69,6 @@ var register = function (request, reply) {
 
 var login = function (request, reply) {
 
-  if (request.auth.isAuthenticated) {
-    return reply({
-      user: request.auth.credentials
-    }); // 200 status
-  }
-
   sqlUser.findOne({where: {username: request.payload.username}}).then(function (ourUser) {
     if (ourUser) {
       if (!Bcrypt.compareSync(request.payload.password, ourUser.password)) {
@@ -130,7 +124,9 @@ var resetPasswordCnange = function (request, reply) {
 
 
 var getCurrentUser = function (request, reply) {
-
+  reply({
+    user: request.auth.credentials
+  }); // add sefe implementation
 };
 
 module.exports = function (server) {
@@ -206,6 +202,16 @@ module.exports = function (server) {
       path: '/logout',
       config: {
         handler: logout,
+        auth: {
+          mode: 'required',
+          strategy: 'session'
+        },
+      }
+    }, {
+      method: 'GET',
+      path: '/me',
+      config: {
+        handler: getCurrentUser,
         auth: {
           mode: 'required',
           strategy: 'session'

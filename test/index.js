@@ -8,30 +8,29 @@ var path      = require("path");
 var basename  = path.basename(module.filename);
 
 // defining a local variables
-var that = this;
 var testsObject = {};
 var sessionCookie = {};
 
 // valid user we are going to register
-that.testUser = {
+var testUser = {
   username: 'pmanValid' + Date.now(),
   password: '177591',
   confirm: '177591'
 };
 // saving reference like this to prevent leaking
-that.lab = Lab.script();
+var lab = Lab.script();
 
 // wrapping in hight level test suite
-that.lab.suite('Laborant Server', function () {
+lab.suite('Laborant Server', function () {
   // wait for models to be loaded
-  that.lab.before(function (done) {
+  lab.before(function (done) {
     // actually waiting 1 secod for server to be started
     setTimeout(function () {
 
       var options = {
         method: "POST",
         url: "/sign-up",
-        payload: that.testUser
+        payload: testUser
       };
 
       // creating a test user and getting auth cookie
@@ -68,10 +67,10 @@ that.lab.suite('Laborant Server', function () {
 
   // and executing them with propper perematers
   Object.keys(testsObject).forEach(function(testName) {
-    testsObject[testName](server, Code, that.lab, sessionCookie);
+    testsObject[testName](server, Code, lab, sessionCookie);
   });
 
 });
 
 // we are done, export our results
-exports.lab = that.lab;
+exports.lab = lab;

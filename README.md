@@ -8,6 +8,7 @@ User-facing API for Laborant tracking solution
   - Nested routing
   - ~~Ensure all roles hidden under auth~~
   - Transition to SQL database
+  - Update routes for all models
 
 * Auth
   - ~~Do ot expose a password - use hashes~~
@@ -39,6 +40,7 @@ User-facing API for Laborant tracking solution
 * Users
   - ~~Add relation to projects~~
   - ~~Add relation to session~~
+  - Model method trimming password and salt from object
   - Write all tests
 
 * Tests

@@ -9,33 +9,25 @@ var sqlUser = require('../models').User;      // Sequilize ORM
 var uuid    = require('node-uuid');           // generate RFC UUID
 
 var deleteAccount = function (request, reply) {
-  sqlUser.findOne(request.auth.credentials.id).then(function (user) {
-    if (user) {
-      if (Bcrypt.compareSync(request.payload.password, user.password)) {
-        sqlUser.destroy({
-          where: {
-            id: user.id
-          },
-          limit: 1
-        }).then(function (deleted) {
-          if (deleted) {
-            reply({ message: "User deleted successfully"});
-          } else {
-            reply(Boom.notFound("Could not delete user"));
-          }
-        }, function (err) {
-          reply(Boom.badRequest(err));
-        });
+  var user = request.auth.credentials;
+  if (Bcrypt.compareSync(request.payload.password, user.password)) {
+    sqlUser.destroy({
+      where: {
+        id: user.id
+      },
+      limit: 1
+    }).then(function (deleted) {
+      if (deleted) {
+        reply({ message: "User deleted successfully"});
       } else {
-        reply(Boom.unauthorized("Wrong password"));
+        reply(Boom.notFound("Could not delete user"));
       }
-    } else {
-      reply(Boom.notFound()); //404
-    }
-  }, function (err) {
-    // console.log(err);
-    reply(Boom.badRequest("Could not delete account"));
-  });
+    }, function (err) {
+      reply(Boom.badRequest(err));
+    });
+  } else {
+    reply(Boom.unauthorized("Wrong password"));
+  }
 };
 
 
@@ -73,7 +65,6 @@ var login = function (request, reply) {
     if (ourUser) {
       if (!Bcrypt.compareSync(request.payload.password, ourUser.password)) {
         // again, wrong
-        console.log('wrong password');
         reply(Boom.unauthorized()); // 403
       } else {
         ourUser.createSession({
@@ -109,7 +100,23 @@ var logout = function (request, reply) {
 
 // TBD!!!!
 var changePassword = function (request, reply) {
-
+  var currentUser = request.auth.credentials;
+  if (Bcrypt.compareSync(request.payload.oldPassword, currentUser.password)) {
+    // all ok, password correct
+    var salt = Bcrypt.genSaltSync(10);
+    var newPassword = request.payload.newPassword;
+    currentUser.updateAttributes({
+      salt: Bcrypt.genSaltSync(10),
+      password: Bcrypt.hashSync(newPassword, salt)
+    }).then(function (user) {
+      reply({ message: "User password updated successfully"});
+    }, function (err) {
+      reply(Boom.badImplementation(err));
+    })
+  } else {
+    // password incorrect
+    reply(Boom.unauthorized("Wrong password"));
+  }
 };
 
 
@@ -131,6 +138,7 @@ var getCurrentUser = function (request, reply) {
 
 module.exports = function (server) {
   server.route([
+    // delete
     {
       method: 'DELETE',
       path: '/account',
@@ -152,7 +160,9 @@ module.exports = function (server) {
           }
         }
       }
-    }, {
+    },
+    // register
+    {
       method: 'POST',
       path: '/sign-up',
       config: {
@@ -175,7 +185,9 @@ module.exports = function (server) {
           }
         }
       }
-    }, {
+    },
+    // login
+    {
       method: 'POST',
       path: '/login',
       config: {
@@ -197,7 +209,9 @@ module.exports = function (server) {
           }
         }
       }
-    }, {
+    },
+    // logout
+    {
       method: 'GET',
       path: '/logout',
       config: {
@@ -207,7 +221,9 @@ module.exports = function (server) {
           strategy: 'session'
         },
       }
-    }, {
+    },
+    // details
+    {
       method: 'GET',
       path: '/me',
       config: {
@@ -217,6 +233,22 @@ module.exports = function (server) {
           strategy: 'session'
         },
       }
-    }
+    },
+    // change password
+    {
+      method: 'POST',
+      path: '/change-password',
+      config: {
+        handler: changePassword,
+        description: "Changing user password",
+        validate: {
+          payload: {
+            oldPassword: Joi.string().regex(/[a-zA-Z0-9]{3,30}/).required(),
+            newPassword: Joi.string().regex(/[a-zA-Z0-9]{3,30}/).required(),
+            confifm: Joi.ref('newPassword') // should be equal
+          }
+        }
+      }
+    },
   ]);
 };

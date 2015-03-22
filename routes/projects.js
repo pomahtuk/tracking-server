@@ -43,7 +43,7 @@ var index = function (server) {
  */
 var create = function (server) {
   // POST /projects
-  var reqProj;
+  var reqProj, User;
 
   server.route({
     method: 'POST',
@@ -62,8 +62,9 @@ var create = function (server) {
     },
     handler: function (request, reply) {
       reqProj = request.payload.project;
+      User = request.auth.credentials;
 
-      sqlProject.create(reqProj).then(function (project) {
+      User.createProject(reqProj).then(function (project) {
         reply({project: project}).created('/projects/' + project.id);    // HTTP 201
       }, function (err) {
         reply(Boom.badRequest(err)); // HTTP 400
@@ -97,8 +98,6 @@ var show = function (server) {
       sqlProject.findOne(request.params.id).then(function (project) {
         reply({project: project});
       }, function (err) {
-        // Log it, but don't show the user, don't want to expose ourselves (think security)
-        console.log(err);
         reply(Boom.badRequest(err));
       });
     }

@@ -6,6 +6,8 @@ var geoip = require('geoip-lite'),
   ClientAccount = require('../models/clientAccount').ClientAccount,
   Visitor = require('../models/visitor').Visitor; // Mongoose ODM
 
+var experiments = require('./experiments.js');
+
 /**
  * Add your other methods below.
  *
@@ -13,6 +15,10 @@ var geoip = require('geoip-lite'),
  */
 exports.init = function (server) {
 
+  // init methods from other files
+  experiments(server);
+
+  // init index own methods
   server.method("ensureCorrectDomain", function (request, next) {
     var apiKey = request.query.apiKey;
 

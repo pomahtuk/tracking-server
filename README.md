@@ -6,6 +6,8 @@ User-facing API for Laborant tracking solution
 
 * General
   - Nested routing
+    - ~~Project - Experimnet~~
+    - Project - Experimnet - Goal
   - ~~Ensure all roles hidden under auth~~
   - Transition to SQL database
   - Update routes for all models
@@ -19,8 +21,7 @@ User-facing API for Laborant tracking solution
 
 * Experiments:
   - ~~Add goals relation~~
-  - Add targets relation
-  - ~~Assign to Project instaed of user~~
+  - ~~Assign to Project instead of user~~
   - Write tests for thouse changes
 
 * Goals

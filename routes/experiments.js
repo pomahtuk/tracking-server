@@ -15,18 +15,38 @@ var sqlExperiment   = require('../models').Experiment;                  // Sequi
  * @param server - The Hapi Server
  */
 var index = function (server) {
+  var Project, User;
+
   // GET /experiments
   server.route({
     method: 'GET',
     path: '/projects/{project_id}/experiments',
     config: {
-      description: "Gets all the experiments from MongoDb and returns them."
+      description: "Gets all the experiments from MongoDb and returns them.",
+      validate: {
+        params: {
+          project_id: Joi.number().integer().min(0).required()
+        }
+      }
     },
     handler: function (request, reply) {
-      sqlExperiment.findAll().then(function (experiments) {
-        reply({
-          experiments: experiments
-        });
+      User = request.auth.credentials;
+
+      User.getProjects({
+        where: {
+          id: request.params.project_id
+        },
+        limit: 1,
+        include: [ sqlExperiment ]
+      }).then(function (projects) {
+        if (projects.length > 0) {
+          Project = projects[0];
+          reply({
+            experiments: Project.Experiments
+          });
+        } else {
+          reply(Boom.notFound());
+        }
       }, function (err) {
         reply(Boom.badImplementation(err)); // 500 error
       });
@@ -43,7 +63,7 @@ var index = function (server) {
  */
 var create = function (server) {
   // POST /experiments
-  var reqExp;
+  var reqExp, User, Project;
 
   server.route({
     method: 'POST',
@@ -51,6 +71,9 @@ var create = function (server) {
     config: {
       description: "Creating a single experiment based on POST data",
       validate: {
+        params: {
+          project_id: Joi.number().integer().min(0).required()
+        },
         payload: {
           experiment: Joi.object().keys({
             name: Joi.string().min(3).max(255).required(),
@@ -67,16 +90,31 @@ var create = function (server) {
     },
     handler: function (request, reply) {
       reqExp = request.payload.experiment;
+      User = request.auth.credentials;
 
-      sqlExperiment.create(reqExp).then(function (experiment) {
-        reply({experiment: experiment}).created('/experiments/' + experiment.id);    // HTTP 201
+      User.getProjects({
+        where: {
+          id: request.params.project_id
+        },
+        limit: 1
+      }).then(function (projects) {
+        if (projects.length > 0) {
+          Project = projects[0];
+          Project.createExperiment(reqExp).then(function (experiment) {
+            reply({experiment: experiment}).created('/experiments/' + experiment.id);    // HTTP 201
+          }, function (err) {
+            reply(Boom.badImplementation(err)); // 500 error
+          });
+        } else {
+          reply(Boom.notFound());
+        }
       }, function (err) {
-        reply(Boom.badRequest(err)); // HTTP 400
-      });
-
+        reply(Boom.badImplementation(err)); // 500 error
+      })
     }
   });
 };
+
 
 /**
  * PUT /experiments/{id}
@@ -85,7 +123,7 @@ var create = function (server) {
  * @param server - The Hapi Serve
  */
 var update = function (server) {
-  var reqExp;
+  var reqExp, User, Project, Experiment;
 
   server.route({
     method: 'PUT',
@@ -111,24 +149,25 @@ var update = function (server) {
       reqExp = request.payload.experiment;
       reqExp.id = Number(request.params.id);
 
-      sqlExperiment.update(reqExp, {
-        where: {
-          id: request.params.id
-        }
-      }).then(function (affectedRows) {
-        // console.log(affectedRows[0]);
-        if (affectedRows[0]) {
-          reply({experiment: reqExp})  // HTTP 200
+      server.methods.getExperimentForRequest(request, function (err, Experiment) {
+        if (err) {
+          if (err.message === 'Not found') {
+            reply(Boom.notFound()); // 404 error
+          } else {
+            reply(Boom.badImplementation(err)); // 500 error
+          }
         } else {
-          reply(Boom.notFound());
+          Experiment.update(reqExp).then(function (newExp) {
+            reply({experiment: newExp})  // HTTP 200
+          }, function (err) {
+            reply(Boom.badImplementation(err)); // 500 error
+          });
         }
-      }, function (err) {
-        reply(Boom.badRequest(err)); // HTTP 400
       });
-
     }
   });
 };
+
 
 /**
  * GET /experiments/{id}
@@ -137,7 +176,6 @@ var update = function (server) {
  * @param server
  */
 var show = function (server) {
-
   server.route({
     method: 'GET',
     path: '/projects/{project_id}/experiments/{id}',
@@ -151,16 +189,16 @@ var show = function (server) {
       }
     },
     handler: function (request, reply) {
-      sqlExperiment.findOne(request.params.id).then(function (experiment) {
-        if (experiment) {
-          reply({experiment: experiment});
+      server.methods.getExperimentForRequest(request, function (err, Experiment) {
+        if (err) {
+          if (err.message === 'Not found') {
+            reply(Boom.notFound()); // 404 error
+          } else {
+            reply(Boom.badImplementation(err)); // 500 error
+          }
         } else {
-          reply(Boom.notFound());
+          reply({experiment: Experiment});
         }
-      }, function (err) {
-        // Log it, but don't show the user, don't want to expose ourselves (think security)
-        console.log(err);
-        reply(Boom.badRequest(err));
       });
     }
   });
@@ -187,19 +225,24 @@ var remove = function (server) {
       }
     },
     handler: function (request, reply) {
-      sqlExperiment.destroy({
-        where: {
-          id: request.params.id
-        },
-        limit: 1
-      }).then(function (deleted) {
-        if (deleted) {
-          reply({ message: "Experiment deleted successfully"});
+      server.methods.getExperimentForRequest(request, function (err, Experiment) {
+        if (err) {
+          if (err.message === 'Not found') {
+            reply(Boom.notFound()); // 404 error
+          } else {
+            reply(Boom.badImplementation(err)); // 500 error
+          }
         } else {
-          reply(Boom.notFound("Could not delete Experiment"));
+          Experiment.destroy().then(function (deleted) {
+            if (deleted) {
+              reply({message: "Experiment deleted successfully"});
+            } else {
+              reply(Boom.notFound("Could not delete Experiment")); // 404 error
+            }
+          }, function (err) {
+            reply(Boom.badImplementation(err)); // 500 error
+          });
         }
-      }, function (err) {
-        reply(Boom.badRequest(err));
       });
     }
   });

@@ -34,6 +34,28 @@ var exports = function (server, Code, lab, sessionCookie) {
       });
     });
 
+    lab.test("Create experiment endpoint rejects valid experiment for unauthorized user", function (done) {
+      var options = {
+        method: "POST",
+        url: "/experiments",
+        payload: {
+          experiment: {
+            name: 'lab experiment',
+            description: 'lab exp descr is pretty much too big',
+            tag: 'lab_exp_olo',
+            variantCount: 2,
+            trackPercent: 100,
+            fullOn: false
+          }
+        }
+      };
+
+      server.inject(options, function (response) {
+        Code.expect(response.statusCode).to.equal(401);
+        done();
+      });
+    });
+
     lab.test("Create experiment endpoint creates valid experiment", function (done) {
       var options = {
         method: "POST",
@@ -101,6 +123,18 @@ var exports = function (server, Code, lab, sessionCookie) {
       });
     });
 
+    lab.test('Experiments endpoint do not lists present experiments for unauthorized user', function (done) {
+      var options = {
+        method: 'GET',
+        url: '/experiments'
+      };
+
+      server.inject(options, function (response) {
+        Code.expect(response.statusCode).to.equal(401);
+        done();
+      });
+    });
+
     /* Show endpoint */
     lab.test('Single experiment endpoint return given experiment', function (done) {
       var options = {
@@ -144,7 +178,32 @@ var exports = function (server, Code, lab, sessionCookie) {
       });
     });
 
+    lab.test('Single experiment endpoint return 401 if user is unauthorized', function (done) {
+      var options = {
+        method: 'GET',
+        url: '/experiments/' + expRecordId
+      };
+
+      server.inject(options, function (response) {
+        Code.expect(response.statusCode).to.equal(401);
+        done();
+      });
+    });
+
     /* Delete endpoint */
+
+    lab.test('Delete experiment endpoint should return 401 error if user is unauthorized', function (done) {
+      var options = {
+        method: 'DELETE',
+        url: '/experiments/' + expRecordId
+      };
+
+      server.inject(options, function (response) {
+        Code.expect(response.statusCode).to.equal(401);
+        done();
+      });
+    });
+
     lab.test('Delete experiment endpoint should delete given experiment', function (done) {
       var options = {
         method: 'DELETE',

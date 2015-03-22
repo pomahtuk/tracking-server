@@ -18,7 +18,7 @@ var index = function (server) {
   // GET /experiments
   server.route({
     method: 'GET',
-    path: '/experiments',
+    path: '/projects/{project_id}/experiments',
     config: {
       description: "Gets all the experiments from MongoDb and returns them."
     },
@@ -47,7 +47,7 @@ var create = function (server) {
 
   server.route({
     method: 'POST',
-    path: '/experiments',
+    path: '/projects/{project_id}/experiments',
     config: {
       description: "Creating a single experiment based on POST data",
       validate: {
@@ -89,7 +89,7 @@ var update = function (server) {
 
   server.route({
     method: 'PUT',
-    path: '/experiments/{id}',
+    path: '/projects/{project_id}/experiments/{id}',
     config: {
       description: "Update a single experiment based on PUT data",
       validate: {
@@ -116,7 +116,12 @@ var update = function (server) {
           id: request.params.id
         }
       }).then(function (affectedRows) {
-        reply({experiment: reqExp})  // HTTP 200
+        // console.log(affectedRows[0]);
+        if (affectedRows[0]) {
+          reply({experiment: reqExp})  // HTTP 200
+        } else {
+          reply(Boom.notFound());
+        }
       }, function (err) {
         reply(Boom.badRequest(err)); // HTTP 400
       });
@@ -135,12 +140,13 @@ var show = function (server) {
 
   server.route({
     method: 'GET',
-    path: '/experiments/{id}',
+    path: '/projects/{project_id}/experiments/{id}',
     config: {
       description: "Gets the experiment based upon the {id} parameter.",
       validate: {
         params: {
-          id: Joi.number().integer().min(0).required()
+          id: Joi.number().integer().min(0).required(),
+          project_id: Joi.number().integer().min(0).required()
         }
       }
     },
@@ -170,12 +176,13 @@ var show = function (server) {
 var remove = function (server) {
   server.route({
     method: 'DELETE',
-    path: '/experiments/{id}',
+    path: '/projects/{project_id}/experiments/{id}',
     config: {
       description: "Deletes an experiment, based on the experiment id in the path.",
       validate: {
         params: {
-          id: Joi.number().integer().min(0).required()
+          id: Joi.number().integer().min(0).required(),
+          project_id: Joi.number().integer().min(0).required()
         }
       }
     },

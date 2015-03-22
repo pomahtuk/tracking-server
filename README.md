@@ -13,6 +13,7 @@ User-facing API for Laborant tracking solution
 * Auth
   - ~~Do ot expose a password - use hashes~~
   - ~~Use seeeions instead of users~~
+  - Delete session from database on logout
   - Reset password and change password
   - ~~Add endpoint returning current user for session~~
 

@@ -78,6 +78,52 @@ var create = function (server) {
   });
 };
 
+/**
+ * PUT /experiments/{id}
+ * Creates a new experiment in the datastore.
+ *
+ * @param server - The Hapi Serve
+ */
+var update = function (server) {
+  var reqExp;
+
+  server.route({
+    method: 'PUT',
+    path: '/experiments/{id}',
+    config: {
+      description: "Update a single experiment based on PUT data",
+      validate: {
+        payload: {
+          experiment: Joi.object().keys({
+            name: Joi.string().min(3).max(255).required(),
+            description: Joi.string().min(3).max(3000).required(),
+            tag: Joi.string().min(3).max(100).required(),
+            variantCount: Joi.number().integer().min(2).max(10).required(),
+            trackPercent: Joi.number().integer().min(1).max(100).required(),
+            fullOn: Joi.boolean().optional(),
+            goal: Joi.optional(),
+            dateCreated: Joi.optional()
+          })
+        }
+      }
+    },
+    handler: function (request, reply) {
+      reqExp = request.payload.experiment;
+      reqExp.id = Number(request.params.id);
+
+      sqlExperiment.update(reqExp, {
+        where: {
+          id: request.params.id
+        }
+      }).then(function (affectedRows) {
+        reply({experiment: reqExp})  // HTTP 200
+      }, function (err) {
+        reply(Boom.badRequest(err)); // HTTP 400
+      });
+
+    }
+  });
+};
 
 /**
  * GET /experiments/{id}
@@ -100,7 +146,11 @@ var show = function (server) {
     },
     handler: function (request, reply) {
       sqlExperiment.findOne(request.params.id).then(function (experiment) {
-        reply({experiment: experiment});
+        if (experiment) {
+          reply({experiment: experiment});
+        } else {
+          reply(Boom.notFound());
+        }
       }, function (err) {
         // Log it, but don't show the user, don't want to expose ourselves (think security)
         console.log(err);
@@ -152,6 +202,7 @@ var remove = function (server) {
 var exports = function (server) {
   index(server);
   create(server);
+  update(server);
   show(server);
   remove(server);
 };

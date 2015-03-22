@@ -2,11 +2,12 @@
 
 'use strict';
 
-var Bcrypt  = require('bcrypt');              // for future password comparison
-var Boom    = require('boom');                // HTTP Errors
-var Joi     = require('joi');                 // Validation
-var sqlUser = require('../models').User;      // Sequilize ORM
-var uuid    = require('node-uuid');           // generate RFC UUID
+var Bcrypt     = require('bcrypt');              // for future password comparison
+var Boom       = require('boom');                // HTTP Errors
+var Joi        = require('joi');                 // Validation
+var sqlUser    = require('../models').User;      // Sequilize ORM
+var sqlSession = require('../models').Session;   // Sequilize ORM
+var uuid       = require('node-uuid');           // generate RFC UUID
 
 var deleteAccount = function (request, reply) {
   var user = request.auth.credentials;
@@ -94,11 +95,20 @@ var login = function (request, reply) {
 
 
 var logout = function (request, reply) {
-  request.auth.session.clear();
-  reply({ status: 'ok' });
+  // delete users's session
+  sqlSession.destroy({
+    where: {
+      hash: request.auth.artifacts.hash
+    }
+  }).then(function (done) {
+    request.auth.session.clear();
+    reply({ status: 'ok' });
+  }, function (err) {
+    reply(Boom.badImplementation(err));
+  })
 };
 
-// TBD!!!!
+
 var changePassword = function (request, reply) {
   var currentUser = request.auth.credentials;
   if (Bcrypt.compareSync(request.payload.oldPassword, currentUser.password)) {
@@ -120,6 +130,7 @@ var changePassword = function (request, reply) {
 };
 
 
+// TBD!!!!
 var resetPasswordStart = function (request, reply) {
 
 };

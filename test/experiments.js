@@ -8,6 +8,7 @@ var exports = function (server, Code, lab, sessionCookie) {
 
   lab.suite('Experiments', function () {
 
+    /* Create endpoint */
     lab.test("Create experiment endpoint rejects invalid experiment", function (done) {
       var options = {
         method: "POST",
@@ -78,7 +79,7 @@ var exports = function (server, Code, lab, sessionCookie) {
       });
     });
 
-    // test index
+    /* Index endpoint */
     lab.test('Experiments endpoint lists present experiments', function (done) {
       var options = {
         method: 'GET',
@@ -95,11 +96,12 @@ var exports = function (server, Code, lab, sessionCookie) {
         Code.expect(result).to.be.an.object();
         Code.expect(result.experiments).to.be.instanceof(Array);
         Code.expect(result.experiments.length).to.be.above(0);
-
+        Code.expect(result.experiments[0].id).to.equal(1);
         done();
       });
     });
 
+    /* Show endpoint */
     lab.test('Single experiment endpoint return given experiment', function (done) {
       var options = {
         method: 'GET',
@@ -127,6 +129,22 @@ var exports = function (server, Code, lab, sessionCookie) {
       });
     });
 
+    lab.test('Single experiment endpoint return 404 if no experiment present', function (done) {
+      var options = {
+        method: 'GET',
+        url: '/experiments/' + 999,
+        headers: {
+          cookie: 'sid=' + sessionCookie.value
+        }
+      };
+
+      server.inject(options, function (response) {
+        Code.expect(response.statusCode).to.equal(404);
+        done();
+      });
+    });
+
+    /* Delete endpoint */
     lab.test('Delete experiment endpoint should delete given experiment', function (done) {
       var options = {
         method: 'DELETE',

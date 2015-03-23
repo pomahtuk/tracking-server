@@ -126,7 +126,7 @@ var create = function (server) {
         if (projects.length > 0) {
           Project = projects[0];
           Project.createExperiment(reqExp).then(function (experiment) {
-            reply({experiment: experiment}).created('/experiments/' + experiment.id);    // HTTP 201
+            reply({experiment: experiment}).created('/projects' + request.params.project_id + '/experiments/' + experiment.id);    // HTTP 201
           }, function (err) {
             reply(Boom.badImplementation(err)); // 500 error
           });

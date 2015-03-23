@@ -15,7 +15,7 @@ var sqlExperiment   = require('../models').Experiment;                  // Sequi
  * @param server - The Hapi Server
  */
 var index = function (server) {
-  var Project, User;
+  var Project, User, limit, offset;
 
   // GET /experiments
   server.route({
@@ -26,23 +26,48 @@ var index = function (server) {
       validate: {
         params: {
           project_id: Joi.number().integer().min(0).required()
+        },
+        query: {
+          limit: Joi.number().integer().min(0).optional(),
+          offset: Joi.number().integer().min(0).optional()
         }
       }
     },
     handler: function (request, reply) {
       User = request.auth.credentials;
 
+      limit = request.query.limit || 10;
+      offset = request.query.offset || 0;
+
+      // console.log('limit is', limit, 'and offset is', offset);
+
       User.getProjects({
         where: {
           id: request.params.project_id
         },
-        limit: 1,
-        include: [ sqlExperiment ]
+        limit: 1
       }).then(function (projects) {
         if (projects.length > 0) {
           Project = projects[0];
-          reply({
-            experiments: Project.Experiments
+          sqlExperiment.findAndCountAll({
+            where: {
+              ProjectId: Project.id
+            },
+            offset: offset,
+            limit: limit
+          }).then(function (result) {
+            if (result.rows) {
+              reply({
+                experiments: result.rows,
+                meta: {
+                  total: result.total
+                }
+              });
+            } else {
+              reply(Boom.notFound());
+            }
+          }, function (err) {
+            reply(Boom.badImplementation(err)); // 500 error
           });
         } else {
           reply(Boom.notFound());

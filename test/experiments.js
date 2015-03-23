@@ -83,6 +83,31 @@ var exports = function (server, Code, lab, sessionCookie) {
       });
     });
 
+    lab.test("Create experiment endpoint rejects experiment if project id is wrong", function (done) {
+      var options = {
+        method: "POST",
+        url: "/projects/" + 11111111 + "/experiments",
+        payload: {
+          experiment: {
+            name: 'lab experiment',
+            description: 'lab exp descr is pretty much too big',
+            tag: 'lab_exp_olo',
+            variantCount: 2,
+            trackPercent: 100,
+            fullOn: false
+          }
+        },
+        headers: {
+          cookie: 'sid=' + sessionCookie.value
+        }
+      };
+
+      server.inject(options, function (response) {
+        Code.expect(response.statusCode).to.equal(404);
+        done();
+      });
+    });
+
     lab.test("Create experiment endpoint rejects valid experiment for unauthorized user", function (done) {
       var options = {
         method: "POST",
@@ -160,10 +185,11 @@ var exports = function (server, Code, lab, sessionCookie) {
         Code.expect(result).to.be.an.object();
         Code.expect(result.experiments).to.be.instanceof(Array);
         Code.expect(result.experiments.length).to.be.above(0);
-        Code.expect(result.experiments[0].id).to.equal(1);
         done();
       });
     });
+
+    // add pagination tests
 
     lab.test('Experiments endpoint do not lists present experiments for unauthorized user', function (done) {
       var options = {
@@ -209,6 +235,21 @@ var exports = function (server, Code, lab, sessionCookie) {
       var options = {
         method: 'GET',
         url: "/projects/" + coreProject.id + '/experiments/' + 999,
+        headers: {
+          cookie: 'sid=' + sessionCookie.value
+        }
+      };
+
+      server.inject(options, function (response) {
+        Code.expect(response.statusCode).to.equal(404);
+        done();
+      });
+    });
+
+    lab.test('Single experiment endpoint return 404 if no project present', function (done) {
+      var options = {
+        method: 'GET',
+        url: "/projects/" + 11111 + '/experiments/' + 999,
         headers: {
           cookie: 'sid=' + sessionCookie.value
         }
@@ -301,6 +342,24 @@ var exports = function (server, Code, lab, sessionCookie) {
       });
     });
 
+    lab.test('Update experiment endpoint should return error if project with given id doesn\'t exists', function (done) {
+      var options = {
+        method: 'PUT',
+        url: "/projects/" + 11111 + '/experiments/0',
+        payload: {
+          experiment: validExperiment
+        },
+        headers: {
+          cookie: 'sid=' + sessionCookie.value
+        }
+      };
+
+      server.inject(options, function (response) {
+        Code.expect(response.statusCode).to.equal(404);
+        done();
+      });
+    });
+
     lab.test('Update experiment endpoint should return 400 error if experiment id is wrong', function (done) {
       var options = {
         method: 'PUT',
@@ -348,6 +407,21 @@ var exports = function (server, Code, lab, sessionCookie) {
         Code.expect(result).to.be.an.object();
         Code.expect(result.message).to.equal("Experiment deleted successfully");
 
+        done();
+      });
+    });
+
+    lab.test('Delete experiment endpoint should return error if project with given id doesn\'t exists', function (done) {
+      var options = {
+        method: 'DELETE',
+        url: "/projects/" + 11111 + '/experiments/0',
+        headers: {
+          cookie: 'sid=' + sessionCookie.value
+        }
+      };
+
+      server.inject(options, function (response) {
+        Code.expect(response.statusCode).to.equal(404);
         done();
       });
     });

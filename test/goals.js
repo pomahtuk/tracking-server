@@ -2,20 +2,60 @@
 
 'use strict';
 
-var goalRecordId, originalGoal;
+var goalRecordId, originalGoal, coreProject;
+var validGoal = {
+  name: 'lab goal',
+  description: 'lab exp descr is pretty much too big',
+  tag: 'lab_goal_olo'
+}
 
 var exports = function (server, Code, lab, sessionCookie) {
   lab.suite('Goals', function () {
 
-    // wait for models to be loaded
+    // create a project
     lab.before(function (done) {
-      setTimeout(function () { done(); }, 1000);
+      var options = {
+        method: "POST",
+        url: "/projects",
+        payload: {
+          project: {
+            name: 'lab project',
+            description: 'lab project descr is pretty much too big',
+            domain: 'http://ya.ru'
+          }
+        },
+        headers: {
+          cookie: 'sid=' + sessionCookie.value
+        }
+      };
+
+      // creating a test user and getting auth cookie
+      server.inject(options, function (response) {
+        var result = response.result;
+        coreProject = result.project;
+        done();
+      });
+    });
+
+    // and delete a project
+    lab.after(function (done) {
+      var options = {
+        method: 'DELETE',
+        url: '/projects/' + coreProject.id,
+        headers: {
+          cookie: 'sid=' + sessionCookie.value
+        }
+      };
+
+      server.inject(options, function (response) {
+        done();
+      });
     });
 
     lab.test("Create goal endpoint rejects invalid goal", function (done) {
       var options = {
         method: "POST",
-        url: "/goals",
+        url: "/projects/" + coreProject.id + "/goals",
         payload: {
           goal: {
             description: 'lab exp descr'
@@ -40,13 +80,9 @@ var exports = function (server, Code, lab, sessionCookie) {
     lab.test("Create goal endpoint creates valid goal", function (done) {
       var options = {
         method: "POST",
-        url: "/goals",
+        url: "/projects/" + coreProject.id + "/goals",
         payload: {
-          goal: {
-            name: 'lab goal',
-            description: 'lab exp descr is pretty much too big',
-            tag: 'lab_goal_olo'
-          }
+          goal: validGoal
         },
         headers: {
           cookie: 'sid=' + sessionCookie.value
@@ -83,7 +119,7 @@ var exports = function (server, Code, lab, sessionCookie) {
     lab.test('Goals endpoint lists present goals', function (done) {
       var options = {
         method: 'GET',
-        url: '/goals',
+        url: "/projects/" + coreProject.id + '/goals',
         headers: {
           cookie: 'sid=' + sessionCookie.value
         }
@@ -104,7 +140,7 @@ var exports = function (server, Code, lab, sessionCookie) {
     lab.test('Single goal endpoint return given goal', function (done) {
       var options = {
         method: 'GET',
-        url: '/goals/' + goalRecordId,
+        url: "/projects/" + coreProject.id + '/goals/' + goalRecordId,
         headers: {
           cookie: 'sid=' + sessionCookie.value
         }
@@ -131,7 +167,7 @@ var exports = function (server, Code, lab, sessionCookie) {
     lab.test('Delete goal endpoint should delete given goal', function (done) {
       var options = {
         method: 'DELETE',
-        url: '/goals/' + goalRecordId,
+        url: "/projects/" + coreProject.id + '/goals/' + goalRecordId,
         headers: {
           cookie: 'sid=' + sessionCookie.value
         }
@@ -151,7 +187,7 @@ var exports = function (server, Code, lab, sessionCookie) {
     lab.test('Delete goal endpoint should return error if goal with given id doesn\'t exists', function (done) {
       var options = {
         method: 'DELETE',
-        url: '/goals/0',
+        url: "/projects/" + coreProject.id + '/goals/0',
         headers: {
           cookie: 'sid=' + sessionCookie.value
         }
@@ -166,7 +202,7 @@ var exports = function (server, Code, lab, sessionCookie) {
     lab.test('Delete goal endpoint should return 400 error if goal id is wrong', function (done) {
       var options = {
         method: 'DELETE',
-        url: '/goals/-1',
+        url: "/projects/" + coreProject.id + '/goals/-1',
         headers: {
           cookie: 'sid=' + sessionCookie.value
         }

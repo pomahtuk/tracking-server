@@ -73,7 +73,6 @@ var index = function (server) {
 };
 
 
-
 /**
  * POST /goals
  * Creates a new experiment in the datastore.
@@ -82,7 +81,7 @@ var index = function (server) {
  */
 var create = function (server) {
   // POST /experiments
-  var reqGoal;
+  var reqGoal, User, Project;
 
   server.route({
     method: 'POST',
@@ -90,6 +89,9 @@ var create = function (server) {
     config: {
       description: "Creating a single goal based on POST data",
       validate: {
+        params: {
+          project_id: Joi.number().integer().min(0).required()
+        },
         payload: {
           goal: Joi.object().keys({
             name: Joi.string().min(3).max(255).required(),
@@ -142,6 +144,9 @@ var update = function (server) {
     config: {
       description: "Update a single goal based on PUT data",
       validate: {
+        params: {
+          project_id: Joi.number().integer().min(0).required()
+        },
         payload: {
           goal: Joi.object().keys({
             name: Joi.string().min(3).max(255).required(),
@@ -190,7 +195,8 @@ var show = function (server) {
       description: "Gets the goal based upon the {id} parameter.",
       validate: {
         params: {
-          id: Joi.number().integer().min(0).required()
+          id: Joi.number().integer().min(0).required(),
+          project_id: Joi.number().integer().min(0).required()
         }
       }
     },
@@ -226,7 +232,8 @@ var remove = function (server) {
       description: "Deletes a goal, based on the goal id in the path.",
       validate: {
         params: {
-          id: Joi.number().integer().min(0).required()
+          id: Joi.number().integer().min(0).required(),
+          project_id: Joi.number().integer().min(0).required()
         }
       }
     },

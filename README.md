@@ -33,6 +33,7 @@ User-facing API for Laborant tracking solution
 
 * Projects
   - ~~Evetything~~
+  - Update route
   - Testing
 
 * Sessions

@@ -7,7 +7,7 @@ var validGoal = {
   name: 'lab goal',
   description: 'lab exp descr is pretty much too big',
   tag: 'lab_goal_olo'
-}
+};
 
 var exports = function (server, Code, lab, sessionCookie) {
   lab.suite('Goals', function () {
@@ -47,11 +47,12 @@ var exports = function (server, Code, lab, sessionCookie) {
         }
       };
 
-      server.inject(options, function (response) {
+      server.inject(options, function () {
         done();
       });
     });
 
+    // test create route
     lab.test("Create goal endpoint rejects invalid goal", function (done) {
       var options = {
         method: "POST",
@@ -137,6 +138,7 @@ var exports = function (server, Code, lab, sessionCookie) {
       });
     });
 
+    // test single endpoint
     lab.test('Single goal endpoint return given goal', function (done) {
       var options = {
         method: 'GET',
@@ -164,6 +166,109 @@ var exports = function (server, Code, lab, sessionCookie) {
       });
     });
 
+    /* Update endpoint */
+    lab.test('Update goal endpoint should return 401 error if user is unauthorized', function (done) {
+      validGoal.description = 'this is edited goal descr';
+      var options = {
+        method: 'PUT',
+        url: "/projects/" + coreProject.id + '/goals/' + goalRecordId,
+        payload: {
+          goal: validGoal
+        }
+      };
+
+      server.inject(options, function (response) {
+        Code.expect(response.statusCode).to.equal(401);
+        done();
+      });
+    });
+
+    lab.test('Update goal endpoint should update given goal', function (done) {
+      var options = {
+        method: 'PUT',
+        url: "/projects/" + coreProject.id + '/goals/' + goalRecordId,
+        payload: {
+          goal: validGoal
+        },
+        headers: {
+          cookie: 'sid=' + sessionCookie.value
+        }
+      };
+
+      server.inject(options, function (response) {
+        var goal,
+          result = response.result;
+
+        Code.expect(response.statusCode).to.equal(200);
+        Code.expect(result).to.be.an.object();
+
+        Code.expect(result.goal).to.be.an.object();
+
+        goal = result.goal;
+
+        Code.expect(goal.name).to.equal(validGoal.name);
+        Code.expect(goal.description).to.equal(validGoal.description);
+        Code.expect(goal.tag).to.equal(validGoal.tag);
+
+        done();
+      });
+    });
+
+    lab.test('Update goal endpoint should return error if goal with given id doesn\'t exists', function (done) {
+      var options = {
+        method: 'PUT',
+        url: "/projects/" + coreProject.id + '/goals/0',
+        payload: {
+          goal: validGoal
+        },
+        headers: {
+          cookie: 'sid=' + sessionCookie.value
+        }
+      };
+
+      server.inject(options, function (response) {
+        Code.expect(response.statusCode).to.equal(404);
+        done();
+      });
+    });
+
+    lab.test('Update goal endpoint should return error if project with given id doesn\'t exists', function (done) {
+      var options = {
+        method: 'PUT',
+        url: "/projects/" + 11111 + '/goals/' + 999999,
+        payload: {
+          goal: validGoal
+        },
+        headers: {
+          cookie: 'sid=' + sessionCookie.value
+        }
+      };
+
+      server.inject(options, function (response) {
+        Code.expect(response.statusCode).to.equal(404);
+        done();
+      });
+    });
+
+    lab.test('Update goal endpoint should return 400 error if goal id is wrong', function (done) {
+      var options = {
+        method: 'PUT',
+        url: "/projects/" + coreProject.id + '/goals/-1',
+        payload: {
+          goal: validGoal
+        },
+        headers: {
+          cookie: 'sid=' + sessionCookie.value
+        }
+      };
+
+      server.inject(options, function (response) {
+        Code.expect(response.statusCode).to.equal(400);
+        done();
+      });
+    });
+
+    // test delete endpoint
     lab.test('Delete goal endpoint should delete given goal', function (done) {
       var options = {
         method: 'DELETE',

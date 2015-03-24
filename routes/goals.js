@@ -145,6 +145,7 @@ var update = function (server) {
       description: "Update a single goal based on PUT data",
       validate: {
         params: {
+          id: Joi.number().integer().min(0).required(),
           project_id: Joi.number().integer().min(0).required()
         },
         payload: {
@@ -158,7 +159,7 @@ var update = function (server) {
     },
     handler: function (request, reply) {
       reqGoal = request.payload.goal;
-      reqExp.id = Number(request.params.id);
+      reqGoal.id = Number(request.params.id);
 
       server.methods.getGoalForRequest(request, function (err, Goal) {
         if (err) {

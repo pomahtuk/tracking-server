@@ -52,7 +52,7 @@ var exports = function (server, Code, lab, sessionCookie) {
         }
       };
 
-      server.inject(options, function (response) {
+      server.inject(options, function () {
         done();
       });
     })

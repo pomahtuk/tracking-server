@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/pomahtuk/tracking-server.svg?branch=master)](https://travis-ci.org/pomahtuk/tracking-server)
+
 ## Laborant-server
 
 User-facing API for Laborant tracking solution

@@ -55,7 +55,9 @@ var create = function (server) {
           project: Joi.object().keys({
             name: Joi.string().min(3).max(255).required(),
             description: Joi.string().min(3).max(3000).required(),
-            domain: Joi.string().min(3).max(100).required()
+            domain: Joi.string().min(3).max(100).required(),
+            createdAt: Joi.optional(),
+            updatedAt: Joi.optional()
           })
         }
       }

@@ -225,7 +225,7 @@ var remove = function (server) {
           var project = projects[0];
           project.destroy().then(function (deleted) {
             if (deleted) {
-              reply('Project deleted successfully');
+              reply({message: 'Project deleted successfully'});
             } else {
               reply(Boom.badImplementation());
             }

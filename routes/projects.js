@@ -15,15 +15,31 @@ var sqlProject      = require('../models').Project;                  // Sequiliz
  * @param server - The Hapi Server
  */
 var index = function (server) {
+  var User, limit, offset;
+
   // GET /projects
   server.route({
     method: 'GET',
     path: '/projects',
     config: {
-      description: "Gets all the projects from DB and returns them."
+      description: "Gets all the projects from DB and returns them.",
+      validate: {
+        query: {
+          limit: Joi.number().integer().min(0).optional(),
+          offset: Joi.number().integer().min(0).optional()
+        }
+      }
     },
     handler: function (request, reply) {
-      sqlProject.findAll().then(function (projects) {
+      User = request.auth.credentials;
+
+      limit = request.query.limit || 10;
+      offset = request.query.offset || 0;
+
+      User.getProjects({
+        limit: limit,
+        offset: offset
+      }).then(function (projects) {
         reply({
           projects: projects
         });
@@ -56,8 +72,8 @@ var create = function (server) {
             name: Joi.string().min(3).max(255).required(),
             description: Joi.string().min(3).max(3000).required(),
             domain: Joi.string().min(3).max(100).required(),
-            createdAt: Joi.optional(),
-            updatedAt: Joi.optional()
+            updatedAt: Joi.optional(),
+            createdAt: Joi.optional()
           })
         }
       }
@@ -84,6 +100,7 @@ var create = function (server) {
  * @param server
  */
 var show = function (server) {
+  var User;
 
   server.route({
     method: 'GET',
@@ -97,8 +114,19 @@ var show = function (server) {
       }
     },
     handler: function (request, reply) {
-      sqlProject.findOne(request.params.id).then(function (project) {
-        reply({project: project});
+      User = request.auth.credentials;
+
+      User.getProjects({
+        where: {
+          id: request.params.id
+        },
+        limit: 1
+      }).then(function (projects) {
+        if (projects.length > 0) {
+          reply({project: projects[0]});
+        } else {
+          reply(Boom.notFound());
+        }
       }, function (err) {
         reply(Boom.badRequest(err));
       });
@@ -108,12 +136,71 @@ var show = function (server) {
 
 
 /**
+ * PUT /projects/{id}
+ * Creates a new experiment in the datastore.
+ *
+ * @param server - The Hapi Serve
+ */
+var update = function (server) {
+  var reqProj, User, Project, Experiment;
+
+  server.route({
+    method: 'PUT',
+    path: '/projects/{id}',
+    config: {
+      description: "Update a single project based on PUT data",
+      validate: {
+        payload: {
+          project: Joi.object().keys({
+            name: Joi.string().min(3).max(255).required(),
+            description: Joi.string().min(3).max(3000).required(),
+            domain: Joi.string().min(3).max(100).required(),
+            updatedAt: Joi.optional(),
+            createdAt: Joi.optional()
+          })
+        }
+      }
+    },
+    handler: function (request, reply) {
+      reqProj = request.payload.project;
+      reqProj.id = Number(request.params.id);
+      delete reqProj.updatedAt;
+      delete reqProj.createdAt;
+
+      User = request.auth.credentials;
+
+      User.getProjects({
+        where: {
+          id: request.params.id
+        },
+        limit: 1
+      }).then(function (projects) {
+        if (projects.length > 0) {
+          var project = projects[0];
+          project.update(reqProj).then(function (newProj) {
+            reply({project: newProj})  // HTTP 200
+          }, function (err) {
+            reply(Boom.badImplementation(err)); // 500 error
+          });
+        } else {
+          reply(Boom.notFound());
+        }
+      }, function (err) {
+        reply(Boom.badRequest(err));
+      });
+    }
+  });
+};
+
+/**
  * DELETE /projects/{id}
  * Deletes a project, based on the project id in the path.
  *
  * @param server - The Hapi Server
  */
 var remove = function (server) {
+  var User, project;
+
   server.route({
     method: 'DELETE',
     path: '/projects/{id}',
@@ -126,16 +213,27 @@ var remove = function (server) {
       }
     },
     handler: function (request, reply) {
-      sqlProject.destroy({
+      User = request.auth.credentials;
+
+      User.getProjects({
         where: {
           id: request.params.id
         },
         limit: 1
-      }).then(function (deleted) {
-        if (deleted) {
-          reply({ message: "Project deleted successfully"});
+      }).then(function (projects) {
+        if (projects.length > 0) {
+          var project = projects[0];
+          project.destroy().then(function (deleted) {
+            if (deleted) {
+              reply('ok');
+            } else {
+              reply(Boom.badImplementation());
+            }
+          }, function (err) {
+            reply(Boom.badImplementation(err));
+          })
         } else {
-          reply(Boom.notFound("Could not delete project"));
+          reply(Boom.notFound());
         }
       }, function (err) {
         reply(Boom.badRequest(err));
@@ -149,5 +247,6 @@ module.exports = function (server) {
   index(server);
   create(server);
   show(server);
+  update(server);
   remove(server);
 };

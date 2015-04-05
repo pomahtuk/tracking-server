@@ -4,10 +4,17 @@
 
 var projRecordId, originalProject;
 
+var validProject = {
+  name: 'lab project',
+  description: 'lab project descr is pretty much too big',
+  domain: 'http://ya.ru'
+};
+
 var exports = function (server, Code, lab, sessionCookie) {
 
   lab.suite('Projects', function () {
 
+    // test creation
     lab.test("Create project endpoint rejects invalid project", function (done) {
 
       var options = {
@@ -34,16 +41,27 @@ var exports = function (server, Code, lab, sessionCookie) {
       });
     });
 
+    lab.test("Create project endpoint rejects valid project for unauthorized user", function (done) {
+      var options = {
+        method: "POST",
+        url: "/projects",
+        payload: {
+          project: validProject
+        }
+      };
+
+      server.inject(options, function (response) {
+        Code.expect(response.statusCode).to.equal(401);
+        done();
+      });
+    });
+
     lab.test("Create project endpoint creates valid project", function (done) {
       var options = {
         method: "POST",
         url: "/projects",
         payload: {
-          project: {
-            name: 'lab project',
-            description: 'lab project descr is pretty much too big',
-            domain: 'http://ya.ru'
-          }
+          project: validProject
         },
         headers: {
           cookie: 'sid=' + sessionCookie.value
@@ -95,6 +113,7 @@ var exports = function (server, Code, lab, sessionCookie) {
       });
     });
 
+    // test single project
     lab.test('Single project endpoint return given project', function (done) {
       var options = {
         method: 'GET',
@@ -119,6 +138,7 @@ var exports = function (server, Code, lab, sessionCookie) {
       });
     });
 
+    // test delete project
     lab.test('Delete project endpoint should delete given project', function (done) {
       var options = {
         method: 'DELETE',

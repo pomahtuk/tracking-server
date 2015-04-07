@@ -108,7 +108,8 @@ var create = function (server) {
             trackPercent: Joi.number().integer().min(1).max(100).required(),
             fullOn: Joi.boolean().optional(),
             goal: Joi.optional(),
-            dateCreated: Joi.optional()
+            updatedAt: Joi.optional(),
+            createdAt: Joi.optional()
           })
         }
       }
@@ -165,7 +166,8 @@ var update = function (server) {
             trackPercent: Joi.number().integer().min(1).max(100).required(),
             fullOn: Joi.boolean().optional(),
             goal: Joi.optional(),
-            dateCreated: Joi.optional()
+            updatedAt: Joi.optional(),
+            createdAt: Joi.optional()
           })
         }
       }

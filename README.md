@@ -8,11 +8,11 @@ User-facing API for Laborant tracking solution
 ### To Be Done:
 
 * General
-  - Nested routing
+  - ~~Nested routing~~
     - ~~Project - Experimnet~~
     - ~~Project - Goal~~
   - ~~Ensure all roles hidden under auth~~
-  - Transition to SQL database
+  - ~~Transition to SQL database~~
   - Update routes for all models
 
 * Auth
@@ -36,7 +36,7 @@ User-facing API for Laborant tracking solution
 
 * Projects
   - ~~Evetything~~
-  - Update route
+  - ~~Update route~~
   - Testing
 
 * Sessions

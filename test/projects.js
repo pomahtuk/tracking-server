@@ -113,6 +113,20 @@ var exports = function (server, Code, lab, sessionCookie) {
       });
     });
 
+    // add pagination tests
+
+    lab.test('Projects endpoint do not lists present projects for unauthorized user', function (done) {
+      var options = {
+        method: 'GET',
+        url: "/projects"
+      };
+
+      server.inject(options, function (response) {
+        Code.expect(response.statusCode).to.equal(401);
+        done();
+      });
+    });
+
     // test single project
     lab.test('Single project endpoint return given project', function (done) {
       var options = {
@@ -138,6 +152,34 @@ var exports = function (server, Code, lab, sessionCookie) {
       });
     });
 
+    lab.test('Single project endpoint return 404 if no project present', function (done) {
+      var options = {
+        method: 'GET',
+        url: "/projects/" + 999,
+        headers: {
+          cookie: 'sid=' + sessionCookie.value
+        }
+      };
+
+      server.inject(options, function (response) {
+        Code.expect(response.statusCode).to.equal(404);
+        done();
+      });
+    });
+
+    lab.test('Single project endpoint return 401 if user is unauthorized', function (done) {
+      var options = {
+        method: 'GET',
+        url: "/projects/" + projRecordId
+      };
+
+      server.inject(options, function (response) {
+        Code.expect(response.statusCode).to.equal(401);
+        done();
+      });
+    });
+
+
     // test delete project
     lab.test('Delete project endpoint should delete given project', function (done) {
       var options = {
@@ -155,6 +197,18 @@ var exports = function (server, Code, lab, sessionCookie) {
         Code.expect(result).to.be.an.object();
         Code.expect(result.message).to.equal("Project deleted successfully");
 
+        done();
+      });
+    });
+
+    lab.test('Delete project endpoint should return 401 error if user is unauthorized', function (done) {
+      var options = {
+        method: 'DELETE',
+        url: "/projects/" + projRecordId
+      };
+
+      server.inject(options, function (response) {
+        Code.expect(response.statusCode).to.equal(401);
         done();
       });
     });

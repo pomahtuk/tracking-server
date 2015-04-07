@@ -96,7 +96,9 @@ var create = function (server) {
           goal: Joi.object().keys({
             name: Joi.string().min(3).max(255).required(),
             description: Joi.string().min(3).max(3000).required(),
-            tag: Joi.string().min(3).max(100).required()
+            tag: Joi.string().min(3).max(100).required(),
+            updatedAt: Joi.optional(),
+            createdAt: Joi.optional()
           })
         }
       }
@@ -152,7 +154,9 @@ var update = function (server) {
           goal: Joi.object().keys({
             name: Joi.string().min(3).max(255).required(),
             description: Joi.string().min(3).max(3000).required(),
-            tag: Joi.string().min(3).max(100).required()
+            tag: Joi.string().min(3).max(100).required(),
+            updatedAt: Joi.optional(),
+            createdAt: Joi.optional()
           })
         }
       }

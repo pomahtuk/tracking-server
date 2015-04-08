@@ -1,10 +1,10 @@
 {
   "development": {
-    "username": "b10368f94a1aaf",
-    "password": "48a1d28b",
-    "database": "heroku_8cdcfb854748bc5",
-    "host": "us-cdbr-iron-east-02.cleardb.net",
-    "dialect": "mysql"
+    "username": null,
+    "password": null,
+    "database": "laborant_development",
+    "host": "devDb.sqlite",
+    "dialect": "sqlite"
   },
   "test": {
     "username": null,
@@ -15,6 +15,12 @@
     "logging": false
   },
   "production": {
-    "use_env_variable": "HEROKU_POSTGRESQL_CRIMSON_URL"
+    "use_env_variable": "HEROKU_POSTGRESQL_CRIMSON_URL",
+    "username": null,
+    "password": null,
+    "database": "laborant_test",
+    "host": "devDb.sqlite",
+    "dialect": "sqlite",
+    "logging": false
   }
 }

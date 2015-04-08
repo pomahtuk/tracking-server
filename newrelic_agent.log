@@ -13,3 +13,5 @@
 {"v":0,"level":30,"name":"newrelic","hostname":"ml905079","pid":25654,"time":"2015-04-08T09:09:44.102Z","msg":"Starting New Relic for Node.js connection process."}
 {"v":0,"level":30,"name":"newrelic","hostname":"ml905079","pid":25654,"time":"2015-04-08T09:09:46.775Z","msg":"Reporting to: https://rpm.newrelic.com/accounts/953592/applications/5631676","component":"new_relic_response"}
 {"v":0,"level":30,"name":"newrelic","hostname":"ml905079","pid":25654,"time":"2015-04-08T09:09:46.776Z","msg":"Connected to collector-119.newrelic.com:443 with agent run ID 24187874342623274.","component":"collector_api"}
+{"v":0,"level":30,"name":"newrelic","hostname":"ml905079","pid":26270,"time":"2015-04-08T09:18:12.519Z","msg":"Starting New Relic for Node.js connection process."}
+{"v":0,"level":30,"name":"newrelic","hostname":"ml905079","pid":26300,"time":"2015-04-08T09:18:27.300Z","msg":"Starting New Relic for Node.js connection process."}

@@ -21,6 +21,10 @@ exports.init = function (server) {
   server.route({
     method: 'GET',
     path: '/user-agent',
+    auth: {
+      mode: 'try',
+      strategy: 'session'
+    },
     handler: function (request, reply) {
       return reply(request.plugins.scooter.toJSON());
     }
@@ -30,6 +34,10 @@ exports.init = function (server) {
   server.route({
     method: 'GET',
     path: '/user-info',
+    auth: {
+      mode: 'try',
+      strategy: 'session'
+    },
     handler: function (request, reply) {
       server.methods.getUserFromCookies(request, function (err, user) {
         return reply(user);

@@ -25,8 +25,7 @@ if (process.env.HEROKU_POSTGRESQL_CRIMSON_URL) {
     logging:  true //false
   })
 } else {
-  // the application is executed on the local machine ... use mysql
-  sequelize = new Sequelize('example-app-db', 'root', null)
+  sequelize = new Sequelize(config.database, config.username, config.password, config);
 }
 
 

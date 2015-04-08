@@ -15,16 +15,15 @@ if (config.logging !== false) {
   config.logging = require(__dirname + '/../helpers/sqlSyntax.js');
 }
 
-if (process.env.HEROKU_POSTGRESQL_CRIMSON_URL) {
-  var match = process.env.HEROKU_POSTGRESQL_CRIMSON_URL.match(/postgres:\/\/([^:]+):([^@]+)@([^:]+):(\d+)\/(.+)/);
+if (process.env.CLEARDB_DATABASE_URL) {
+  var match = process.env.CLEARDB_DATABASE_URL.match(/mysql:\/\/([^:]+):([^@]+)@([^:]+):(\d+)\/(.+)/);
   console.log(match);
   // the application is executed on Heroku ... use the postgres database
-  sequelize = new Sequelize(process.env.HEROKU_POSTGRESQL_CRIMSON_URL, {
-    dialect:  'postgres',
-    protocol: 'postgres',
+  sequelize = new Sequelize(process.env.CLEARDB_DATABASE_URL, {
+    dialect:  'mysql',
     port:     match[4],
     host:     match[3],
-    logging:  true //false
+    logging:  false
   })
 } else {
   sequelize = new Sequelize(config.database, config.username, config.password, config);

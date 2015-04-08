@@ -25,3 +25,92 @@
 {"v":0,"level":40,"name":"newrelic","hostname":"ml905079","pid":28076,"time":"2015-04-08T09:39:17.406Z","msg":"No connection has been established to New Relic after 4 attempts.","component":"collector_api"}
 {"v":0,"level":30,"name":"newrelic","hostname":"ml905079","pid":29614,"time":"2015-04-08T10:00:39.675Z","msg":"Starting New Relic for Node.js connection process."}
 {"v":0,"level":30,"name":"newrelic","hostname":"ml905079","pid":30075,"time":"2015-04-08T10:02:07.998Z","msg":"Starting New Relic for Node.js connection process."}
+{"v":0,"level":30,"name":"newrelic","hostname":"ml905079","pid":42885,"time":"2015-04-08T13:46:14.294Z","msg":"Starting New Relic for Node.js connection process."}
+{"v":0,"level":30,"name":"newrelic","hostname":"ml905079","pid":42934,"time":"2015-04-08T13:46:44.029Z","msg":"Starting New Relic for Node.js connection process."}
+{"v":0,"level":30,"name":"newrelic","hostname":"ml905079","pid":42985,"time":"2015-04-08T13:47:03.351Z","msg":"Starting New Relic for Node.js connection process."}
+{"v":0,"level":40,"name":"newrelic","hostname":"ml905079","pid":42985,"time":"2015-04-08T13:48:09.478Z","msg":"No connection has been established to New Relic after 4 attempts.","component":"collector_api"}
+{"v":0,"level":30,"name":"newrelic","hostname":"ml905079","pid":43180,"time":"2015-04-08T13:48:24.923Z","msg":"Starting New Relic for Node.js connection process."}
+{"v":0,"level":30,"name":"newrelic","hostname":"ml905079","pid":43334,"time":"2015-04-08T13:49:38.688Z","msg":"Starting New Relic for Node.js connection process."}
+{"v":0,"level":30,"name":"newrelic","hostname":"ml905079","pid":43382,"time":"2015-04-08T13:49:59.291Z","msg":"Starting New Relic for Node.js connection process."}
+{"v":0,"level":30,"name":"newrelic","hostname":"ml905079","pid":43524,"time":"2015-04-08T13:51:06.946Z","msg":"Starting New Relic for Node.js connection process."}
+{"v":0,"level":30,"name":"newrelic","hostname":"ml905079","pid":43679,"time":"2015-04-08T13:51:39.336Z","msg":"Starting New Relic for Node.js connection process."}
+{"v":0,"level":30,"name":"newrelic","hostname":"ml905079","pid":43709,"time":"2015-04-08T13:51:58.863Z","msg":"Starting New Relic for Node.js connection process."}
+{"v":0,"level":40,"name":"newrelic","hostname":"ml905079","pid":43709,"time":"2015-04-08T13:53:07.041Z","msg":"No connection has been established to New Relic after 4 attempts.","component":"collector_api"}
+{"v":0,"level":30,"name":"newrelic","hostname":"ml905079","pid":44059,"time":"2015-04-08T13:54:07.323Z","msg":"Starting New Relic for Node.js connection process."}
+{"v":0,"level":40,"name":"newrelic","hostname":"ml905079","pid":44059,"time":"2015-04-08T13:55:14.196Z","msg":"No connection has been established to New Relic after 4 attempts.","component":"collector_api"}
+{"v":0,"level":50,"name":"newrelic","hostname":"ml905079","pid":44059,"time":"2015-04-08T13:58:15.098Z","msg":"New Relic for Node.js halted startup due to an error:","class":"NewRelic::Agent::LicenseException","statusCode":200}
+{"v":0,"level":30,"name":"newrelic","hostname":"ml905079","pid":44888,"time":"2015-04-08T13:59:57.190Z","msg":"Starting New Relic for Node.js connection process."}
+{"v":0,"level":30,"name":"newrelic","hostname":"ml905079","pid":45025,"time":"2015-04-08T14:00:58.452Z","msg":"Starting New Relic for Node.js connection process."}
+{"v":0,"level":30,"name":"newrelic","hostname":"ml905079","pid":45132,"time":"2015-04-08T14:01:30.835Z","msg":"Starting New Relic for Node.js connection process."}
+{"v":0,"level":30,"name":"newrelic","hostname":"ml905079","pid":45147,"time":"2015-04-08T14:01:39.058Z","msg":"Starting New Relic for Node.js connection process."}
+{"v":0,"level":30,"name":"newrelic","hostname":"ml905079","pid":45251,"time":"2015-04-08T14:02:23.742Z","msg":"Starting New Relic for Node.js connection process."}
+{"v":0,"level":30,"name":"newrelic","hostname":"ml905079","pid":45268,"time":"2015-04-08T14:02:28.960Z","msg":"Starting New Relic for Node.js connection process."}
+{"v":0,"level":30,"name":"newrelic","hostname":"ml905079","pid":45482,"time":"2015-04-08T14:03:46.987Z","msg":"Starting New Relic for Node.js connection process."}
+{"v":0,"level":30,"name":"newrelic","hostname":"ml905079","pid":45516,"time":"2015-04-08T14:04:00.205Z","msg":"Starting New Relic for Node.js connection process."}
+{"v":0,"level":30,"name":"newrelic","hostname":"ml905079","pid":45535,"time":"2015-04-08T14:04:12.447Z","msg":"Starting New Relic for Node.js connection process."}
+{"v":0,"level":30,"name":"newrelic","hostname":"ml905079","pid":45652,"time":"2015-04-08T14:05:18.390Z","msg":"Starting New Relic for Node.js connection process."}
+{"v":0,"level":30,"name":"newrelic","hostname":"ml905079","pid":45836,"time":"2015-04-08T14:06:25.866Z","msg":"Starting New Relic for Node.js connection process."}
+{"v":0,"level":30,"name":"newrelic","hostname":"ml905079","pid":45877,"time":"2015-04-08T14:06:48.163Z","msg":"Starting New Relic for Node.js connection process."}
+{"v":0,"level":30,"name":"newrelic","hostname":"ml905079","pid":45906,"time":"2015-04-08T14:07:05.794Z","msg":"Starting New Relic for Node.js connection process."}
+{"v":0,"level":30,"name":"newrelic","hostname":"ml905079","pid":45981,"time":"2015-04-08T14:07:22.090Z","msg":"Starting New Relic for Node.js connection process."}
+{"v":0,"level":30,"name":"newrelic","hostname":"ml905079","pid":45999,"time":"2015-04-08T14:07:32.232Z","msg":"Starting New Relic for Node.js connection process."}
+{"v":0,"level":30,"name":"newrelic","hostname":"ml905079","pid":46046,"time":"2015-04-08T14:08:07.717Z","msg":"Starting New Relic for Node.js connection process."}
+{"v":0,"level":30,"name":"newrelic","hostname":"ml905079","pid":46186,"time":"2015-04-08T14:08:55.423Z","msg":"Starting New Relic for Node.js connection process."}
+{"v":0,"level":30,"name":"newrelic","hostname":"ml905079","pid":46200,"time":"2015-04-08T14:09:02.533Z","msg":"Starting New Relic for Node.js connection process."}
+{"v":0,"level":30,"name":"newrelic","hostname":"ml905079","pid":46282,"time":"2015-04-08T14:09:13.772Z","msg":"Starting New Relic for Node.js connection process."}
+{"v":0,"level":40,"name":"newrelic","hostname":"ml905079","pid":46282,"time":"2015-04-08T14:10:19.789Z","msg":"No connection has been established to New Relic after 4 attempts.","component":"collector_api"}
+{"v":0,"level":30,"name":"newrelic","hostname":"ml905079","pid":46751,"time":"2015-04-08T14:12:40.620Z","msg":"Starting New Relic for Node.js connection process."}
+{"v":0,"level":30,"name":"newrelic","hostname":"ml905079","pid":46932,"time":"2015-04-08T14:13:44.530Z","msg":"Starting New Relic for Node.js connection process."}
+{"v":0,"level":30,"name":"newrelic","hostname":"ml905079","pid":46948,"time":"2015-04-08T14:13:56.233Z","msg":"Starting New Relic for Node.js connection process."}
+{"v":0,"level":30,"name":"newrelic","hostname":"ml905079","pid":47092,"time":"2015-04-08T14:14:35.724Z","msg":"Starting New Relic for Node.js connection process."}
+{"v":0,"level":40,"name":"newrelic","hostname":"ml905079","pid":47092,"time":"2015-04-08T14:15:41.653Z","msg":"No connection has been established to New Relic after 4 attempts.","component":"collector_api"}
+{"v":0,"level":50,"name":"newrelic","hostname":"ml905079","pid":47092,"time":"2015-04-08T14:18:42.562Z","msg":"New Relic for Node.js halted startup due to an error:","class":"NewRelic::Agent::LicenseException","statusCode":200}
+{"v":0,"level":30,"name":"newrelic","hostname":"ml905079","pid":47944,"time":"2015-04-08T14:21:54.518Z","msg":"Starting New Relic for Node.js connection process."}
+{"v":0,"level":30,"name":"newrelic","hostname":"ml905079","pid":47966,"time":"2015-04-08T14:22:08.623Z","msg":"Starting New Relic for Node.js connection process."}
+{"v":0,"level":30,"name":"newrelic","hostname":"ml905079","pid":48001,"time":"2015-04-08T14:22:21.959Z","msg":"Starting New Relic for Node.js connection process."}
+{"v":0,"level":30,"name":"newrelic","hostname":"ml905079","pid":48098,"time":"2015-04-08T14:23:13.557Z","msg":"Starting New Relic for Node.js connection process."}
+{"v":0,"level":30,"name":"newrelic","hostname":"ml905079","pid":48160,"time":"2015-04-08T14:23:24.953Z","msg":"Starting New Relic for Node.js connection process."}
+{"v":0,"level":40,"name":"newrelic","hostname":"ml905079","pid":48160,"time":"2015-04-08T14:24:34.957Z","msg":"No connection has been established to New Relic after 4 attempts.","component":"collector_api"}
+{"v":0,"level":30,"name":"newrelic","hostname":"ml905079","pid":48470,"time":"2015-04-08T14:25:55.002Z","msg":"Starting New Relic for Node.js connection process."}
+{"v":0,"level":30,"name":"newrelic","hostname":"ml905079","pid":48585,"time":"2015-04-08T14:26:21.570Z","msg":"Starting New Relic for Node.js connection process."}
+{"v":0,"level":30,"name":"newrelic","hostname":"ml905079","pid":48605,"time":"2015-04-08T14:26:35.111Z","msg":"Starting New Relic for Node.js connection process."}
+{"v":0,"level":40,"name":"newrelic","hostname":"ml905079","pid":48605,"time":"2015-04-08T14:27:41.465Z","msg":"No connection has been established to New Relic after 4 attempts.","component":"collector_api"}
+{"v":0,"level":30,"name":"newrelic","hostname":"ml905079","pid":48932,"time":"2015-04-08T14:28:11.160Z","msg":"Starting New Relic for Node.js connection process."}
+{"v":0,"level":40,"name":"newrelic","hostname":"ml905079","pid":48932,"time":"2015-04-08T14:29:17.364Z","msg":"No connection has been established to New Relic after 4 attempts.","component":"collector_api"}
+{"v":0,"level":30,"name":"newrelic","hostname":"ml905079","pid":49195,"time":"2015-04-08T14:29:36.606Z","msg":"Starting New Relic for Node.js connection process."}
+{"v":0,"level":30,"name":"newrelic","hostname":"ml905079","pid":49321,"time":"2015-04-08T14:30:14.064Z","msg":"Starting New Relic for Node.js connection process."}
+{"v":0,"level":30,"name":"newrelic","hostname":"ml905079","pid":49396,"time":"2015-04-08T14:30:26.444Z","msg":"Starting New Relic for Node.js connection process."}
+{"v":0,"level":30,"name":"newrelic","hostname":"ml905079","pid":49417,"time":"2015-04-08T14:30:34.467Z","msg":"Starting New Relic for Node.js connection process."}
+{"v":0,"level":30,"name":"newrelic","hostname":"ml905079","pid":49430,"time":"2015-04-08T14:30:39.648Z","msg":"Starting New Relic for Node.js connection process."}
+{"v":0,"level":40,"name":"newrelic","hostname":"ml905079","pid":49430,"time":"2015-04-08T14:31:47.906Z","msg":"No connection has been established to New Relic after 4 attempts.","component":"collector_api"}
+{"v":0,"level":30,"name":"newrelic","hostname":"ml905079","pid":49717,"time":"2015-04-08T14:33:16.418Z","msg":"Starting New Relic for Node.js connection process."}
+{"v":0,"level":40,"name":"newrelic","hostname":"ml905079","pid":49717,"time":"2015-04-08T14:34:20.726Z","msg":"No connection has been established to New Relic after 4 attempts.","component":"collector_api"}
+{"v":0,"level":30,"name":"newrelic","hostname":"ml905079","pid":50012,"time":"2015-04-08T14:35:44.606Z","msg":"Starting New Relic for Node.js connection process."}
+{"v":0,"level":40,"name":"newrelic","hostname":"ml905079","pid":50012,"time":"2015-04-08T14:36:48.990Z","msg":"No connection has been established to New Relic after 4 attempts.","component":"collector_api"}
+{"v":0,"level":30,"name":"newrelic","hostname":"ml905079","pid":50221,"time":"2015-04-08T14:37:23.711Z","msg":"Starting New Relic for Node.js connection process."}
+{"v":0,"level":30,"name":"newrelic","hostname":"ml905079","pid":50250,"time":"2015-04-08T14:37:43.130Z","msg":"Starting New Relic for Node.js connection process."}
+{"v":0,"level":40,"name":"newrelic","hostname":"ml905079","pid":50250,"time":"2015-04-08T14:38:51.079Z","msg":"No connection has been established to New Relic after 4 attempts.","component":"collector_api"}
+{"v":0,"level":30,"name":"newrelic","hostname":"ml905079","pid":50466,"time":"2015-04-08T14:39:30.644Z","msg":"Starting New Relic for Node.js connection process."}
+{"v":0,"level":40,"name":"newrelic","hostname":"ml905079","pid":50466,"time":"2015-04-08T14:40:34.718Z","msg":"No connection has been established to New Relic after 4 attempts.","component":"collector_api"}
+{"v":0,"level":30,"name":"newrelic","hostname":"ml905079","pid":50656,"time":"2015-04-08T14:40:53.863Z","msg":"Starting New Relic for Node.js connection process."}
+{"v":0,"level":30,"name":"newrelic","hostname":"ml905079","pid":50701,"time":"2015-04-08T14:41:15.300Z","msg":"Starting New Relic for Node.js connection process."}
+{"v":0,"level":30,"name":"newrelic","hostname":"ml905079","pid":50838,"time":"2015-04-08T14:41:49.727Z","msg":"Starting New Relic for Node.js connection process."}
+{"v":0,"level":30,"name":"newrelic","hostname":"ml905079","pid":50859,"time":"2015-04-08T14:42:01.979Z","msg":"Starting New Relic for Node.js connection process."}
+{"v":0,"level":30,"name":"newrelic","hostname":"ml905079","pid":50911,"time":"2015-04-08T14:42:22.521Z","msg":"Starting New Relic for Node.js connection process."}
+{"v":0,"level":30,"name":"newrelic","hostname":"ml905079","pid":50966,"time":"2015-04-08T14:42:28.717Z","msg":"Starting New Relic for Node.js connection process."}
+{"v":0,"level":40,"name":"newrelic","hostname":"ml905079","pid":50966,"time":"2015-04-08T14:43:34.714Z","msg":"No connection has been established to New Relic after 4 attempts.","component":"collector_api"}
+{"v":0,"level":30,"name":"newrelic","hostname":"ml905079","pid":51134,"time":"2015-04-08T14:43:45.597Z","msg":"Starting New Relic for Node.js connection process."}
+{"v":0,"level":30,"name":"newrelic","hostname":"ml905079","pid":51224,"time":"2015-04-08T14:44:24.384Z","msg":"Starting New Relic for Node.js connection process."}
+{"v":0,"level":30,"name":"newrelic","hostname":"ml905079","pid":51592,"time":"2015-04-08T14:46:22.651Z","msg":"Starting New Relic for Node.js connection process."}
+{"v":0,"level":30,"name":"newrelic","hostname":"ml905079","pid":51684,"time":"2015-04-08T14:46:53.164Z","msg":"Starting New Relic for Node.js connection process."}
+{"v":0,"level":30,"name":"newrelic","hostname":"ml905079","pid":51708,"time":"2015-04-08T14:47:10.458Z","msg":"Starting New Relic for Node.js connection process."}
+{"v":0,"level":40,"name":"newrelic","hostname":"ml905079","pid":51708,"time":"2015-04-08T14:48:14.887Z","msg":"No connection has been established to New Relic after 4 attempts.","component":"collector_api"}
+{"v":0,"level":30,"name":"newrelic","hostname":"ml905079","pid":51911,"time":"2015-04-08T14:48:28.907Z","msg":"Starting New Relic for Node.js connection process."}
+{"v":0,"level":30,"name":"newrelic","hostname":"ml905079","pid":51944,"time":"2015-04-08T14:48:53.411Z","msg":"Starting New Relic for Node.js connection process."}
+{"v":0,"level":30,"name":"newrelic","hostname":"ml905079","pid":52045,"time":"2015-04-08T14:49:39.034Z","msg":"Starting New Relic for Node.js connection process."}
+{"v":0,"level":40,"name":"newrelic","hostname":"ml905079","pid":52045,"time":"2015-04-08T14:50:45.480Z","msg":"No connection has been established to New Relic after 4 attempts.","component":"collector_api"}
+{"v":0,"level":30,"name":"newrelic","hostname":"ml905079","pid":52223,"time":"2015-04-08T14:51:00.168Z","msg":"Starting New Relic for Node.js connection process."}
+{"v":0,"level":30,"name":"newrelic","hostname":"ml905079","pid":52245,"time":"2015-04-08T14:51:12.874Z","msg":"Starting New Relic for Node.js connection process."}
+{"v":0,"level":30,"name":"newrelic","hostname":"ml905079","pid":52312,"time":"2015-04-08T14:51:30.332Z","msg":"Starting New Relic for Node.js connection process."}
+{"v":0,"level":40,"name":"newrelic","hostname":"ml905079","pid":52312,"time":"2015-04-08T14:52:34.831Z","msg":"No connection has been established to New Relic after 4 attempts.","component":"collector_api"}
+{"v":0,"level":50,"name":"newrelic","hostname":"ml905079","pid":52312,"time":"2015-04-08T14:55:35.729Z","msg":"New Relic for Node.js halted startup due to an error:","class":"NewRelic::Agent::LicenseException","statusCode":200}

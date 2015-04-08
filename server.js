@@ -46,6 +46,10 @@ if (env === 'development') {
     options: {
       reporters: [{
         reporter: require('good-console'),
+        events: {
+            request: '*',
+            log: '*'
+        },
         args: [{ response: '*' }]
       }]
     }

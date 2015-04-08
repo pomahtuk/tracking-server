@@ -4,7 +4,7 @@
 
 var fs        = require('fs');
 var path      = require('path');
-var Boom      = require('Boom');
+var Boom      = require('boom');
 var Joi       = require('Joi');
 var UglifyJS  = require('uglify-js');
 
@@ -54,7 +54,7 @@ exports.init = function (server) {
           filePath = __dirname + '/../public/' + request.params.apiKey + '/laborant.js';
 
         // check if project with api key present
-        // 
+        //
 
         // try to serve pre-saved file
         // BOTTLENECK!
@@ -96,7 +96,7 @@ exports.init = function (server) {
       }
     }
   });
-  
+
   // add route to write all statistics
   // return gathered user info
   server.route({

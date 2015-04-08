@@ -52,6 +52,8 @@ if (env === 'development') {
   });
 }
 
+Mongoose.connect(mongoURI);
+
 models.sequelize.sync().then(function () {
   server.register(packagesToRegister, function (err) {
     server.auth.strategy('session', 'cookie', {

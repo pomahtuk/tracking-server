@@ -32,6 +32,12 @@ exports.init = function (server) {
     }
   });
 
+  // add route for injecting script
+  
+  // add route to write all statistics
+  
+  // add intial route with all experiments for laborant
+
   // return gathered user info
   server.route({
     method: 'GET',

@@ -3,7 +3,6 @@
 'use strict';
 
 var geoip = require('geoip-lite'),
-  ClientAccount = require('../models/clientAccount').ClientAccount,
   Visitor = require('../models/visitor').Visitor; // Mongoose ODM
 
 var experiments = require('./experiments.js');
@@ -19,46 +18,6 @@ exports.init = function (server) {
   // init methods from other files
   experiments(server);
   goals(server);
-
-  // init index own methods
-  server.method("ensureCorrectDomain", function (request, next) {
-    var apiKey = request.query.apiKey;
-
-    var clientTestCallback = function (err, client) {
-      if (err) {
-        next(err, null);
-      } else {
-        next(null, client);
-      }
-    }
-
-    function clientCallback(err, client) {
-      if (err) {
-        next(err, null);
-      // this check should be far more complicated
-      } else if (client && client.domain === request.headers.host) {
-        next(null, client);
-      } else {
-        next(new Error('No client found for this API key'), null);
-      }
-    }
-
-    if (apiKey && request.headers.host) {
-      if (apiKey === 'laborant_development_key' || request.headers.host.indexOf('localhost') !== -1) {
-        ClientAccount
-          .findOne({'name': 'pman'})
-          .populate('experiments')
-          .exec(clientTestCallback);
-      } else {
-        ClientAccount
-          .findOne(apiKey)
-          .populate('experiments')
-          .exec(clientCallback);
-      }
-    } else {
-      next(new Error('no query params or wrong headers'), null);
-    }
-  });
 
   /**
    * Looks up for visitor with particular cookies in DB

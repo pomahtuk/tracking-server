@@ -2,6 +2,8 @@
 
 'use strict';
 
+require('newrelic');
+
 var Hapi          = require('hapi');
 var serverConfig  = require('./config/server');
 var Mongoose      = require('mongoose');

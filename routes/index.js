@@ -5,7 +5,7 @@
 var fs        = require('fs');
 var path      = require('path');
 var Boom      = require('boom');
-var Joi       = require('Joi');
+var Joi       = require('joi');
 var UglifyJS  = require('uglify-js');
 
 /**

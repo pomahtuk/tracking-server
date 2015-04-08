@@ -16,6 +16,8 @@ if (config.logging !== false) {
 }
 
 if (process.env.HEROKU_POSTGRESQL_CRIMSON_URL) {
+  var match = process.env.HEROKU_POSTGRESQL_CRIMSON_URL.match(/postgres:\/\/([^:]+):([^@]+)@([^:]+):(\d+)\/(.+)/);
+  console.log(match);
   // the application is executed on Heroku ... use the postgres database
   sequelize = new Sequelize(process.env.HEROKU_POSTGRESQL_CRIMSON_URL, {
     dialect:  'postgres',

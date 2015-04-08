@@ -16,15 +16,7 @@ if (config.logging !== false) {
 }
 
 if (process.env.CLEARDB_DATABASE_URL) {
-  var match = process.env.CLEARDB_DATABASE_URL.match(/mysql:\/\/([^:]+):([^@]+)@([^:]+):(\d+)\/(.+)/);
-  console.log(match);
-  // the application is executed on Heroku ... use the postgres database
-  sequelize = new Sequelize(process.env.CLEARDB_DATABASE_URL, {
-    dialect:  'mysql',
-    port:     match[4],
-    host:     match[3],
-    logging:  false
-  })
+  sequelize = new Sequelize(process.env.CLEARDB_DATABASE_URL)
 } else {
   sequelize = new Sequelize(config.database, config.username, config.password, config);
 }

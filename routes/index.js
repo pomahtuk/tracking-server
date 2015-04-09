@@ -59,8 +59,8 @@ exports.init = function (server) {
           where: {
             apiKey: request.params.apiKey
           }
-        }).then(function (projects) {
-          if (projects.length > 0) {
+        }).then(function (project) {
+          if (project) {
             // try to serve pre-saved file
             // BOTTLENECK!
             if (fs.existsSync(filePath)) {

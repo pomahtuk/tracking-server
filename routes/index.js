@@ -7,6 +7,7 @@ var path      = require('path');
 var Boom      = require('boom');
 var Joi       = require('joi');
 var UglifyJS  = require('uglify-js');
+var Project   = require('../models').Project;
 
 /**
  * Add your other routes below.
@@ -54,45 +55,55 @@ exports.init = function (server) {
           filePath = __dirname + '/../public/' + request.params.apiKey + '/laborant.js';
 
         // check if project with api key present
-        //
-
-        // try to serve pre-saved file
-        // BOTTLENECK!
-        if (fs.existsSync(filePath)) {
-          reply.file(filePath).header('Content-Type', 'application/javascript');
-        } else {
-          // if file doesn't exist
-          fs.readFile(__dirname + '/../public/laborant.template.js', {encoding: 'utf-8'}, function (err, data) {
-            if (err) {
-              reply(Boom.notFound(err));
+        Project.find({
+          where: {
+            apiKey: request.params.apiKey
+          }
+        }).then(function (projects) {
+          if (projects.length > 0) {
+            // try to serve pre-saved file
+            // BOTTLENECK!
+            if (fs.existsSync(filePath)) {
+              reply.file(filePath).header('Content-Type', 'application/javascript');
             } else {
-              // generate dev version with hardcoded project apiKey
-              processedData = String(data).replace(/%%apiKey%%/g, request.params.apiKey);
-              // uglify/minify
-              // BOTTLENECK!
-              processedData = UglifyJS.minify(processedData, {fromString: true});
-              processedData = processedData.code;
-              // if folder allready exists we are fine, but error will be thrown
-              try {
-                // BOTTLENECK!
-                fs.mkdirSync(__dirname + '/../public/' + request.params.apiKey)
-              } catch (err) {
-                console.log(err);
-                if (err.code !== 'EEXIST') {
-                  return reply(Boom.badImplementation(err))
-                }
-              }
-              // save && serve
-              fs.writeFile(filePath, processedData, function (err) {
+              // if file doesn't exist
+              fs.readFile(__dirname + '/../public/laborant.template.js', {encoding: 'utf-8'}, function (err, data) {
                 if (err) {
-                  reply(Boom.badImplementation(err));
+                  reply(Boom.notFound(err));
                 } else {
-                  reply.file(filePath).header('Content-Type', 'application/javascript');
+                  // generate dev version with hardcoded project apiKey
+                  processedData = String(data).replace(/%%apiKey%%/g, request.params.apiKey);
+                  // uglify/minify
+                  // BOTTLENECK!
+                  processedData = UglifyJS.minify(processedData, {fromString: true});
+                  processedData = processedData.code;
+                  // if folder allready exists we are fine, but error will be thrown
+                  try {
+                    // BOTTLENECK!
+                    fs.mkdirSync(__dirname + '/../public/' + request.params.apiKey)
+                  } catch (err) {
+                    console.log(err);
+                    if (err.code !== 'EEXIST') {
+                      return reply(Boom.badImplementation(err))
+                    }
+                  }
+                  // save && serve
+                  fs.writeFile(filePath, processedData, function (err) {
+                    if (err) {
+                      reply(Boom.badImplementation(err));
+                    } else {
+                      reply.file(filePath).header('Content-Type', 'application/javascript');
+                    }
+                  });
                 }
               });
             }
-          });
-        }
+          } else {
+            reply(Boom.notFound());
+          }
+        }, function (err) {
+          reply(Boom.badImplementation(err));
+        })
       }
     }
   });

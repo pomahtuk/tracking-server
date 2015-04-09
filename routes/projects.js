@@ -2,9 +2,10 @@
 
 'use strict';
 
-var Boom            = require('boom');                                  // HTTP Errors
-var Joi             = require('joi');                                   // Validation
+var Boom            = require('boom');                               // HTTP Errors
+var Joi             = require('joi');                                // Validation
 var sqlProject      = require('../models').Project;                  // Sequilize ORM
+var uuid            = require('node-uuid');           // generate RFC UUID
 
 
 /**
@@ -72,6 +73,7 @@ var create = function (server) {
             name: Joi.string().min(3).max(255).required(),
             description: Joi.string().min(3).max(3000).required(),
             domain: Joi.string().min(3).max(100).required(),
+            apiKey: Joi.string().optional(),
             updatedAt: Joi.optional(),
             createdAt: Joi.optional()
           })
@@ -81,6 +83,9 @@ var create = function (server) {
     handler: function (request, reply) {
       reqProj = request.payload.project;
       User = request.auth.credentials;
+
+      // generate api key
+      reqProj.apiKey = uuid.v4();
 
       User.createProject(reqProj).then(function (project) {
         reply({project: project}).created('/projects/' + project.id);    // HTTP 201
@@ -155,6 +160,7 @@ var update = function (server) {
             name: Joi.string().min(3).max(255).required(),
             description: Joi.string().min(3).max(3000).required(),
             domain: Joi.string().min(3).max(100).required(),
+            apiKey: Joi.string().optional(),
             updatedAt: Joi.optional(),
             createdAt: Joi.optional()
           })
@@ -166,6 +172,7 @@ var update = function (server) {
       reqProj.id = Number(request.params.id);
       delete reqProj.updatedAt;
       delete reqProj.createdAt;
+      delete reqProj.apiKey;
 
       User = request.auth.credentials;
 

@@ -1,4 +1,4 @@
-/*jslint node: true, es5: true, nomen: true, indent: 2*/
+/*jslint node: true, nomen: true, indent: 2*/
 
 'use strict';
 
@@ -6,6 +6,15 @@ var Boom     = require('boom');                            // HTTP Errors
 var Joi      = require('joi');                             // Validation
 var sqlGoal  = require('../models').Goal;                  // Sequilize ORM
 
+var validPayload = {
+  goal: Joi.object().keys({
+    name: Joi.string().min(3).max(255).required(),
+    description: Joi.string().min(3).max(3000).required(),
+    tag: Joi.string().min(3).max(100).required(),
+    updatedAt: Joi.optional(),
+    createdAt: Joi.optional()
+  })
+};
 
 var index = function (server) {
   var Project, User, limit, offset;
@@ -15,7 +24,7 @@ var index = function (server) {
     method: 'GET',
     path: '/projects/{project_id}/goals',
     config: {
-      description: "Gets all the goals from MongoDb and returns them.",
+      description: 'Gets all the goals from MongoDb and returns them.',
       validate: {
         params: {
           project_id: Joi.number().integer().min(0).required()
@@ -87,20 +96,12 @@ var create = function (server) {
     method: 'POST',
     path: '/projects/{project_id}/goals',
     config: {
-      description: "Creating a single goal based on POST data",
+      description: 'Creating a single goal based on POST data',
       validate: {
         params: {
           project_id: Joi.number().integer().min(0).required()
         },
-        payload: {
-          goal: Joi.object().keys({
-            name: Joi.string().min(3).max(255).required(),
-            description: Joi.string().min(3).max(3000).required(),
-            tag: Joi.string().min(3).max(100).required(),
-            updatedAt: Joi.optional(),
-            createdAt: Joi.optional()
-          })
-        }
+        payload: validPayload
       }
     },
     handler: function (request, reply) {
@@ -125,7 +126,7 @@ var create = function (server) {
         }
       }, function (err) {
         reply(Boom.badImplementation(err)); // 500 error
-      })
+      });
     }
   });
 };
@@ -138,27 +139,19 @@ var create = function (server) {
  * @param server - The Hapi Serve
  */
 var update = function (server) {
-  var reqGoal, User, Project;
+  var reqGoal;
 
   server.route({
     method: 'PUT',
     path: '/projects/{project_id}/goals/{id}',
     config: {
-      description: "Update a single goal based on PUT data",
+      description: 'Update a single goal based on PUT data',
       validate: {
         params: {
           id: Joi.number().integer().min(0).required(),
           project_id: Joi.number().integer().min(0).required()
         },
-        payload: {
-          goal: Joi.object().keys({
-            name: Joi.string().min(3).max(255).required(),
-            description: Joi.string().min(3).max(3000).required(),
-            tag: Joi.string().min(3).max(100).required(),
-            updatedAt: Joi.optional(),
-            createdAt: Joi.optional()
-          })
-        }
+        payload: validPayload
       }
     },
     handler: function (request, reply) {
@@ -173,8 +166,8 @@ var update = function (server) {
             reply(Boom.badImplementation(err)); // 500 error
           }
         } else {
-          Goal.update(reqGoal).then(function (newExp) {
-            reply({goal: reqGoal})  // HTTP 200
+          Goal.update(reqGoal).then(function (newGoal) {
+            reply({goal: newGoal});  // HTTP 200
           }, function (err) {
             reply(Boom.badImplementation(err)); // 500 error
           });
@@ -197,7 +190,7 @@ var show = function (server) {
     method: 'GET',
     path: '/projects/{project_id}/goals/{id}',
     config: {
-      description: "Gets the goal based upon the {id} parameter.",
+      description: 'Gets the goal based upon the {id} parameter.',
       validate: {
         params: {
           id: Joi.number().integer().min(0).required(),
@@ -234,7 +227,7 @@ var remove = function (server) {
     method: 'DELETE',
     path: '/projects/{project_id}/goals/{id}',
     config: {
-      description: "Deletes a goal, based on the goal id in the path.",
+      description: 'Deletes a goal, based on the goal id in the path.',
       validate: {
         params: {
           id: Joi.number().integer().min(0).required(),
@@ -253,9 +246,9 @@ var remove = function (server) {
         } else {
           Goal.destroy().then(function (deleted) {
             if (deleted) {
-              reply({message: "Goal deleted successfully"});
+              reply({message: 'Goal deleted successfully'});
             } else {
-              reply(Boom.notFound("Could not delete Goal")); // 404 error
+              reply(Boom.notFound('Could not delete Goal')); // 404 error
             }
           }, function (err) {
             reply(Boom.badImplementation(err)); // 500 error

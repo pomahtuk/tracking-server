@@ -1,5 +1,6 @@
 [![Build Status](https://travis-ci.org/pomahtuk/tracking-server.svg?branch=master)](https://travis-ci.org/pomahtuk/tracking-server)
 [![Dependecies Status](https://david-dm.org/pomahtuk/tracking-server.svg)](https://david-dm.org/pomahtuk/tracking-server)
+[![Code Climate](https://codeclimate.com/github/pomahtuk/tracking-server/badges/gpa.svg)](https://codeclimate.com/github/pomahtuk/tracking-server)
 
 ## Laborant-server
 

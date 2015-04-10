@@ -20,6 +20,23 @@ var validPayload = {
   })
 };
 
+var indexValidations = {
+  params: {
+    project_id: Joi.number().integer().min(0).required()
+  },
+  query: {
+    limit: Joi.number().integer().min(0).optional(),
+    offset: Joi.number().integer().min(0).optional()
+  }
+};
+
+var validParams = {
+  params: {
+    id: Joi.number().integer().min(0).required(),
+    project_id: Joi.number().integer().min(0).required()
+  }
+}
+
 /**
  * GET /experiments
  * Gets all the experiments from MongoDb and returns them.
@@ -36,15 +53,7 @@ var index = function (server) {
     path: '/projects/{project_id}/experiments',
     config: {
       description: 'Gets all the experiments from MongoDb and returns them.',
-      validate: {
-        params: {
-          project_id: Joi.number().integer().min(0).required()
-        },
-        query: {
-          limit: Joi.number().integer().min(0).optional(),
-          offset: Joi.number().integer().min(0).optional()
-        }
-      }
+      validate: indexValidations
     },
     handler: function (request, reply) {
       User = request.auth.credentials;
@@ -197,12 +206,7 @@ var show = function (server) {
     path: '/projects/{project_id}/experiments/{id}',
     config: {
       description: 'Gets the experiment based upon the {id} parameter.',
-      validate: {
-        params: {
-          id: Joi.number().integer().min(0).required(),
-          project_id: Joi.number().integer().min(0).required()
-        }
-      }
+      validate: validParams
     },
     handler: function (request, reply) {
       server.methods.getExperimentForRequest(request, function (err, Experiment) {
@@ -233,12 +237,7 @@ var remove = function (server) {
     path: '/projects/{project_id}/experiments/{id}',
     config: {
       description: 'Deletes an experiment, based on the experiment id in the path.',
-      validate: {
-        params: {
-          id: Joi.number().integer().min(0).required(),
-          project_id: Joi.number().integer().min(0).required()
-        }
-      }
+      validate: validParams
     },
     handler: function (request, reply) {
       server.methods.getExperimentForRequest(request, function (err, Experiment) {

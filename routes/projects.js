@@ -1,12 +1,21 @@
-/*jslint node: true, es5: true, nomen: true, indent: 2*/
+/*jslint node: true, nomen: true, indent: 2*/
 
 'use strict';
 
 var Boom            = require('boom');                               // HTTP Errors
 var Joi             = require('joi');                                // Validation
-var sqlProject      = require('../models').Project;                  // Sequilize ORM
 var uuid            = require('node-uuid');           // generate RFC UUID
 
+var validPayload = {
+  project: Joi.object().keys({
+    name: Joi.string().min(3).max(255).required(),
+    description: Joi.string().min(3).max(3000).required(),
+    domain: Joi.string().min(3).max(100).required(),
+    apiKey: Joi.string().optional(),
+    updatedAt: Joi.optional(),
+    createdAt: Joi.optional()
+  })
+};
 
 /**
  * GET /projects
@@ -23,7 +32,7 @@ var index = function (server) {
     method: 'GET',
     path: '/projects',
     config: {
-      description: "Gets all the projects from DB and returns them.",
+      description: 'Gets all the projects from DB and returns them.',
       validate: {
         query: {
           limit: Joi.number().integer().min(0).optional(),
@@ -66,18 +75,9 @@ var create = function (server) {
     method: 'POST',
     path: '/projects',
     config: {
-      description: "Creating a single project based on POST data",
+      description: 'Creating a single project based on POST data',
       validate: {
-        payload: {
-          project: Joi.object().keys({
-            name: Joi.string().min(3).max(255).required(),
-            description: Joi.string().min(3).max(3000).required(),
-            domain: Joi.string().min(3).max(100).required(),
-            apiKey: Joi.string().optional(),
-            updatedAt: Joi.optional(),
-            createdAt: Joi.optional()
-          })
-        }
+        payload: validPayload
       }
     },
     handler: function (request, reply) {
@@ -111,7 +111,7 @@ var show = function (server) {
     method: 'GET',
     path: '/projects/{id}',
     config: {
-      description: "Gets the project based upon the {id} parameter.",
+      description: 'Gets the project based upon the {id} parameter.',
       validate: {
         params: {
           id: Joi.number().integer().min(0).required()
@@ -147,24 +147,15 @@ var show = function (server) {
  * @param server - The Hapi Serve
  */
 var update = function (server) {
-  var reqProj, User, Project, Experiment;
+  var reqProj, User;
 
   server.route({
     method: 'PUT',
     path: '/projects/{id}',
     config: {
-      description: "Update a single project based on PUT data",
+      description: 'Update a single project based on PUT data',
       validate: {
-        payload: {
-          project: Joi.object().keys({
-            name: Joi.string().min(3).max(255).required(),
-            description: Joi.string().min(3).max(3000).required(),
-            domain: Joi.string().min(3).max(100).required(),
-            apiKey: Joi.string().optional(),
-            updatedAt: Joi.optional(),
-            createdAt: Joi.optional()
-          })
-        }
+        payload: validPayload
       }
     },
     handler: function (request, reply) {
@@ -185,7 +176,7 @@ var update = function (server) {
         if (projects.length > 0) {
           var project = projects[0];
           project.update(reqProj).then(function (newProj) {
-            reply({project: newProj})  // HTTP 200
+            reply({project: newProj});  // HTTP 200
           }, function (err) {
             reply(Boom.badImplementation(err)); // 500 error
           });
@@ -206,13 +197,13 @@ var update = function (server) {
  * @param server - The Hapi Server
  */
 var remove = function (server) {
-  var User, project;
+  var User;
 
   server.route({
     method: 'DELETE',
     path: '/projects/{id}',
     config: {
-      description: "Deletes a project, based on the project id in the path.",
+      description: 'Deletes a project, based on the project id in the path.',
       validate: {
         params: {
           id: Joi.number().integer().min(0).required()
@@ -238,7 +229,7 @@ var remove = function (server) {
             }
           }, function (err) {
             reply(Boom.badImplementation(err));
-          })
+          });
         } else {
           reply(Boom.notFound());
         }

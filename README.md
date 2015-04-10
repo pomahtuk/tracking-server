@@ -80,6 +80,10 @@ $.ajax({
 
 ```
 
+Will try to use agenda for data processing
+* https://github.com/rschmukler/agenda
+* https://github.com/moudy/agenda-ui
+
 Switching to SQL databases using Sequilize
 * https://github.com/sequelize/cli
 * http://sequelize.readthedocs.org/en/latest/docs/

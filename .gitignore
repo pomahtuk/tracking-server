@@ -27,3 +27,4 @@ public/*
 node_modules/
 
 coverage.html
+newrelic_agent.log

@@ -1,4 +1,4 @@
-/*jslint node: true, es5: true, nomen: true, indent: 2, vars: true, regexp: true */
+/*jslint node: true, nomen: true, indent: 2, vars: true, regexp: true */
 
 'use strict';
 
@@ -19,15 +19,15 @@ var deleteAccount = function (request, reply) {
       limit: 1
     }).then(function (deleted) {
       if (deleted) {
-        reply({ message: "User deleted successfully"});
+        reply({ message: 'User deleted successfully'});
       } else {
-        reply(Boom.notFound("Could not delete user"));
+        reply(Boom.notFound('Could not delete user'));
       }
     }, function (err) {
       reply(Boom.badRequest(err));
     });
   } else {
-    reply(Boom.unauthorized("Wrong password"));
+    reply(Boom.unauthorized('Wrong password'));
   }
 };
 
@@ -38,7 +38,7 @@ var register = function (request, reply) {
   theirUser.salt = Bcrypt.genSaltSync(10);
   theirUser.password = Bcrypt.hashSync(theirUser.password, theirUser.salt);
 
-  sqlUser.create(theirUser).then(function (newUser, created) {
+  sqlUser.create(theirUser).then(function (newUser) {
     newUser.createSession({
       hash: uuid.v4()
     }).then(function (session) {
@@ -101,11 +101,15 @@ var logout = function (request, reply) {
       hash: request.auth.artifacts.hash
     }
   }).then(function (done) {
-    request.auth.session.clear();
-    reply({ status: 'ok' });
+    if (done) {
+      request.auth.session.clear();
+      reply({ status: 'ok' });
+    } else {
+      reply(Boom.badImplementation());
+    }
   }, function (err) {
     reply(Boom.badImplementation(err));
-  })
+  });
 };
 
 
@@ -118,27 +122,27 @@ var changePassword = function (request, reply) {
     currentUser.updateAttributes({
       salt: Bcrypt.genSaltSync(10),
       password: Bcrypt.hashSync(newPassword, salt)
-    }).then(function (user) {
-      reply({ message: "User password updated successfully"});
+    }).then(function () {
+      reply({ message: 'User password updated successfully'});
     }, function (err) {
       reply(Boom.badImplementation(err));
-    })
+    });
   } else {
     // password incorrect
-    reply(Boom.unauthorized("Wrong password"));
+    reply(Boom.unauthorized('Wrong password'));
   }
 };
 
 
-// TBD!!!!
-var resetPasswordStart = function (request, reply) {
+// // TBD!!!!
+// var resetPasswordStart = function (request, reply) {
 
-};
+// };
 
 
-var resetPasswordCnange = function (request, reply) {
+// var resetPasswordCnange = function (request, reply) {
 
-};
+// };
 
 
 var getCurrentUser = function (request, reply) {
@@ -155,7 +159,7 @@ module.exports = function (server) {
       path: '/account',
       config: {
         handler: deleteAccount,
-        description: "Creating a single experiment based on POST data",
+        description: 'Creating a single experiment based on POST data',
         validate: {
           payload: {
             password: Joi.string().regex(/[a-zA-Z0-9]{3,30}/).required()
@@ -178,7 +182,7 @@ module.exports = function (server) {
       path: '/sign-up',
       config: {
         handler: register,
-        description: "Creating a single experiment based on POST data",
+        description: 'Creating a single experiment based on POST data',
         validate: {
           payload: {
             username: Joi.string().min(3).required(),
@@ -203,7 +207,7 @@ module.exports = function (server) {
       path: '/login',
       config: {
         handler: login,
-        description: "Creating a single experiment based on POST data",
+        description: 'Creating a single experiment based on POST data',
         validate: {
           payload: {
             username: Joi.string().min(3).required(),
@@ -251,7 +255,7 @@ module.exports = function (server) {
       path: '/change-password',
       config: {
         handler: changePassword,
-        description: "Changing user password",
+        description: 'Changing user password',
         validate: {
           payload: {
             oldPassword: Joi.string().regex(/[a-zA-Z0-9]{3,30}/).required(),

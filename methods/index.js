@@ -2,7 +2,7 @@
 
 'use strict';
 
-var geoip = require('geoip-native');
+var geoip = require('geoip-lite');
 var Visitor = require('../models/visitor').Visitor; // Mongoose ODM
 
 // external helpers

@@ -1,10 +1,6 @@
 /*jslint browser: true, plusplus: true, indent: 2*/
 /*global window, document, setTimeout, docReady, console*/
 
-/**
- * Created by pman on 04.10.14.
- */
-
 /*
   Custom docReady implementation
 */

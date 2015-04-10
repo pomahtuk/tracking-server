@@ -1,4 +1,4 @@
-/*jslint node: true, es5: true, nomen: true, indent: 2*/
+/*jslint node: true, nomen: true, indent: 2*/
 
 'use strict';
 
@@ -6,6 +6,19 @@ var Boom            = require('boom');                                  // HTTP 
 var Joi             = require('joi');                                   // Validation
 var sqlExperiment   = require('../models').Experiment;                  // Sequilize ORM
 
+var validPayload = {
+  experiment: Joi.object().keys({
+    name: Joi.string().min(3).max(255).required(),
+    description: Joi.string().min(3).max(3000).required(),
+    tag: Joi.string().min(3).max(100).required(),
+    variantCount: Joi.number().integer().min(2).max(10).required(),
+    trackPercent: Joi.number().integer().min(1).max(100).required(),
+    fullOn: Joi.boolean().optional(),
+    goal: Joi.optional(),
+    updatedAt: Joi.optional(),
+    createdAt: Joi.optional()
+  })
+};
 
 /**
  * GET /experiments
@@ -22,7 +35,7 @@ var index = function (server) {
     method: 'GET',
     path: '/projects/{project_id}/experiments',
     config: {
-      description: "Gets all the experiments from MongoDb and returns them.",
+      description: 'Gets all the experiments from MongoDb and returns them.',
       validate: {
         params: {
           project_id: Joi.number().integer().min(0).required()
@@ -94,24 +107,12 @@ var create = function (server) {
     method: 'POST',
     path: '/projects/{project_id}/experiments',
     config: {
-      description: "Creating a single experiment based on POST data",
+      description: 'Creating a single experiment based on POST data',
       validate: {
         params: {
           project_id: Joi.number().integer().min(0).required()
         },
-        payload: {
-          experiment: Joi.object().keys({
-            name: Joi.string().min(3).max(255).required(),
-            description: Joi.string().min(3).max(3000).required(),
-            tag: Joi.string().min(3).max(100).required(),
-            variantCount: Joi.number().integer().min(2).max(10).required(),
-            trackPercent: Joi.number().integer().min(1).max(100).required(),
-            fullOn: Joi.boolean().optional(),
-            goal: Joi.optional(),
-            updatedAt: Joi.optional(),
-            createdAt: Joi.optional()
-          })
-        }
+        payload: validPayload
       }
     },
     handler: function (request, reply) {
@@ -136,7 +137,7 @@ var create = function (server) {
         }
       }, function (err) {
         reply(Boom.badImplementation(err)); // 500 error
-      })
+      });
     }
   });
 };
@@ -149,27 +150,15 @@ var create = function (server) {
  * @param server - The Hapi Serve
  */
 var update = function (server) {
-  var reqExp, User, Project, Experiment;
+  var reqExp;
 
   server.route({
     method: 'PUT',
     path: '/projects/{project_id}/experiments/{id}',
     config: {
-      description: "Update a single experiment based on PUT data",
+      description: 'Update a single experiment based on PUT data',
       validate: {
-        payload: {
-          experiment: Joi.object().keys({
-            name: Joi.string().min(3).max(255).required(),
-            description: Joi.string().min(3).max(3000).required(),
-            tag: Joi.string().min(3).max(100).required(),
-            variantCount: Joi.number().integer().min(2).max(10).required(),
-            trackPercent: Joi.number().integer().min(1).max(100).required(),
-            fullOn: Joi.boolean().optional(),
-            goal: Joi.optional(),
-            updatedAt: Joi.optional(),
-            createdAt: Joi.optional()
-          })
-        }
+        payload: validPayload
       }
     },
     handler: function (request, reply) {
@@ -185,7 +174,7 @@ var update = function (server) {
           }
         } else {
           Experiment.update(reqExp).then(function (newExp) {
-            reply({experiment: newExp})  // HTTP 200
+            reply({experiment: newExp});  // HTTP 200
           }, function (err) {
             reply(Boom.badImplementation(err)); // 500 error
           });
@@ -207,7 +196,7 @@ var show = function (server) {
     method: 'GET',
     path: '/projects/{project_id}/experiments/{id}',
     config: {
-      description: "Gets the experiment based upon the {id} parameter.",
+      description: 'Gets the experiment based upon the {id} parameter.',
       validate: {
         params: {
           id: Joi.number().integer().min(0).required(),
@@ -243,7 +232,7 @@ var remove = function (server) {
     method: 'DELETE',
     path: '/projects/{project_id}/experiments/{id}',
     config: {
-      description: "Deletes an experiment, based on the experiment id in the path.",
+      description: 'Deletes an experiment, based on the experiment id in the path.',
       validate: {
         params: {
           id: Joi.number().integer().min(0).required(),
@@ -262,9 +251,9 @@ var remove = function (server) {
         } else {
           Experiment.destroy().then(function (deleted) {
             if (deleted) {
-              reply({message: "Experiment deleted successfully"});
+              reply({message: 'Experiment deleted successfully'});
             } else {
-              reply(Boom.notFound("Could not delete Experiment")); // 404 error
+              reply(Boom.notFound('Could not delete Experiment')); // 404 error
             }
           }, function (err) {
             reply(Boom.badImplementation(err)); // 500 error

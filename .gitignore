@@ -21,8 +21,8 @@ com_crashlytics_export_strings.xml
 
 devDb.sqlite
 
-public/*
 !public/laborant.template.js
+public/*
 
 node_modules/
 

@@ -9,6 +9,33 @@ var Joi       = require('joi');
 var UglifyJS  = require('uglify-js');
 var Project   = require('../models').Project;
 
+var trackingEventsCache = {};
+
+
+var agendaSetup = function (agenda) {
+  agenda.define('dump tracking cache to MySQL', function(job, done) {
+
+    // this looks tricky
+    // make a copy of current dataset
+    var tempData = Object.keys(trackingEventsCache).reduce(function (obj, item) {
+        obj[item] = trackingEventsCache[item];
+        return obj;
+    },{});
+    // wipe original
+    trackingEventsCache = {};
+
+    done();
+    // try to save data to DB
+    // if failed - update original dataset with data - will retry later
+  });
+
+  // set up repetetive job
+  var job = agenda.create('dump tracking cache to MySQL');
+  job.repeatEvery('60 seconds');
+  job.save();
+
+}
+
 /**
  * Add your other routes below.
  * Each model might have a file that declares its
@@ -16,13 +43,15 @@ var Project   = require('../models').Project;
  *
  * @param server
  */
-exports.init = function (server) {
+exports.init = function (server, agenda) {
   require('./laborant')(server);
   require('./events')(server);
   require('./experiments')(server);
   require('./projects')(server);
   require('./goals')(server);
   require('./auth')(server);
+
+  agendaSetup(agenda);
 
   // check for ua string
   server.route({
@@ -124,11 +153,33 @@ exports.init = function (server) {
         }
       },
       handler: function (request, reply) {
+        // we are going to collect some events for 1 minute
+        // dump to database
+        // clear cache
+        // and repeat
+        var expId = request.params.expId;
+        var eventType = request.params.eventType;
+        var visitorUaData = request.plugins.scooter;
+        var visitorBrowser = visitorUaData.family + ' ' + visitorUaData.major + '.' + visitorUaData.minor + '.' + visitorUaData.patch || 'unknown';
+        var visitorDevice = visitorUaData.device.family || 'unknown';
+        var visitorOs = visitorUaData.os.family + ' ' + visitorUaData.os.major + '.' + visitorUaData.os.minor + '.' + visitorUaData.os.patch || 'unknown';
+        // geoip should run in background!
+        // 
+        if (!trackingEventsCache[eventType]) {
+          trackingEventsCache[eventType] = [];
+        }
 
-        // make apiKey check
-        // if all ok - save event
+        trackingEventsCache[eventType].push({
+          browser: visitorBrowser,
+          device: visitorDevice,
+          os: visitorOs,
+          lang: request.headers['accept-language'].split(';')[0].split(',')[0],
+          ip: request.info.remoteAddress,
+          referrer: request.info.referrer,
+          timestamp: new Date()
+        }); // push all data we could posibly find
 
-        reply(request.params.eventType + ', ' + request.params.expId + ', apiKey: ' + request.query.apiKey);
+        reply(''); // reply empty string
       }
     }
   });
@@ -140,23 +191,5 @@ exports.init = function (server) {
   //     experiments Joi.optional()
   //   }
   // },
-
-  // return gathered user info
-  server.route({
-    method: 'GET',
-    path: '/user-info',
-    config: {
-      auth: {
-        mode: 'try',
-        strategy: 'session'
-      },
-      handler: function (request, reply) {
-        server.methods.getUserFromCookies(request, function (err, user) {
-          return reply(user);
-        });
-      }
-    }
-  });
-
 
 };

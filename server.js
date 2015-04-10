@@ -7,8 +7,8 @@ if (process.env.NEW_RELIC_LICENSE_KEY) {
 }
 
 var Hapi          = require('hapi');
+var Agenda        = require('agenda');
 var serverConfig  = require('./config/server');
-var Mongoose      = require('mongoose');
 var models        = require('./models');
 var routes        = require('./routes');
 var methods       = require('./methods');
@@ -16,6 +16,12 @@ var env           = process.env.NODE_ENV || 'development';
 var port          = process.env.PORT || 3000;
 var server        = new Hapi.Server(serverConfig);
 var mongoURI      = process.env.MONGOLAB_URI || 'mongodb://localhost/tracking_tool';
+var agenda        = new Agenda({
+  db: { 
+    address: mongoURI,
+    collection: 'agendaJobs'
+  }
+});
 
 server.connection({ port: port });
 
@@ -58,8 +64,6 @@ if (env === 'development') {
   });
 }
 
-Mongoose.connect(mongoURI);
-
 models.sequelize.sync().then(function () {
   server.register(packagesToRegister, function (err) {
     server.auth.strategy('session', 'cookie', {
@@ -78,8 +82,9 @@ models.sequelize.sync().then(function () {
       strategy: 'session'
     });
 
-    routes.init(server);
+    routes.init(server, agenda);
     methods.init(server);
+    agenda.start();
 
     server.start(function () {
       console.log('Server started and listeting on port ' + port);
@@ -87,5 +92,14 @@ models.sequelize.sync().then(function () {
 
   });
 });
+
+function graceful() {
+  agenda.stop(function() {
+    process.exit(0);
+  });
+}
+
+process.on('SIGTERM', graceful);
+process.on('SIGINT' , graceful);
 
 module.exports = server;

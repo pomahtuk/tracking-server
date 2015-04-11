@@ -17,7 +17,7 @@ var port          = process.env.PORT || 3000;
 var server        = new Hapi.Server(serverConfig);
 var mongoURI      = process.env.MONGOLAB_URI || 'mongodb://localhost/tracking_tool';
 var agenda        = new Agenda({
-  db: { 
+  db: {
     address: mongoURI,
     collection: 'agendaJobs'
   }
@@ -72,26 +72,31 @@ models.sequelize.sync().then(function () {
       clearInvalid: true,
       redirectOnTry: false,
       cookie: 'sid',
-      mode: 'required', // for a while, untill correct auth are not implemented
+      mode: 'optional', // for a while, untill correct auth are not implemented
       isSecure: false,
       validateFunc: require('./helpers/sessionValidate.js')
     });
 
     server.auth.default({
-      mode: 'required',
+      mode: 'optional',
       strategy: 'session'
     });
 
     routes.init(server, agenda);
     methods.init(server);
-    agenda.start();
 
-    server.start(function () {
-      console.log('Server started and listeting on port ' + port);
-    });
+    if(!module.parent) {
+      // do not start agenda for tests...
+      agenda.start();
+      server.start(function () {
+        console.log('Server started and listeting on port ' + port);
+      });
+    }
 
   });
 });
+
+process.stdin.resume();
 
 function graceful() {
   agenda.stop(function() {
@@ -101,5 +106,6 @@ function graceful() {
 
 process.on('SIGTERM', graceful);
 process.on('SIGINT' , graceful);
+process.on('exit', graceful);
 
 module.exports = server;

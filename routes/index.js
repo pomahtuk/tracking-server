@@ -8,25 +8,33 @@ var Boom      = require('boom');
 var Joi       = require('joi');
 var UglifyJS  = require('uglify-js');
 var Project   = require('../models').Project;
+var Event     = require('../models').Event;
 
-var trackingEventsCache = {};
+var trackingEventsCache = [];
 
 
 var agendaSetup = function (agenda) {
   agenda.define('dump tracking cache to MySQL', function(job, done) {
-
     // this looks tricky
     // make a copy of current dataset
-    var tempData = Object.keys(trackingEventsCache).reduce(function (obj, item) {
-        obj[item] = trackingEventsCache[item];
-        return obj;
-    },{});
     // wipe original
-    trackingEventsCache = {};
+    var dataToStore = trackingEventsCache.splice(0, trackingEventsCache.length - 1);
 
-    done();
-    // try to save data to DB
-    // if failed - update original dataset with data - will retry later
+    if (dataToStore.length > 0) {
+      Event.bulkCreate(dataToStore).then(function() {
+        console.log('chunk saved');
+        done();
+      }, function (err) {
+        // find a way to erport error
+        console.log(err);
+        // ad try again may be? later
+        done();
+      });
+    } else {
+      console.log('empty chank');
+      done();
+    }
+
   });
 
   // set up repetetive job
@@ -57,10 +65,6 @@ exports.init = function (server, agenda) {
     method: 'GET',
     path: '/user-agent',
     config: {
-      auth: {
-        mode: 'try',
-        strategy: 'session'
-      },
       handler: function (request, reply) {
         return reply(request.plugins.scooter.toJSON());
       }
@@ -74,15 +78,12 @@ exports.init = function (server, agenda) {
     method: 'GET',
     path: '/{apiKey}/laborant.js',
     config: {
-      auth: {
-        mode: 'try',
-        strategy: 'session'
-      },
       handler: function (request, reply) {
         var processedData = '',
           filePath = __dirname + '/../public/' + request.params.apiKey + '/laborant.js';
 
         // check if project with api key present
+        // and check for modifications of template!
         Project.find({
           where: {
             apiKey: request.params.apiKey
@@ -142,10 +143,6 @@ exports.init = function (server, agenda) {
     method: 'GET',
     path: '/laborant/{eventType}/{expId}',
     config: {
-      auth: {
-        mode: 'try',
-        strategy: 'session'
-      },
       validate: {
         query: {
           apiKey: Joi.string().required()
@@ -163,12 +160,9 @@ exports.init = function (server, agenda) {
         var visitorDevice = visitorUaData.device.family || 'unknown';
         var visitorOs = visitorUaData.os.family + ' ' + visitorUaData.os.major + '.' + visitorUaData.os.minor + '.' + visitorUaData.os.patch || 'unknown';
         // geoip should run in background!
-        // 
-        if (!trackingEventsCache[eventType]) {
-          trackingEventsCache[eventType] = [];
-        }
 
-        trackingEventsCache[eventType].push({
+        trackingEventsCache.push({
+          type: eventType,
           browser: visitorBrowser,
           device: visitorDevice,
           os: visitorOs,
@@ -176,14 +170,15 @@ exports.init = function (server, agenda) {
           ip: request.info.remoteAddress,
           referrer: request.info.referrer,
           timestamp: new Date()
-        }); // push all data we could posibly find
+        });
 
-        reply(''); // reply empty string
+        reply('');
       }
     }
   });
 
   // add intial route with all experiments for laborant
+  // get md5 of UA string + ip + referrer to identify user
   // validate: {
   //   query: {
   //     apiKey: Joi.string().required(),

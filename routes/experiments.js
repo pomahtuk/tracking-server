@@ -53,6 +53,10 @@ var index = function (server) {
     path: '/projects/{project_id}/experiments',
     config: {
       description: 'Gets all the experiments from MongoDb and returns them.',
+      auth: {
+        mode: 'required',
+        strategy: 'session'
+      },
       validate: indexValidations
     },
     handler: function (request, reply) {
@@ -117,6 +121,10 @@ var create = function (server) {
     path: '/projects/{project_id}/experiments',
     config: {
       description: 'Creating a single experiment based on POST data',
+      auth: {
+        mode: 'required',
+        strategy: 'session'
+      },
       validate: {
         params: {
           project_id: Joi.number().integer().min(0).required()
@@ -166,6 +174,10 @@ var update = function (server) {
     path: '/projects/{project_id}/experiments/{id}',
     config: {
       description: 'Update a single experiment based on PUT data',
+      auth: {
+        mode: 'required',
+        strategy: 'session'
+      },
       validate: {
         payload: validPayload
       }
@@ -206,6 +218,10 @@ var show = function (server) {
     path: '/projects/{project_id}/experiments/{id}',
     config: {
       description: 'Gets the experiment based upon the {id} parameter.',
+      auth: {
+        mode: 'required',
+        strategy: 'session'
+      },
       validate: validParams
     },
     handler: function (request, reply) {
@@ -237,6 +253,10 @@ var remove = function (server) {
     path: '/projects/{project_id}/experiments/{id}',
     config: {
       description: 'Deletes an experiment, based on the experiment id in the path.',
+      auth: {
+        mode: 'required',
+        strategy: 'session'
+      },
       validate: validParams
     },
     handler: function (request, reply) {

@@ -25,6 +25,10 @@ var index = function (server) {
     path: '/projects/{project_id}/goals',
     config: {
       description: 'Gets all the goals from MongoDb and returns them.',
+      auth: {
+        mode: 'required',
+        strategy: 'session'
+      },
       validate: {
         params: {
           project_id: Joi.number().integer().min(0).required()
@@ -97,6 +101,10 @@ var create = function (server) {
     path: '/projects/{project_id}/goals',
     config: {
       description: 'Creating a single goal based on POST data',
+      auth: {
+        mode: 'required',
+        strategy: 'session'
+      },
       validate: {
         params: {
           project_id: Joi.number().integer().min(0).required()
@@ -146,6 +154,10 @@ var update = function (server) {
     path: '/projects/{project_id}/goals/{id}',
     config: {
       description: 'Update a single goal based on PUT data',
+      auth: {
+        mode: 'required',
+        strategy: 'session'
+      },
       validate: {
         params: {
           id: Joi.number().integer().min(0).required(),
@@ -191,6 +203,10 @@ var show = function (server) {
     path: '/projects/{project_id}/goals/{id}',
     config: {
       description: 'Gets the goal based upon the {id} parameter.',
+      auth: {
+        mode: 'required',
+        strategy: 'session'
+      },
       validate: {
         params: {
           id: Joi.number().integer().min(0).required(),
@@ -228,6 +244,10 @@ var remove = function (server) {
     path: '/projects/{project_id}/goals/{id}',
     config: {
       description: 'Deletes a goal, based on the goal id in the path.',
+      auth: {
+        mode: 'required',
+        strategy: 'session'
+      },
       validate: {
         params: {
           id: Joi.number().integer().min(0).required(),

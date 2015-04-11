@@ -33,6 +33,10 @@ var index = function (server) {
     path: '/projects',
     config: {
       description: 'Gets all the projects from DB and returns them.',
+      auth: {
+        mode: 'required',
+        strategy: 'session'
+      },
       validate: {
         query: {
           limit: Joi.number().integer().min(0).optional(),
@@ -76,6 +80,10 @@ var create = function (server) {
     path: '/projects',
     config: {
       description: 'Creating a single project based on POST data',
+      auth: {
+        mode: 'required',
+        strategy: 'session'
+      },
       validate: {
         payload: validPayload
       }
@@ -112,6 +120,10 @@ var show = function (server) {
     path: '/projects/{id}',
     config: {
       description: 'Gets the project based upon the {id} parameter.',
+      auth: {
+        mode: 'required',
+        strategy: 'session'
+      },
       validate: {
         params: {
           id: Joi.number().integer().min(0).required()
@@ -154,6 +166,10 @@ var update = function (server) {
     path: '/projects/{id}',
     config: {
       description: 'Update a single project based on PUT data',
+      auth: {
+        mode: 'required',
+        strategy: 'session'
+      },
       validate: {
         payload: validPayload
       }
@@ -204,6 +220,10 @@ var remove = function (server) {
     path: '/projects/{id}',
     config: {
       description: 'Deletes a project, based on the project id in the path.',
+      auth: {
+        mode: 'required',
+        strategy: 'session'
+      },
       validate: {
         params: {
           id: Joi.number().integer().min(0).required()

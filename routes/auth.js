@@ -256,6 +256,10 @@ module.exports = function (server) {
       config: {
         handler: changePassword,
         description: 'Changing user password',
+        auth: {
+          mode: 'required',
+          strategy: 'session'
+        },
         validate: {
           payload: {
             oldPassword: Joi.string().regex(/[a-zA-Z0-9]{3,30}/).required(),

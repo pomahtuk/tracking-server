@@ -22,7 +22,6 @@ var agendaSetup = function (agenda) {
 
     if (dataToStore.length > 0) {
       Event.bulkCreate(dataToStore).then(function() {
-        console.log('chunk saved');
         done();
       }, function (err) {
         // find a way to erport error
@@ -31,11 +30,11 @@ var agendaSetup = function (agenda) {
         done();
       });
     } else {
-      console.log('empty chank');
       done();
     }
-
   });
+
+  // define a job for processing events
 
   // set up repetetive job
   var job = agenda.create('dump tracking cache to MySQL');

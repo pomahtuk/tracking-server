@@ -14,7 +14,18 @@ User-facing API for Laborant tracking solution
     - ~~Project - Goal~~
   - ~~Ensure all roles hidden under auth~~
   - ~~Transition to SQL database~~
-  - Update routes for all models
+  - ~~Update routes for all models~~
+
+* Events tracking
+  - ~~Event model~~
+  - ~~Save event route~~
+  - Events background processing
+  - Identification of user
+  - Collecting stats
+
+* Clientside script
+  - ~~Genereation of resulting js~~
+  - Regenaration if template was changed meanwhile
 
 * Auth
   - ~~Do ot expose a password - use hashes~~
@@ -26,11 +37,11 @@ User-facing API for Laborant tracking solution
 * Experiments:
   - ~~Add goals relation~~
   - ~~Assign to Project instead of user~~
-  - Write tests for thouse changes
+  - ~~Write tests for thouse changes~~
 
 * Goals
   - ~~Add relation to Project~~
-  - Implement tests for current functionality
+  - ~~Implement tests for current functionality~~
 
 * Tags
   - Everything
@@ -38,7 +49,7 @@ User-facing API for Laborant tracking solution
 * Projects
   - ~~Evetything~~
   - ~~Update route~~
-  - Testing
+  - ~~Testing~~
 
 * Sessions
   - ~~Evetything~~
@@ -48,10 +59,10 @@ User-facing API for Laborant tracking solution
   - ~~Add relation to projects~~
   - ~~Add relation to session~~
   - Model method trimming password and salt from object
-  - Write all tests
+  - ~~Write all tests~~
 
 * Tests
-  - Test unauthentificated access to routes
+  - ~~Test unauthentificated access to routes~~
   - add more checks, test JOI validations and passing invalid params
 
 

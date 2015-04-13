@@ -1,14 +1,14 @@
-/*jslint node: true, es5: true, indent: 2*/
+/*jslint node: true, indent: 2*/
 
 'use strict';
 
 var fs        = require('fs');
-var path      = require('path');
+// var path      = require('path');
 var Boom      = require('boom');
 var Joi       = require('joi');
 var UglifyJS  = require('uglify-js');
 var Project   = require('../models').Project;
-var Event     = require('../models').Event;
+var sqlEvent  = require('../models').Event;
 
 var trackingEventsCache = [];
 
@@ -21,7 +21,7 @@ var agendaSetup = function (agenda) {
     var dataToStore = trackingEventsCache.splice(0, trackingEventsCache.length - 1);
 
     if (dataToStore.length > 0) {
-      Event.bulkCreate(dataToStore).then(function() {
+      sqlEvent.bulkCreate(dataToStore).then(function() {
         done();
       }, function (err) {
         // find a way to erport error
@@ -40,8 +40,41 @@ var agendaSetup = function (agenda) {
   var job = agenda.create('dump tracking cache to MySQL');
   job.repeatEvery('60 seconds');
   job.save();
+};
 
-}
+var generateScript = function (apiKey, filePath, callback) {
+  var processedData = '';
+  fs.readFile(__dirname + '/../public/laborant.template.js', {encoding: 'utf-8'}, function (err, data) {
+    if (err) {
+      return callback(err, null);
+    } else {
+      // generate dev version with hardcoded project apiKey
+      processedData = String(data).replace(/%%apiKey%%/g, apiKey);
+      // uglify/minify
+      // BOTTLENECK!
+      processedData = UglifyJS.minify(processedData, {fromString: true});
+      processedData = processedData.code;
+      // if folder allready exists we are fine, but error will be thrown
+      try {
+        // BOTTLENECK!
+        fs.mkdirSync(__dirname + '/../public/' + apiKey);
+      } catch (err) {
+        console.log(err);
+        if (err.code !== 'EEXIST') {
+          return callback(err, null);
+        }
+      }
+      // save && serve
+      fs.writeFile(filePath, processedData, function (err) {
+        if (err) {
+          return callback(err, null);
+        } else {
+          return callback(null, filePath);
+        }
+      });
+    }
+  });
+};
 
 /**
  * Add your other routes below.
@@ -78,8 +111,8 @@ exports.init = function (server, agenda) {
     path: '/{apiKey}/laborant.js',
     config: {
       handler: function (request, reply) {
-        var processedData = '',
-          filePath = __dirname + '/../public/' + request.params.apiKey + '/laborant.js';
+        var filePath = __dirname + '/../public/' + request.params.apiKey + '/laborant.js';
+        var apiKey = request.params.apiKey;
 
         // check if project with api key present
         // and check for modifications of template!
@@ -92,37 +125,23 @@ exports.init = function (server, agenda) {
             // try to serve pre-saved file
             // BOTTLENECK!
             if (fs.existsSync(filePath)) {
+              // compare date created with modification date of template
+              // if template is newer - regenerate!
               reply.file(filePath).header('Content-Type', 'application/javascript');
+              // generateScript(apiKey, filePath, function (err, newFilePath) {
+              //   if (err) {
+              //     reply(Boom.badImplementation(err));
+              //   } else {
+              //     reply.file(newFilePath).header('Content-Type', 'application/javascript');
+              //   }
+              // });
             } else {
               // if file doesn't exist
-              fs.readFile(__dirname + '/../public/laborant.template.js', {encoding: 'utf-8'}, function (err, data) {
+              generateScript(apiKey, filePath, function (err, newFilePath) {
                 if (err) {
-                  reply(Boom.notFound(err));
+                  reply(Boom.badImplementation(err));
                 } else {
-                  // generate dev version with hardcoded project apiKey
-                  processedData = String(data).replace(/%%apiKey%%/g, request.params.apiKey);
-                  // uglify/minify
-                  // BOTTLENECK!
-                  processedData = UglifyJS.minify(processedData, {fromString: true});
-                  processedData = processedData.code;
-                  // if folder allready exists we are fine, but error will be thrown
-                  try {
-                    // BOTTLENECK!
-                    fs.mkdirSync(__dirname + '/../public/' + request.params.apiKey)
-                  } catch (err) {
-                    console.log(err);
-                    if (err.code !== 'EEXIST') {
-                      return reply(Boom.badImplementation(err))
-                    }
-                  }
-                  // save && serve
-                  fs.writeFile(filePath, processedData, function (err) {
-                    if (err) {
-                      reply(Boom.badImplementation(err));
-                    } else {
-                      reply.file(filePath).header('Content-Type', 'application/javascript');
-                    }
-                  });
+                  reply.file(newFilePath).header('Content-Type', 'application/javascript');
                 }
               });
             }
@@ -131,7 +150,7 @@ exports.init = function (server, agenda) {
           }
         }, function (err) {
           reply(Boom.badImplementation(err));
-        })
+        });
       }
     }
   });
@@ -148,11 +167,10 @@ exports.init = function (server, agenda) {
         }
       },
       handler: function (request, reply) {
-        // we are going to collect some events for 1 minute
-        // dump to database
-        // clear cache
-        // and repeat
+        // if expId provided, could be not
         var expId = request.params.expId;
+        // to identify project for event
+        var apiKey = request.query.apiKey;
         var eventType = request.params.eventType;
         var visitorUaData = request.plugins.scooter;
         var visitorBrowser = visitorUaData.family + ' ' + visitorUaData.major + '.' + visitorUaData.minor + '.' + visitorUaData.patch || 'unknown';
@@ -162,6 +180,8 @@ exports.init = function (server, agenda) {
 
         trackingEventsCache.push({
           type: eventType,
+          expId: expId,
+          apiKey: apiKey,
           browser: visitorBrowser,
           device: visitorDevice,
           os: visitorOs,

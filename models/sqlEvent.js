@@ -17,6 +17,8 @@ module.exports = function (sequelize, DataTypes) {
 
   var Event = sequelize.define("Event", {
     type          : { type: DataTypes.STRING, allowNull: false },
+    expId         : { type: DataTypes.STRING, allowNull: false },
+    apiKey        : { type: DataTypes.STRING, allowNull: false },
     browser       : { type: DataTypes.STRING, allowNull: false },
     device        : { type: DataTypes.STRING, allowNull: false },
     os            : { type: DataTypes.STRING, allowNull: false },

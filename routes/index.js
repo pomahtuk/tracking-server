@@ -14,6 +14,7 @@ var trackingEventsCache = [];
 
 
 var agendaSetup = function (agenda) {
+  // define a job for dumping events to DB
   agenda.define('dump tracking cache to MySQL', function(job, done) {
     // this looks tricky
     // make a copy of current dataset
@@ -42,9 +43,9 @@ var agendaSetup = function (agenda) {
   job.save();
 };
 
-var generateScript = function (apiKey, filePath, callback) {
+var generateScript = function (apiKey, filePath, templatePath, callback) {
   var processedData = '';
-  fs.readFile(__dirname + '/../public/laborant.template.js', {encoding: 'utf-8'}, function (err, data) {
+  fs.readFile(templatePath, {encoding: 'utf-8'}, function (err, data) {
     if (err) {
       return callback(err, null);
     } else {
@@ -73,6 +74,42 @@ var generateScript = function (apiKey, filePath, callback) {
         }
       });
     }
+  });
+};
+
+var checkModification = function (apiKey, filePath, templatePath, callback) {
+  var templateModTime, scriptModTime;
+
+  fs.stat(filePath, function (err, targetFileStat) {
+    if (err) {
+      // return reply(Boom.badImplementation(err));
+      return callback(err, null);
+    }
+    fs.stat(templatePath, function (err, templateStat) {
+      if (err) {
+        // return reply(Boom.badImplementation(err));
+        return callback(err, null);
+      } else {
+        templateModTime = templateStat.mtime.getTime();
+        scriptModTime = targetFileStat.mtime.getTime();
+        // compare date created with modification date of template
+        if (templateModTime > scriptModTime) {
+          // if template is newer - regenerate!
+          generateScript(apiKey, filePath, templatePath, function (err, newFilePath) {
+            if (err) {
+              // reply(Boom.badImplementation(err));
+              return callback(err, null);
+            } else {
+              // reply.file(newFilePath).header('Content-Type', 'application/javascript');
+              return callback(null, newFilePath);
+            }
+          });
+        } else {
+          // reply.file(filePath).header('Content-Type', 'application/javascript');
+          return callback(null, filePath);
+        }
+      }
+    });
   });
 };
 
@@ -110,8 +147,13 @@ exports.init = function (server, agenda) {
     method: 'GET',
     path: '/{apiKey}/laborant.js',
     config: {
+      auth: {
+        mode: 'optional',
+        strategy: 'session'
+      },
       handler: function (request, reply) {
         var filePath = __dirname + '/../public/' + request.params.apiKey + '/laborant.js';
+        var templatePath = __dirname + '/../public/laborant.template.js';
         var apiKey = request.params.apiKey;
 
         // check if project with api key present
@@ -125,19 +167,16 @@ exports.init = function (server, agenda) {
             // try to serve pre-saved file
             // BOTTLENECK!
             if (fs.existsSync(filePath)) {
-              // compare date created with modification date of template
-              // if template is newer - regenerate!
-              reply.file(filePath).header('Content-Type', 'application/javascript');
-              // generateScript(apiKey, filePath, function (err, newFilePath) {
-              //   if (err) {
-              //     reply(Boom.badImplementation(err));
-              //   } else {
-              //     reply.file(newFilePath).header('Content-Type', 'application/javascript');
-              //   }
-              // });
+              checkModification(apiKey, filePath, templatePath, function (err, resultFilePath) {
+                if (err) {
+                  reply(Boom.badImplementation(err));
+                } else {
+                  reply.file(resultFilePath).header('Content-Type', 'application/javascript');
+                }
+              });
             } else {
               // if file doesn't exist
-              generateScript(apiKey, filePath, function (err, newFilePath) {
+              generateScript(apiKey, filePath, templatePath, function (err, newFilePath) {
                 if (err) {
                   reply(Boom.badImplementation(err));
                 } else {
@@ -166,6 +205,10 @@ exports.init = function (server, agenda) {
           apiKey: Joi.string().required()
         }
       },
+      auth: {
+        mode: 'optional',
+        strategy: 'session'
+      },
       handler: function (request, reply) {
         // if expId provided, could be not
         var expId = request.params.expId;
@@ -176,6 +219,7 @@ exports.init = function (server, agenda) {
         var visitorBrowser = visitorUaData.family + ' ' + visitorUaData.major + '.' + visitorUaData.minor + '.' + visitorUaData.patch || 'unknown';
         var visitorDevice = visitorUaData.device.family || 'unknown';
         var visitorOs = visitorUaData.os.family + ' ' + visitorUaData.os.major + '.' + visitorUaData.os.minor + '.' + visitorUaData.os.patch || 'unknown';
+        // expVariant
         // geoip should run in background!
 
         trackingEventsCache.push({

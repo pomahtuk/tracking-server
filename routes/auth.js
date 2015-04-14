@@ -191,7 +191,7 @@ module.exports = function (server) {
           }
         },
         auth: {
-          mode: 'try',
+          mode: 'optional',
           strategy: 'session'
         },
         plugins: {
@@ -215,7 +215,7 @@ module.exports = function (server) {
           }
         },
         auth: {
-          mode: 'try',
+          mode: 'optional',
           strategy: 'session'
         },
         plugins: {

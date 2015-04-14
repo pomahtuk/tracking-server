@@ -2,13 +2,12 @@
 
 'use strict';
 
-var fs        = require('fs');
-// var path      = require('path');
-var Boom      = require('boom');
-var Joi       = require('joi');
-var UglifyJS  = require('uglify-js');
-var Project   = require('../models').Project;
-var sqlEvent  = require('../models').Event;
+var fs            = require('fs');
+var Boom          = require('boom');
+var Joi           = require('joi');
+var Project       = require('../models').Project;
+var sqlEvent      = require('../models').Event;
+var fileUtilities = require('../helpers/fileGeneration.js');
 
 var trackingEventsCache = [];
 
@@ -28,7 +27,7 @@ var agendaSetup = function (agenda) {
         // find a way to erport error
         console.log(err);
         // ad try again may be? later
-        done();
+        done(err);
       });
     } else {
       done();
@@ -38,79 +37,20 @@ var agendaSetup = function (agenda) {
   // define a job for processing events
 
   // set up repetetive job
-  var job = agenda.create('dump tracking cache to MySQL');
-  job.repeatEvery('60 seconds');
-  job.save();
-};
+  var dumpingJob = agenda.create('dump tracking cache to MySQL');
+  dumpingJob.repeatEvery('60 seconds');
+  dumpingJob.save();
 
-var generateScript = function (apiKey, filePath, templatePath, callback) {
-  var processedData = '';
-  fs.readFile(templatePath, {encoding: 'utf-8'}, function (err, data) {
-    if (err) {
-      return callback(err, null);
-    } else {
-      // generate dev version with hardcoded project apiKey
-      processedData = String(data).replace(/%%apiKey%%/g, apiKey);
-      // uglify/minify
-      // BOTTLENECK!
-      processedData = UglifyJS.minify(processedData, {fromString: true});
-      processedData = processedData.code;
-      // if folder allready exists we are fine, but error will be thrown
-      try {
-        // BOTTLENECK!
-        fs.mkdirSync(__dirname + '/../public/' + apiKey);
-      } catch (err) {
-        console.log(err);
-        if (err.code !== 'EEXIST') {
-          return callback(err, null);
-        }
-      }
-      // save && serve
-      fs.writeFile(filePath, processedData, function (err) {
-        if (err) {
-          return callback(err, null);
-        } else {
-          return callback(null, filePath);
-        }
-      });
-    }
+
+  agenda.define('process collected events', function(job, done) {
+    // get everything from sql
+    done();
   });
-};
 
-var checkModification = function (apiKey, filePath, templatePath, callback) {
-  var templateModTime, scriptModTime;
+  var processingJob = agenda.create('dump tracking cache to MySQL');
+  processingJob.repeatEvery('5 minutes');
+  processingJob.save();
 
-  fs.stat(filePath, function (err, targetFileStat) {
-    if (err) {
-      // return reply(Boom.badImplementation(err));
-      return callback(err, null);
-    }
-    fs.stat(templatePath, function (err, templateStat) {
-      if (err) {
-        // return reply(Boom.badImplementation(err));
-        return callback(err, null);
-      } else {
-        templateModTime = templateStat.mtime.getTime();
-        scriptModTime = targetFileStat.mtime.getTime();
-        // compare date created with modification date of template
-        if (templateModTime > scriptModTime) {
-          // if template is newer - regenerate!
-          generateScript(apiKey, filePath, templatePath, function (err, newFilePath) {
-            if (err) {
-              // reply(Boom.badImplementation(err));
-              return callback(err, null);
-            } else {
-              // reply.file(newFilePath).header('Content-Type', 'application/javascript');
-              return callback(null, newFilePath);
-            }
-          });
-        } else {
-          // reply.file(filePath).header('Content-Type', 'application/javascript');
-          return callback(null, filePath);
-        }
-      }
-    });
-  });
 };
 
 /**
@@ -167,7 +107,7 @@ exports.init = function (server, agenda) {
             // try to serve pre-saved file
             // BOTTLENECK!
             if (fs.existsSync(filePath)) {
-              checkModification(apiKey, filePath, templatePath, function (err, resultFilePath) {
+              fileUtilities.checkModification(apiKey, filePath, templatePath, function (err, resultFilePath) {
                 if (err) {
                   reply(Boom.badImplementation(err));
                 } else {
@@ -176,7 +116,7 @@ exports.init = function (server, agenda) {
               });
             } else {
               // if file doesn't exist
-              generateScript(apiKey, filePath, templatePath, function (err, newFilePath) {
+              fileUtilities.generateScript(apiKey, filePath, templatePath, function (err, newFilePath) {
                 if (err) {
                   reply(Boom.badImplementation(err));
                 } else {
@@ -198,7 +138,7 @@ exports.init = function (server, agenda) {
   // return gathered user info
   server.route({
     method: 'GET',
-    path: '/laborant/{eventType}/{expId}',
+    path: '/laborant/{eventType}/{expId}/{variant}',
     config: {
       validate: {
         query: {
@@ -219,12 +159,13 @@ exports.init = function (server, agenda) {
         var visitorBrowser = visitorUaData.family + ' ' + visitorUaData.major + '.' + visitorUaData.minor + '.' + visitorUaData.patch || 'unknown';
         var visitorDevice = visitorUaData.device.family || 'unknown';
         var visitorOs = visitorUaData.os.family + ' ' + visitorUaData.os.major + '.' + visitorUaData.os.minor + '.' + visitorUaData.os.patch || 'unknown';
-        // expVariant
+        var expVariant = request.params.variant;
         // geoip should run in background!
 
         trackingEventsCache.push({
           type: eventType,
           expId: expId,
+          expVariant: expVariant,
           apiKey: apiKey,
           browser: visitorBrowser,
           device: visitorDevice,

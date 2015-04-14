@@ -1,6 +1,6 @@
-/*jslint node: true, es5: true, indent: 2*/
+/*jslint node: true, indent: 2*/
 
-"use strict";
+'use strict';
 
 module.exports = function (sequelize, DataTypes) {
 
@@ -15,9 +15,10 @@ module.exports = function (sequelize, DataTypes) {
   //   timestamp: new Date()
   // });
 
-  var Event = sequelize.define("Event", {
+  var Event = sequelize.define('Event', {
     type          : { type: DataTypes.STRING, allowNull: false },
     expId         : { type: DataTypes.STRING, allowNull: false },
+    expVariant    : { type: DataTypes.STRING, allowNull: false },
     apiKey        : { type: DataTypes.STRING, allowNull: false },
     browser       : { type: DataTypes.STRING, allowNull: false },
     device        : { type: DataTypes.STRING, allowNull: false },

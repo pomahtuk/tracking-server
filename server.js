@@ -22,11 +22,15 @@ var agenda        = new Agenda({
     collection: 'agendaJobs'
   }
 });
-
-server.connection({
-  host: process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1',
+var connectionParams = {
   port: port 
-});
+};
+
+if (process.env.OPENSHIFT_NODEJS_IP) {
+  connectionParams.hos = process.env.OPENSHIFT_NODEJS_IP ;
+}
+  
+server.connection(connectionParams);
 
 // Lout Options
 // 'engines' - an object where each key is a file extension (e.g. 'html', 'jade'), mapped to the npm module name (string) used for rendering the templates. Default is { html: 'handlebars' }.

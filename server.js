@@ -23,13 +23,13 @@ var agenda        = new Agenda({
   }
 });
 var connectionParams = {
-  port: port 
+  port: port
 };
 
 if (process.env.OPENSHIFT_NODEJS_IP) {
-  connectionParams.hos = process.env.OPENSHIFT_NODEJS_IP ;
+  connectionParams.host = process.env.OPENSHIFT_NODEJS_IP ;
 }
-  
+
 server.connection(connectionParams);
 
 // Lout Options

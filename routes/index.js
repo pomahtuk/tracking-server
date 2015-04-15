@@ -44,11 +44,28 @@ var agendaSetup = function (agenda) {
 
   agenda.define('process collected events', function(job, done) {
     // get everything from sql
-    done();
+    sqlEvent.findAll({
+      where: {
+        timestamp: {
+          $lte: new Date()
+        }
+      }
+    }).then(function (rawEvents) {
+      if (rawEvents) {
+        console.log('Events retreived: ', rawEvents.length);
+        done();
+      } else {
+        done();
+      }
+    }, function (err) {
+      console.log(err);
+      done(err);
+    })
   });
 
-  var processingJob = agenda.create('dump tracking cache to MySQL');
-  processingJob.repeatEvery('5 minutes');
+  var processingJob = agenda.create('process collected events');
+  // processingJob.repeatEvery('5 minutes');
+  processingJob.repeatEvery('1 minute');
   processingJob.save();
 
 };
@@ -109,26 +126,26 @@ exports.init = function (server, agenda) {
             if (fs.existsSync(filePath)) {
               fileUtilities.checkModification(apiKey, filePath, templatePath, function (err, resultFilePath) {
                 if (err) {
-                  reply(Boom.badImplementation(err));
+                  return reply(Boom.badImplementation(err));
                 } else {
-                  reply.file(resultFilePath).header('Content-Type', 'application/javascript');
+                  return reply.file(resultFilePath).header('Content-Type', 'application/javascript');
                 }
               });
             } else {
               // if file doesn't exist
               fileUtilities.generateScript(apiKey, filePath, templatePath, function (err, newFilePath) {
                 if (err) {
-                  reply(Boom.badImplementation(err));
+                  return reply(Boom.badImplementation(err));
                 } else {
-                  reply.file(newFilePath).header('Content-Type', 'application/javascript');
+                  return reply.file(newFilePath).header('Content-Type', 'application/javascript');
                 }
               });
             }
           } else {
-            reply(Boom.notFound());
+            return reply(Boom.notFound());
           }
         }, function (err) {
-          reply(Boom.badImplementation(err));
+          return reply(Boom.badImplementation(err));
         });
       }
     }
@@ -144,10 +161,6 @@ exports.init = function (server, agenda) {
         query: {
           apiKey: Joi.string().required()
         }
-      },
-      auth: {
-        mode: 'optional',
-        strategy: 'session'
       },
       handler: function (request, reply) {
         // if expId provided, could be not

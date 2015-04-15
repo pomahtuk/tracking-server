@@ -13,7 +13,7 @@ var models        = require('./models');
 var routes        = require('./routes');
 var methods       = require('./methods');
 var env           = process.env.NODE_ENV || 'development';
-var port          = process.env.PORT || 3000;
+var port          = process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 3000;
 var server        = new Hapi.Server(serverConfig);
 var mongoURI      = process.env.MONGOLAB_URI || 'mongodb://localhost/tracking_tool';
 var agenda        = new Agenda({
@@ -23,7 +23,10 @@ var agenda        = new Agenda({
   }
 });
 
-server.connection({ port: port });
+server.connection({
+  host: process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1',
+  port: port 
+});
 
 // Lout Options
 // 'engines' - an object where each key is a file extension (e.g. 'html', 'jade'), mapped to the npm module name (string) used for rendering the templates. Default is { html: 'handlebars' }.
@@ -72,15 +75,15 @@ models.sequelize.sync().then(function () {
       clearInvalid: true,
       redirectOnTry: false,
       cookie: 'sid',
-      mode: 'optional', // for a while, untill correct auth are not implemented
+      mode: 'false', // for a while, untill correct auth are not implemented
       isSecure: false,
       validateFunc: require('./helpers/sessionValidate.js')
     });
 
-    server.auth.default({
-      mode: 'optional',
-      strategy: 'session'
-    });
+    // server.auth.default({
+    //   mode: 'false',
+    //   strategy: 'session'
+    // });
 
     routes.init(server, agenda);
     methods.init(server);

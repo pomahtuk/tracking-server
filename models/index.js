@@ -16,7 +16,9 @@ if (config.logging !== false) {
 }
 
 if (process.env.CLEARDB_DATABASE_URL) {
-  sequelize = new Sequelize(process.env.CLEARDB_DATABASE_URL)
+  sequelize = new Sequelize(process.env.CLEARDB_DATABASE_URL);
+} else if (process.env.OPENSHIFT_MYSQL_DB_URL) {
+  sequelize = new Sequelize(process.env.OPENSHIFT_MYSQL_DB_URL);
 } else {
   sequelize = new Sequelize(config.database, config.username, config.password, config);
 }
@@ -25,16 +27,16 @@ if (process.env.CLEARDB_DATABASE_URL) {
 fs
   .readdirSync(__dirname)
   .filter(function (file) {
-    var condition = (file.indexOf(".") !== 0) && (file !== basename) && (file.indexOf('sql') === 0);
+    var condition = (file.indexOf('.') !== 0) && (file !== basename) && (file.indexOf('sql') === 0);
 
-    if (condition && env === "development") {
+    if (condition && env === 'development') {
       console.log('loading model from', file);
     }
 
     return condition;
   })
   .forEach(function (file) {
-    var model = sequelize["import"](path.join(__dirname, file));
+    var model = sequelize['import'](path.join(__dirname, file));
     db[model.name] = model;
   });
 

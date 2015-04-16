@@ -34,14 +34,10 @@ var agendaSetup = function (agenda) {
     }
   });
 
+  agenda.every('60 seconds', 'dump tracking cache to MySQL');
+
+
   // define a job for processing events
-
-  // set up repetetive job
-  var dumpingJob = agenda.create('dump tracking cache to MySQL');
-  dumpingJob.repeatEvery('60 seconds');
-  dumpingJob.save();
-
-
   agenda.define('process collected events', function(job, done) {
     // get everything from sql
     sqlEvent.findAll({
@@ -63,10 +59,7 @@ var agendaSetup = function (agenda) {
     })
   });
 
-  var processingJob = agenda.create('process collected events');
-  // processingJob.repeatEvery('5 minutes');
-  processingJob.repeatEvery('1 minute');
-  processingJob.save();
+  agenda.every('5 minutes', 'process collected events');
 
 };
 

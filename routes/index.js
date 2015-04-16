@@ -90,6 +90,17 @@ exports.init = function (server, agenda) {
     }
   });
 
+  // haproxy route helper
+  server.route({
+    method: 'GET',
+    path: '/',
+    config: {
+      handler: function (request, reply) {
+        return reply('server running');
+      }
+    }
+  });
+
   // add route for injecting script
   // sync operations are possible bottlenecks,
   // but for right now we are fine

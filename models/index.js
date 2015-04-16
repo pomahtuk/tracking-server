@@ -18,7 +18,7 @@ if (config.logging !== false) {
 if (process.env.CLEARDB_DATABASE_URL) {
   sequelize = new Sequelize(process.env.CLEARDB_DATABASE_URL);
 } else if (process.env.OPENSHIFT_MYSQL_DB_URL) {
-  sequelize = new Sequelize(process.env.OPENSHIFT_MYSQL_DB_URL);
+  sequelize = new Sequelize(process.env.OPENSHIFT_MYSQL_DB_URL + '/laborant');
 } else {
   sequelize = new Sequelize(config.database, config.username, config.password, config);
 }

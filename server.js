@@ -15,7 +15,7 @@ var methods       = require('./methods');
 var env           = process.env.NODE_ENV || 'development';
 var port          = process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 3000;
 var server        = new Hapi.Server(serverConfig);
-var mongoURI      = process.env.MONGOLAB_URI || 'mongodb://localhost/tracking_tool';
+var mongoURI      = process.env.OPENSHIFT_MONGODB_DB_URL ? process.env.OPENSHIFT_MONGODB_DB_URL + 'laborant' : process.env.MONGOLAB_URI || 'mongodb://localhost/tracking_tool';
 var agenda        = new Agenda({
   db: {
     address: mongoURI,

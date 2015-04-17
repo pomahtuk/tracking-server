@@ -13,6 +13,21 @@ Then summ all 5m calculations done with allready stored total and save it as tot
 If this metric is not targert metric for experiment and/or project - wipe 5m data 
 
 
+### Deploy
+
+#### Openshift
+
+  ```
+    gem install rhc
+    # this will create scalable application with mysql and mongodb
+    rhc app create [app_name] nodejs-0.10 mongodb-2.4 mysql-5.4 -s
+    cd app_name
+    # point new app to our github code
+    git remote add upstream -m master git@github.com:pomahtuk/tracking-server.git
+    git pull -s recursive -X theirs upstream master
+  ```
+
+
 ### To Be Done:
 
 * General

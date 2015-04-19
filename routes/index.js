@@ -3,6 +3,7 @@
 'use strict';
 
 var fs            = require('fs');
+var crypto        = require('crypto');
 var Boom          = require('boom');
 var Joi           = require('joi');
 var Project       = require('../models').Project;
@@ -49,6 +50,7 @@ var agendaSetup = function (agenda) {
     }).then(function (rawEvents) {
       if (rawEvents) {
         console.log('Events retreived: ', rawEvents.length);
+        // for
         done();
       } else {
         done();
@@ -167,6 +169,8 @@ exports.init = function (server, agenda) {
         }
       },
       handler: function (request, reply) {
+        // generate visitorIdentity here
+
         // if expId provided, could be not
         var expId = request.params.expId;
         // to identify project for event
@@ -177,9 +181,14 @@ exports.init = function (server, agenda) {
         var visitorDevice = visitorUaData.device.family || 'unknown';
         var visitorOs = visitorUaData.os.family + ' ' + visitorUaData.os.major + '.' + visitorUaData.os.minor + '.' + visitorUaData.os.patch || 'unknown';
         var expVariant = request.params.variant;
+
+        // assuming that this parameters let us identify visitor
+        // BOTTLENECK! coud be, md5 is syncronus and UA string could be sent enormously big
+        var visiorIdentity = crypto.createHash('md5').update(visitorUaData.toString() + request.info.referrer + request.info.remoteAddress).digest('hex');
         // geoip should run in background!
 
         trackingEventsCache.push({
+          visiorIdentity: visiorIdentity,
           type: eventType,
           expId: expId,
           expVariant: expVariant,

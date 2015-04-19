@@ -16,6 +16,7 @@ module.exports = function (sequelize, DataTypes) {
   // });
 
   var Event = sequelize.define('Event', {
+    visiorIdentity: { type: DataTypes.STRING, allowNull: false },
     type          : { type: DataTypes.STRING, allowNull: false },
     expId         : { type: DataTypes.STRING, allowNull: false },
     expVariant    : { type: DataTypes.STRING, allowNull: false },

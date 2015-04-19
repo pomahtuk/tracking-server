@@ -57,7 +57,7 @@ module.exports = {
         if (templateModTime > scriptModTime) {
           console.log('template newer! regenerate!');
           // if template is newer - regenerate!
-          context.generateScript(apiKey, filePath, templatePath, function (err, newFilePath) {
+          return context.generateScript(apiKey, filePath, templatePath, function (err, newFilePath) {
             if (err) {
               return callback(err, null);
             }

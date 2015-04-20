@@ -4,7 +4,7 @@
 
 module.exports = function (sequelize, DataTypes) {
   var Visitor = sequelize.define("Visitor", {
-    identity          : { type: DataTypes.STRING, primaryKey: true }
+    identity          : { type: DataTypes.STRING }
     // find a way to store all experiments and their variants, assigned to this user
   }, {
     classMethods: {

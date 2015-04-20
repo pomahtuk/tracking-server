@@ -16,7 +16,7 @@ module.exports = function (sequelize, DataTypes) {
   // });
 
   var Event = sequelize.define('Event', {
-    visiorIdentity: { type: DataTypes.STRING, allowNull: false },
+    visiorIdentity: { type: DataTypes.STRING, allowNull: false, references: "Visitors", referencesKey: "identity" },
     type          : { type: DataTypes.STRING, allowNull: false },
     expId         : { type: DataTypes.STRING, allowNull: false },
     expVariant    : { type: DataTypes.STRING, allowNull: false },
@@ -28,6 +28,12 @@ module.exports = function (sequelize, DataTypes) {
     ip            : { type: DataTypes.STRING, allowNull: false },
     referrer      : { type: DataTypes.STRING, allowNull: false },
     timestamp     : { type: DataTypes.DATE, allowNull: false }
+  }, {
+    classMethods: {
+      associate: function (models) {
+        Event.belongsTo(models.Visitor);
+      }
+    }
   });
 
   return Event;

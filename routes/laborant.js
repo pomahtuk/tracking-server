@@ -28,7 +28,7 @@ exports.jsonp = function (server) {
   var callbackName;
 
   server.route({
-    path: "/laborant",
+    path: "/laborant-old/",
     method: "GET",
     config: {
       handler: function (request, reply) {

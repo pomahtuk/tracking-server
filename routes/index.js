@@ -12,6 +12,9 @@ var fileUtilities = require('../helpers/fileGeneration.js');
 
 var trackingEventsCache = [];
 
+var wrapJsonp = function (callbackName, data) {
+  return callbackName + '(' + JSON.stringify(data) + ')';
+}
 
 var agendaSetup = function (agenda) {
   // define a job for dumping events to DB
@@ -172,6 +175,7 @@ exports.init = function (server, agenda) {
         // generate visitorIdentity here
 
         // if expId provided, could be not
+        // TODO: notexpId, but eventId
         var expId = request.params.expId;
         // to identify project for event
         var apiKey = request.query.apiKey;
@@ -207,13 +211,34 @@ exports.init = function (server, agenda) {
     }
   });
 
-  // add intial route with all experiments for laborant
-  // get md5 of UA string + ip + referrer to identify user
-  // validate: {
-  //   query: {
-  //     apiKey: Joi.string().required(),
-  //     experiments Joi.optional()
-  //   }
-  // },
+  server.route({
+    method: 'GET',
+    path: '/laborant',
+    config: {
+      validate: {
+        query: {
+          apiKey: Joi.string().required(),
+          callback: Joi.string().required(), // request.query.callback;
+          experiments: Joi.optional()
+        }
+      },
+      handler: function (request, reply) {
+        // reply all initial exps
+        // also we could just write a server-side cookie with encoded experiments,
+        // assigned to user. Decoding should be extreemly simple
+        var callbackName = request.query.callback;
+
+        var response = wrapJsonp(callbackName, {
+          status: 'success',
+          experiments: {
+            'green_button': 1,
+            'footer_text': 0
+          },
+        });
+
+        reply(response);
+      }
+    }
+  });
 
 };

@@ -76,7 +76,6 @@ var agendaSetup = function (agenda) {
  * @param server
  */
 exports.init = function (server, agenda) {
-  require('./laborant')(server);
   require('./experiments')(server);
   require('./projects')(server);
   require('./goals')(server);
@@ -113,10 +112,6 @@ exports.init = function (server, agenda) {
     method: 'GET',
     path: '/{apiKey}/laborant.js',
     config: {
-      auth: {
-        mode: 'optional',
-        strategy: 'session'
-      },
       handler: function (request, reply) {
         var filePath = __dirname + '/../public/' + request.params.apiKey + '/laborant.js';
         var templatePath = __dirname + '/../public/laborant.template.js';

@@ -206,34 +206,34 @@ exports.init = function (server, agenda) {
     }
   });
 
-  // server.route({
-  //   method: 'GET',
-  //   path: '/laborant',
-  //   config: {
-  //     validate: {
-  //       query: {
-  //         apiKey: Joi.string().required(),
-  //         callback: Joi.string().required(), // request.query.callback;
-  //         experiments: Joi.optional()
-  //       }
-  //     },
-  //     handler: function (request, reply) {
-  //       // reply all initial exps
-  //       // also we could just write a server-side cookie with encoded experiments,
-  //       // assigned to user. Decoding should be extreemly simple
-  //       var callbackName = request.query.callback;
+  server.route({
+    method: 'GET',
+    path: '/laborant',
+    config: {
+      validate: {
+        query: {
+          apiKey: Joi.string().required(),
+          callback: Joi.string().required(), // request.query.callback;
+          experiments: Joi.optional()
+        }
+      },
+      handler: function (request, reply) {
+        // reply all initial exps
+        // also we could just write a server-side cookie with encoded experiments,
+        // assigned to user. Decoding should be extreemly simple
+        var callbackName = request.query.callback;
 
-  //       var response = wrapJsonp(callbackName, {
-  //         status: 'success',
-  //         experiments: {
-  //           'green_button': 1,
-  //           'footer_text': 0
-  //         },
-  //       });
+        var response = wrapJsonp(callbackName, {
+          status: 'success',
+          experiments: {
+            'green_button': 1,
+            'footer_text': 0
+          },
+        });
 
-  //       reply(response);
-  //     }
-  //   }
-  // });
+        reply(response);
+      }
+    }
+  });
 
 };

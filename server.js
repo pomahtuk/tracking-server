@@ -79,15 +79,10 @@ models.sequelize.sync().then(function () {
       clearInvalid: true,
       redirectOnTry: false,
       cookie: 'sid',
-      mode: 'false', // for a while, untill correct auth are not implemented
+      // mode: 'false', // for a while, untill correct auth are not implemented
       isSecure: false,
       validateFunc: require('./helpers/sessionValidate.js')
     });
-
-    // server.auth.default({
-    //   mode: 'false',
-    //   strategy: 'session'
-    // });
 
     routes.init(server, agenda);
     methods.init(server);

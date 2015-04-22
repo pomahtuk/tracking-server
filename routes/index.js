@@ -13,7 +13,7 @@ var fileUtilities = require('../helpers/fileGeneration.js');
 var trackingEventsCache = [];
 
 var wrapJsonp = function (callbackName, data) {
-  return callbackName + '(' + JSON.stringify(data) + ')';
+  return callbackName + '(' + JSON.stringify(data) + ');';
 }
 
 var agendaSetup = function (agenda) {
@@ -231,7 +231,7 @@ exports.init = function (server, agenda) {
           },
         });
 
-        reply(response);
+        reply(response).header('Content-Type', 'application/javascript');
       }
     }
   });

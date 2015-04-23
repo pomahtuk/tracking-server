@@ -1,11 +1,11 @@
-/*jslint node: true, es5: true, indent: 2*/
+/*jslint node: true, indent: 2*/
 
 'use strict';
 
 var getExperimentForRequest = function (server) {
   var User, Project, Experiment;
 
-  server.method("getExperimentForRequest", function (request, next) {
+  server.method('getExperimentForRequest', function (request, next) {
     User = request.auth.credentials;
 
     User.getProjects({
@@ -30,7 +30,7 @@ var getExperimentForRequest = function (server) {
           }
         }, function (err) {
           next(err);
-        })
+        });
       } else {
         next(new Error('Not found'));
       }
@@ -38,7 +38,7 @@ var getExperimentForRequest = function (server) {
       next(err);
     });
   });
-}
+};
 
 var exports = function (server) {
   getExperimentForRequest(server);

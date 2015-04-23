@@ -1,9 +1,9 @@
-/*jslint node: true, es5: true, indent: 2*/
+/*jslint node: true, indent: 2*/
 
-"use strict";
+'use strict';
 
 module.exports = function (sequelize, DataTypes) {
-  var Goal = sequelize.define("Goal", {
+  var Goal = sequelize.define('Goal', {
     name          : { type: DataTypes.STRING, allowNull: false },
     description   : { type: DataTypes.STRING, allowNull: false },
     tag           : { type: DataTypes.STRING, allowNull: false }

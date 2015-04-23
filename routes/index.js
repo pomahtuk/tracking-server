@@ -15,18 +15,19 @@ var trackingEventsCache = [];
 
 var wrapJsonp = function (callbackName, data) {
   return callbackName + '(' + JSON.stringify(data) + ');';
-}
+};
 
 var agendaSetup = function (agenda) {
   // define a job for dumping events to DB
-  agenda.define('dump tracking cache to MySQL', function(job, done) {
+  /*jslint unparam: true*/
+  agenda.define('dump tracking cache to MySQL', function (job, done) {
     // this looks tricky
     // make a copy of current dataset
     // wipe original
     var dataToStore = trackingEventsCache.splice(0, trackingEventsCache.length - 1);
 
     if (dataToStore.length > 0) {
-      sqlEvent.bulkCreate(dataToStore).then(function() {
+      sqlEvent.bulkCreate(dataToStore).then(function () {
         done();
       }, function (err) {
         // find a way to erport error
@@ -38,12 +39,14 @@ var agendaSetup = function (agenda) {
       done();
     }
   });
+  /*jslint unparam: false*/
 
   agenda.every('60 seconds', 'dump tracking cache to MySQL');
 
 
   // define a job for processing events
-  agenda.define('process collected events', function(job, done) {
+  /*jslint unparam: true*/
+  agenda.define('process collected events', function (job, done) {
     // get everything from sql
     sqlEvent.findAll({
       where: {
@@ -62,8 +65,9 @@ var agendaSetup = function (agenda) {
     }, function (err) {
       console.log(err);
       done(err);
-    })
+    });
   });
+  /*jslint unparam: false*/
 
   agenda.every('5 minutes', 'process collected events');
 
@@ -101,7 +105,7 @@ exports.init = function (server, agenda) {
     path: '/',
     config: {
       handler: function (request, reply) {
-        return reply('server running');
+        return reply('server running', request.params);
       }
     }
   });
@@ -132,18 +136,16 @@ exports.init = function (server, agenda) {
               fileUtilities.checkModification(apiKey, filePath, templatePath, function (err, resultFilePath) {
                 if (err) {
                   return reply(Boom.badImplementation(err));
-                } else {
-                  return reply.file(resultFilePath).header('Content-Type', 'application/javascript');
                 }
+                return reply.file(resultFilePath).header('Content-Type', 'application/javascript');
               });
             } else {
               // if file doesn't exist
               fileUtilities.generateScript(apiKey, filePath, templatePath, function (err, newFilePath) {
                 if (err) {
                   return reply(Boom.badImplementation(err));
-                } else {
-                  return reply.file(newFilePath).header('Content-Type', 'application/javascript');
                 }
+                return reply.file(newFilePath).header('Content-Type', 'application/javascript');
               });
             }
           } else {
@@ -238,22 +240,17 @@ exports.init = function (server, agenda) {
           var clientExps = request.state.exps;
           var experimentsList = {};
 
-          console.log(request.state);
-
-          project.Experiments.forEach(function(experiment, index) {
-            console.log('if exp in cookie allready set');
-            if (clientExps && clientExps[experiment.tag]) {
-              console.log('use existing data');
+          project.Experiments.forEach(function (experiment) {
+            if (clientExps && clientExps.hasOwnProperty && clientExps.hasOwnProperty(experiment.tag)) {
               experimentsList[experiment.tag] = clientExps[experiment.tag];
             } else {
-              console.log('nope, not set, using new data');
               experimentsList[experiment.tag] = Math.floor(Math.random() * (experiment.variantCount));
             }
-          })
+          });
 
           var response = wrapJsonp(callbackName, {
             status: 'success',
-            experiments: experimentsList,
+            experiments: experimentsList
           });
 
           reply(response).header('Content-Type', 'application/javascript').state('exps', experimentsList);

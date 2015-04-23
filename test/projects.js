@@ -1,4 +1,4 @@
-/*jslint node: true, es5: true, nomen: true, indent: 2, vars: true, regexp: true */
+/*jslint node: true, nomen: true, indent: 2, vars: true, regexp: true */
 
 'use strict';
 
@@ -15,11 +15,11 @@ var exports = function (server, Code, lab, sessionCookie) {
   lab.suite('Projects', function () {
 
     // test creation
-    lab.test("Create project endpoint rejects invalid project", function (done) {
+    lab.test('Create project endpoint rejects invalid project', function (done) {
 
       var options = {
-        method: "POST",
-        url: "/projects",
+        method: 'POST',
+        url: '/projects',
         payload: {
           project: {
             description: 'lab proj descr'
@@ -41,10 +41,10 @@ var exports = function (server, Code, lab, sessionCookie) {
       });
     });
 
-    lab.test("Create project endpoint rejects valid project for unauthorized user", function (done) {
+    lab.test('Create project endpoint rejects valid project for unauthorized user', function (done) {
       var options = {
-        method: "POST",
-        url: "/projects",
+        method: 'POST',
+        url: '/projects',
         payload: {
           project: validProject
         }
@@ -56,10 +56,10 @@ var exports = function (server, Code, lab, sessionCookie) {
       });
     });
 
-    lab.test("Create project endpoint creates valid project", function (done) {
+    lab.test('Create project endpoint creates valid project', function (done) {
       var options = {
-        method: "POST",
-        url: "/projects",
+        method: 'POST',
+        url: '/projects',
         payload: {
           project: validProject
         },
@@ -118,7 +118,7 @@ var exports = function (server, Code, lab, sessionCookie) {
     lab.test('Projects endpoint do not lists present projects for unauthorized user', function (done) {
       var options = {
         method: 'GET',
-        url: "/projects"
+        url: '/projects'
       };
 
       server.inject(options, function (response) {
@@ -155,7 +155,7 @@ var exports = function (server, Code, lab, sessionCookie) {
     lab.test('Single project endpoint return 404 if no project present', function (done) {
       var options = {
         method: 'GET',
-        url: "/projects/" + 999,
+        url: '/projects/' + 999,
         headers: {
           cookie: 'sid=' + sessionCookie.value
         }
@@ -170,7 +170,7 @@ var exports = function (server, Code, lab, sessionCookie) {
     lab.test('Single project endpoint return 401 if user is unauthorized', function (done) {
       var options = {
         method: 'GET',
-        url: "/projects/" + projRecordId
+        url: '/projects/' + projRecordId
       };
 
       server.inject(options, function (response) {
@@ -195,7 +195,7 @@ var exports = function (server, Code, lab, sessionCookie) {
 
         Code.expect(response.statusCode).to.equal(200);
         Code.expect(result).to.be.an.object();
-        Code.expect(result.message).to.equal("Project deleted successfully");
+        Code.expect(result.message).to.equal('Project deleted successfully');
 
         done();
       });
@@ -204,7 +204,7 @@ var exports = function (server, Code, lab, sessionCookie) {
     lab.test('Delete project endpoint should return 401 error if user is unauthorized', function (done) {
       var options = {
         method: 'DELETE',
-        url: "/projects/" + projRecordId
+        url: '/projects/' + projRecordId
       };
 
       server.inject(options, function (response) {

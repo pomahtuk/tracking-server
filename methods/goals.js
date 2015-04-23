@@ -1,11 +1,11 @@
-/*jslint node: true, es5: true, indent: 2*/
+/*jslint node: true, indent: 2*/
 
 'use strict';
 
 var getGoalForRequest = function (server) {
   var User, Project, Goal;
 
-  server.method("getGoalForRequest", function (request, next) {
+  server.method('getGoalForRequest', function (request, next) {
     User = request.auth.credentials;
 
     User.getProjects({
@@ -30,7 +30,7 @@ var getGoalForRequest = function (server) {
           }
         }, function (err) {
           next(err);
-        })
+        });
       } else {
         next(new Error('Not found'));
       }
@@ -38,7 +38,7 @@ var getGoalForRequest = function (server) {
       next(err);
     });
   });
-}
+};
 
 var exports = function (server) {
   getGoalForRequest(server);

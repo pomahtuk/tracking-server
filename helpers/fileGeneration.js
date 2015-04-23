@@ -1,4 +1,6 @@
 /*jslint node: true, nomen: true, indent: 2, vars: true, regexp: true */
+'use strict';
+
 var fs        = require('fs');
 var UglifyJS  = require('uglify-js');
 

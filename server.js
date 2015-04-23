@@ -89,7 +89,6 @@ models.sequelize.sync().then(function () {
 
     server.state('exps', {
       ttl: 30 * 24 * 60 * 60 * 1000, // 30 days
-      isSecure: true,
       isHttpOnly: false,
       encoding: 'base64json',
       clearInvalid: true,

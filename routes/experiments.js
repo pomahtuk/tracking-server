@@ -35,7 +35,7 @@ var validParams = {
     id: Joi.number().integer().min(0).required(),
     project_id: Joi.number().integer().min(0).required()
   }
-}
+};
 
 /**
  * GET /experiments

@@ -1,4 +1,4 @@
-/*jslint node: true, es5: true, nomen: true, indent: 2*/
+/*jslint node: true, nomen: true, indent: 2*/
 
 'use strict';
 

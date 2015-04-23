@@ -1,4 +1,4 @@
-/*jslint node: true, es5: true, indent: 2*/
+/*jslint node: true, indent: 2*/
 
 // Config for server instace
 module.exports = {

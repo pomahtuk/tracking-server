@@ -1,12 +1,12 @@
-/*jslint node: true, es5: true, nomen: true, indent: 2, vars: true, regexp: true */
+/*jslint node: true, nomen: true, indent: 2, vars: true, regexp: true */
 
 'use strict';
 
 var Lab     = require('lab');
 var Code    = require('code');
 var server  = require('../server.js');
-var fs        = require("fs");
-var path      = require("path");
+var fs        = require('fs');
+var path      = require('path');
 var basename  = path.basename(module.filename);
 
 // defining a local variables
@@ -30,8 +30,8 @@ lab.suite('Laborant Server', function () {
     setTimeout(function () {
 
       var options = {
-        method: "POST",
-        url: "/sign-up",
+        method: 'POST',
+        url: '/sign-up',
         payload: testUser
       };
 
@@ -42,9 +42,8 @@ lab.suite('Laborant Server', function () {
           console.log('Wrong response', response.payload, 'with code', response.statusCode);
         }
 
-        var result = response.result;
         var header = response.headers['set-cookie'];
-        var thisSessionCookie = header[0].match(/(?:[^\x00-\x20\(\)<>@\,;\:\\"\/\[\]\?\=\{\}\x7F]+)\s*=\s*(?:([^\x00-\x20\"\,\;\\\x7F]*))/);
+        var thisSessionCookie = header[0].match(/(?:[^\x00-\x20\(\)<>@\,;\:\\'\/\[\]\?\=\{\}\x7F]+)\s*=\s*(?:([^\x00-\x20\'\,\;\\\x7F]*))/);
 
         // setting value of cookie
         sessionCookie.value = thisSessionCookie[1];
@@ -60,7 +59,7 @@ lab.suite('Laborant Server', function () {
   fs
     .readdirSync(__dirname)
     .filter(function (file) {
-      return (file.indexOf(".") !== 0) && (file !== basename);
+      return (file.indexOf('.') !== 0) && (file !== basename);
     })
     .forEach(function (file) {
       var test = require(path.join(__dirname, file));

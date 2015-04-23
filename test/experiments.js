@@ -1,4 +1,4 @@
-/*jslint node: true, es5: true, nomen: true, indent: 2, vars: true, regexp: true */
+/*jslint node: true, nomen: true, indent: 2, vars: true, regexp: true */
 
 'use strict';
 
@@ -20,8 +20,8 @@ var exports = function (server, Code, lab, sessionCookie) {
     // create a project
     lab.before(function (done) {
       var options = {
-        method: "POST",
-        url: "/projects",
+        method: 'POST',
+        url: '/projects',
         payload: {
           project: {
             name: 'lab project',
@@ -55,13 +55,13 @@ var exports = function (server, Code, lab, sessionCookie) {
       server.inject(options, function () {
         done();
       });
-    })
+    });
 
     /* Create endpoint */
-    lab.test("Create experiment endpoint rejects invalid experiment", function (done) {
+    lab.test('Create experiment endpoint rejects invalid experiment', function (done) {
       var options = {
-        method: "POST",
-        url: "/projects/" + coreProject.id + "/experiments",
+        method: 'POST',
+        url: '/projects/' + coreProject.id + '/experiments',
         payload: {
           experiment: {
             description: 'lab exp descr'
@@ -83,10 +83,10 @@ var exports = function (server, Code, lab, sessionCookie) {
       });
     });
 
-    lab.test("Create experiment endpoint rejects experiment if project id is wrong", function (done) {
+    lab.test('Create experiment endpoint rejects experiment if project id is wrong', function (done) {
       var options = {
-        method: "POST",
-        url: "/projects/" + 11111111 + "/experiments",
+        method: 'POST',
+        url: '/projects/' + 11111111 + '/experiments',
         payload: {
           experiment: {
             name: 'lab experiment',
@@ -108,10 +108,10 @@ var exports = function (server, Code, lab, sessionCookie) {
       });
     });
 
-    lab.test("Create experiment endpoint rejects valid experiment for unauthorized user", function (done) {
+    lab.test('Create experiment endpoint rejects valid experiment for unauthorized user', function (done) {
       var options = {
-        method: "POST",
-        url: "/projects/" + coreProject.id + "/experiments",
+        method: 'POST',
+        url: '/projects/' + coreProject.id + '/experiments',
         payload: {
           experiment: {
             name: 'lab experiment',
@@ -130,10 +130,10 @@ var exports = function (server, Code, lab, sessionCookie) {
       });
     });
 
-    lab.test("Create experiment endpoint creates valid experiment", function (done) {
+    lab.test('Create experiment endpoint creates valid experiment', function (done) {
       var options = {
-        method: "POST",
-        url: "/projects/" + coreProject.id + "/experiments",
+        method: 'POST',
+        url: '/projects/' + coreProject.id + '/experiments',
         payload: {
           experiment: validExperiment
         },
@@ -172,7 +172,7 @@ var exports = function (server, Code, lab, sessionCookie) {
     lab.test('Experiments endpoint lists present experiments', function (done) {
       var options = {
         method: 'GET',
-        url: "/projects/" + coreProject.id + '/experiments',
+        url: '/projects/' + coreProject.id + '/experiments',
         headers: {
           cookie: 'sid=' + sessionCookie.value
         }
@@ -194,7 +194,7 @@ var exports = function (server, Code, lab, sessionCookie) {
     lab.test('Experiments endpoint do not lists present experiments for unauthorized user', function (done) {
       var options = {
         method: 'GET',
-        url: "/projects/" + coreProject.id + '/experiments'
+        url: '/projects/' + coreProject.id + '/experiments'
       };
 
       server.inject(options, function (response) {
@@ -207,7 +207,7 @@ var exports = function (server, Code, lab, sessionCookie) {
     lab.test('Single experiment endpoint return given experiment', function (done) {
       var options = {
         method: 'GET',
-        url: "/projects/" + coreProject.id + '/experiments/' + expRecordId,
+        url: '/projects/' + coreProject.id + '/experiments/' + expRecordId,
         headers: {
           cookie: 'sid=' + sessionCookie.value
         }
@@ -234,7 +234,7 @@ var exports = function (server, Code, lab, sessionCookie) {
     lab.test('Single experiment endpoint return 404 if no experiment present', function (done) {
       var options = {
         method: 'GET',
-        url: "/projects/" + coreProject.id + '/experiments/' + 999,
+        url: '/projects/' + coreProject.id + '/experiments/' + 999,
         headers: {
           cookie: 'sid=' + sessionCookie.value
         }
@@ -249,7 +249,7 @@ var exports = function (server, Code, lab, sessionCookie) {
     lab.test('Single experiment endpoint return 404 if no project present', function (done) {
       var options = {
         method: 'GET',
-        url: "/projects/" + 11111 + '/experiments/' + 999,
+        url: '/projects/' + 11111 + '/experiments/' + 999,
         headers: {
           cookie: 'sid=' + sessionCookie.value
         }
@@ -264,7 +264,7 @@ var exports = function (server, Code, lab, sessionCookie) {
     lab.test('Single experiment endpoint return 401 if user is unauthorized', function (done) {
       var options = {
         method: 'GET',
-        url: "/projects/" + coreProject.id + '/experiments/' + expRecordId
+        url: '/projects/' + coreProject.id + '/experiments/' + expRecordId
       };
 
       server.inject(options, function (response) {
@@ -278,7 +278,7 @@ var exports = function (server, Code, lab, sessionCookie) {
       validExperiment.description = 'this is edited experiment descr';
       var options = {
         method: 'PUT',
-        url: "/projects/" + coreProject.id + '/experiments/' + expRecordId,
+        url: '/projects/' + coreProject.id + '/experiments/' + expRecordId,
         payload: {
           experiment: validExperiment
         }
@@ -293,7 +293,7 @@ var exports = function (server, Code, lab, sessionCookie) {
     lab.test('Update experiment endpoint should update given experiment', function (done) {
       var options = {
         method: 'PUT',
-        url: "/projects/" + coreProject.id + '/experiments/' + expRecordId,
+        url: '/projects/' + coreProject.id + '/experiments/' + expRecordId,
         payload: {
           experiment: validExperiment
         },
@@ -327,7 +327,7 @@ var exports = function (server, Code, lab, sessionCookie) {
     lab.test('Update experiment endpoint should return error if experiment with given id doesn\'t exists', function (done) {
       var options = {
         method: 'PUT',
-        url: "/projects/" + coreProject.id + '/experiments/0',
+        url: '/projects/' + coreProject.id + '/experiments/0',
         payload: {
           experiment: validExperiment
         },
@@ -345,7 +345,7 @@ var exports = function (server, Code, lab, sessionCookie) {
     lab.test('Update experiment endpoint should return error if project with given id doesn\'t exists', function (done) {
       var options = {
         method: 'PUT',
-        url: "/projects/" + 11111 + '/experiments/0',
+        url: '/projects/' + 11111 + '/experiments/0',
         payload: {
           experiment: validExperiment
         },
@@ -363,7 +363,7 @@ var exports = function (server, Code, lab, sessionCookie) {
     lab.test('Update experiment endpoint should return 400 error if experiment id is wrong', function (done) {
       var options = {
         method: 'PUT',
-        url: "/projects/" + coreProject.id + '/experiments/-1',
+        url: '/projects/' + coreProject.id + '/experiments/-1',
         payload: {
           experiment: validExperiment
         },
@@ -382,7 +382,7 @@ var exports = function (server, Code, lab, sessionCookie) {
     lab.test('Delete experiment endpoint should return 401 error if user is unauthorized', function (done) {
       var options = {
         method: 'DELETE',
-        url: "/projects/" + coreProject.id + '/experiments/' + expRecordId
+        url: '/projects/' + coreProject.id + '/experiments/' + expRecordId
       };
 
       server.inject(options, function (response) {
@@ -394,7 +394,7 @@ var exports = function (server, Code, lab, sessionCookie) {
     lab.test('Delete experiment endpoint should delete given experiment', function (done) {
       var options = {
         method: 'DELETE',
-        url: "/projects/" + coreProject.id + '/experiments/' + expRecordId,
+        url: '/projects/' + coreProject.id + '/experiments/' + expRecordId,
         headers: {
           cookie: 'sid=' + sessionCookie.value
         }
@@ -405,7 +405,7 @@ var exports = function (server, Code, lab, sessionCookie) {
 
         Code.expect(response.statusCode).to.equal(200);
         Code.expect(result).to.be.an.object();
-        Code.expect(result.message).to.equal("Experiment deleted successfully");
+        Code.expect(result.message).to.equal('Experiment deleted successfully');
 
         done();
       });
@@ -414,7 +414,7 @@ var exports = function (server, Code, lab, sessionCookie) {
     lab.test('Delete experiment endpoint should return error if project with given id doesn\'t exists', function (done) {
       var options = {
         method: 'DELETE',
-        url: "/projects/" + 11111 + '/experiments/0',
+        url: '/projects/' + 11111 + '/experiments/0',
         headers: {
           cookie: 'sid=' + sessionCookie.value
         }
@@ -429,7 +429,7 @@ var exports = function (server, Code, lab, sessionCookie) {
     lab.test('Delete experiment endpoint should return error if experiment with given id doesn\'t exists', function (done) {
       var options = {
         method: 'DELETE',
-        url: "/projects/" + coreProject.id + '/experiments/0',
+        url: '/projects/' + coreProject.id + '/experiments/0',
         headers: {
           cookie: 'sid=' + sessionCookie.value
         }
@@ -444,7 +444,7 @@ var exports = function (server, Code, lab, sessionCookie) {
     lab.test('Delete experiment endpoint should return 400 error if experiment id is wrong', function (done) {
       var options = {
         method: 'DELETE',
-        url: "/projects/" + coreProject.id + '/experiments/-1',
+        url: '/projects/' + coreProject.id + '/experiments/-1',
         headers: {
           cookie: 'sid=' + sessionCookie.value
         }

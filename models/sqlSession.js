@@ -1,9 +1,9 @@
 /*jslint node: true, es5: true, indent: 2*/
 
-"use strict";
+'use strict';
 
 module.exports = function (sequelize, DataTypes) {
-  var Session = sequelize.define("Session", {
+  var Session = sequelize.define('Session', {
     hash: { type: DataTypes.STRING, allowNull: false, unique: true }
   }, {
     classMethods: {

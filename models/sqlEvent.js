@@ -16,7 +16,7 @@ module.exports = function (sequelize, DataTypes) {
   // });
 
   var Event = sequelize.define('Event', {
-    visiorIdentity: { type: DataTypes.STRING, allowNull: false, references: "Visitors", referencesKey: "identity" },
+    visiorIdentity: { type: DataTypes.STRING, allowNull: false, references: 'Visitors', referencesKey: 'identity' },
     type          : { type: DataTypes.STRING, allowNull: false },
     expId         : { type: DataTypes.STRING, allowNull: false },
     expVariant    : { type: DataTypes.STRING, allowNull: false },

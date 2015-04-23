@@ -1,4 +1,4 @@
-/*jslint node: true, es5: true, nomen: true, indent: 2, vars: true, regexp: true */
+/*jslint node: true, nomen: true, indent: 2, vars: true, regexp: true */
 
 'use strict';
 
@@ -18,8 +18,8 @@ var exports = function (server, Code, lab) {
     lab.test('Creates a user when valid data is provided', function (done) {
 
       var options = {
-        method: "POST",
-        url: "/sign-up",
+        method: 'POST',
+        url: '/sign-up',
         payload: valudUser
       };
 
@@ -28,7 +28,7 @@ var exports = function (server, Code, lab) {
         var header = response.headers['set-cookie'];
         Code.expect(header.length).to.equal(1);
 
-        sessionCookie = header[0].match(/(?:[^\x00-\x20\(\)<>@\,;\:\\"\/\[\]\?\=\{\}\x7F]+)\s*=\s*(?:([^\x00-\x20\"\,\;\\\x7F]*))/);
+        sessionCookie = header[0].match(/(?:[^\x00-\x20\(\)<>@\,;\:\\'\/\[\]\?\=\{\}\x7F]+)\s*=\s*(?:([^\x00-\x20\'\,\;\\\x7F]*))/);
 
         Code.expect(result.user.username).to.equal(valudUser.username);
         Code.expect(response.statusCode).to.equal(201);
@@ -41,8 +41,8 @@ var exports = function (server, Code, lab) {
     lab.test('Rejects creation of allready existing valid user', function (done) {
 
       var options = {
-        method: "POST",
-        url: "/sign-up",
+        method: 'POST',
+        url: '/sign-up',
         payload: valudUser
       };
 
@@ -58,8 +58,8 @@ var exports = function (server, Code, lab) {
     lab.test('Authenticate a user', function (done) {
 
       var options = {
-        method: "POST",
-        url: "/login",
+        method: 'POST',
+        url: '/login',
         payload: {
           username: valudUser.username,
           password: '177591'
@@ -80,8 +80,8 @@ var exports = function (server, Code, lab) {
     lab.test('Return error if credentials are invalid', function (done) {
 
       var options = {
-        method: "POST",
-        url: "/login",
+        method: 'POST',
+        url: '/login',
         payload: {
           username: valudUser.username,
           password: valudUser.password + '1',
@@ -100,8 +100,8 @@ var exports = function (server, Code, lab) {
     lab.test('Gets authenticated user details', function (done) {
 
       var options = {
-        method: "GET",
-        url: "/me",
+        method: 'GET',
+        url: '/me',
         headers: {
           cookie: 'sid=' + sessionCookie[1]
         }
@@ -119,8 +119,8 @@ var exports = function (server, Code, lab) {
     lab.test('Do not return any details to unauthenticated user', function (done) {
 
       var options = {
-        method: "GET",
-        url: "/me"
+        method: 'GET',
+        url: '/me'
       };
 
       server.inject(options, function (response) {
@@ -136,8 +136,8 @@ var exports = function (server, Code, lab) {
     lab.test('Change password route return an error for incorrect data', function (done) {
 
       var options = {
-        method: "POST",
-        url: "/change-password",
+        method: 'POST',
+        url: '/change-password',
         payload: {
           oldPassword: valudUser.password + '1',
           newPassword: newPassword,
@@ -158,8 +158,8 @@ var exports = function (server, Code, lab) {
     lab.test('Change password route return an error for unauthenticated user', function (done) {
 
       var options = {
-        method: "POST",
-        url: "/change-password",
+        method: 'POST',
+        url: '/change-password',
         payload: {
           oldPassword: valudUser.password,
           newPassword: newPassword,
@@ -178,8 +178,8 @@ var exports = function (server, Code, lab) {
     lab.test('Change password route sucessfully changes a password for user with correct data', function (done) {
 
       var options = {
-        method: "POST",
-        url: "/change-password",
+        method: 'POST',
+        url: '/change-password',
         payload: {
           oldPassword: valudUser.password,
           newPassword: newPassword,
@@ -192,7 +192,7 @@ var exports = function (server, Code, lab) {
 
       server.inject(options, function (response) {
         Code.expect(response.statusCode).to.equal(200);
-        Code.expect(response.result.message).to.equal("User password updated successfully");
+        Code.expect(response.result.message).to.equal('User password updated successfully');
         done();
       });
 
@@ -203,8 +203,8 @@ var exports = function (server, Code, lab) {
     lab.test('Delete route shoud return error if usser session is invalid', function (done) {
 
       var options = {
-        method: "DELETE",
-        url: "/account",
+        method: 'DELETE',
+        url: '/account',
         payload: {
           password: valudUser.password + '1'
         },
@@ -214,7 +214,6 @@ var exports = function (server, Code, lab) {
       };
 
       server.inject(options, function (response) {
-        var result = response.result;
         Code.expect(response.statusCode).to.equal(401);
         done();
       });
@@ -224,8 +223,8 @@ var exports = function (server, Code, lab) {
     lab.test('Return error for authenticated user with wrong password', function (done) {
 
       var options = {
-        method: "DELETE",
-        url: "/account",
+        method: 'DELETE',
+        url: '/account',
         payload: {
           password: valudUser.password + '1'
         },
@@ -237,7 +236,7 @@ var exports = function (server, Code, lab) {
       server.inject(options, function (response) {
         var result = response.result;
         Code.expect(response.statusCode).to.equal(401);
-        Code.expect(result.message).to.equal("Wrong password");
+        Code.expect(result.message).to.equal('Wrong password');
         done();
       });
 
@@ -246,12 +245,11 @@ var exports = function (server, Code, lab) {
     lab.test('Return error for unauthenticated user', function (done) {
 
       var options = {
-        method: "DELETE",
-        url: "/account"
+        method: 'DELETE',
+        url: '/account'
       };
 
       server.inject(options, function (response) {
-        var result = response.result;
         Code.expect(response.statusCode).to.equal(401);
         done();
       });
@@ -261,8 +259,8 @@ var exports = function (server, Code, lab) {
     lab.test('Deletes authenticated user with right password', function (done) {
 
       var options = {
-        method: "DELETE",
-        url: "/account",
+        method: 'DELETE',
+        url: '/account',
         payload: {
           password: newPassword
         },
@@ -274,7 +272,7 @@ var exports = function (server, Code, lab) {
       server.inject(options, function (response) {
         var result = response.result;
         Code.expect(response.statusCode).to.equal(200);
-        Code.expect(result.message).to.equal("User deleted successfully");
+        Code.expect(result.message).to.equal('User deleted successfully');
         done();
       });
 

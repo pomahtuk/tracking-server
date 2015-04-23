@@ -12,7 +12,8 @@
     "start": "nodemon server.js",
     "test": "lab -v ./test/index.js",
     "test-cov-html": "lab -r html -o coverage.html",
-    "debug": "node-debug server.js"
+    "debug": "node-debug server.js",
+    "seed": "node seed.js"
   },
   "author": "pman",
   "license": "MIT",

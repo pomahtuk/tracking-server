@@ -1,4 +1,4 @@
-/*jslint node: true, es5: true, nomen: true, indent: 2, vars: true, regexp: true */
+/*jslint node: true, nomen: true, indent: 2, vars: true, regexp: true */
 
 'use strict';
 
@@ -15,8 +15,8 @@ var exports = function (server, Code, lab, sessionCookie) {
     // create a project
     lab.before(function (done) {
       var options = {
-        method: "POST",
-        url: "/projects",
+        method: 'POST',
+        url: '/projects',
         payload: {
           project: {
             name: 'lab project',
@@ -53,10 +53,10 @@ var exports = function (server, Code, lab, sessionCookie) {
     });
 
     // test create route
-    lab.test("Create goal endpoint rejects invalid goal", function (done) {
+    lab.test('Create goal endpoint rejects invalid goal', function (done) {
       var options = {
-        method: "POST",
-        url: "/projects/" + coreProject.id + "/goals",
+        method: 'POST',
+        url: '/projects/' + coreProject.id + '/goals',
         payload: {
           goal: {
             description: 'lab exp descr'
@@ -78,10 +78,10 @@ var exports = function (server, Code, lab, sessionCookie) {
       });
     });
 
-    lab.test("Create goal endpoint creates valid goal", function (done) {
+    lab.test('Create goal endpoint creates valid goal', function (done) {
       var options = {
-        method: "POST",
-        url: "/projects/" + coreProject.id + "/goals",
+        method: 'POST',
+        url: '/projects/' + coreProject.id + '/goals',
         payload: {
           goal: validGoal
         },
@@ -120,7 +120,7 @@ var exports = function (server, Code, lab, sessionCookie) {
     lab.test('Goals endpoint lists present goals', function (done) {
       var options = {
         method: 'GET',
-        url: "/projects/" + coreProject.id + '/goals',
+        url: '/projects/' + coreProject.id + '/goals',
         headers: {
           cookie: 'sid=' + sessionCookie.value
         }
@@ -142,7 +142,7 @@ var exports = function (server, Code, lab, sessionCookie) {
     lab.test('Single goal endpoint return given goal', function (done) {
       var options = {
         method: 'GET',
-        url: "/projects/" + coreProject.id + '/goals/' + goalRecordId,
+        url: '/projects/' + coreProject.id + '/goals/' + goalRecordId,
         headers: {
           cookie: 'sid=' + sessionCookie.value
         }
@@ -171,7 +171,7 @@ var exports = function (server, Code, lab, sessionCookie) {
       validGoal.description = 'this is edited goal descr';
       var options = {
         method: 'PUT',
-        url: "/projects/" + coreProject.id + '/goals/' + goalRecordId,
+        url: '/projects/' + coreProject.id + '/goals/' + goalRecordId,
         payload: {
           goal: validGoal
         }
@@ -186,7 +186,7 @@ var exports = function (server, Code, lab, sessionCookie) {
     lab.test('Update goal endpoint should update given goal', function (done) {
       var options = {
         method: 'PUT',
-        url: "/projects/" + coreProject.id + '/goals/' + goalRecordId,
+        url: '/projects/' + coreProject.id + '/goals/' + goalRecordId,
         payload: {
           goal: validGoal
         },
@@ -217,7 +217,7 @@ var exports = function (server, Code, lab, sessionCookie) {
     lab.test('Update goal endpoint should return error if goal with given id doesn\'t exists', function (done) {
       var options = {
         method: 'PUT',
-        url: "/projects/" + coreProject.id + '/goals/0',
+        url: '/projects/' + coreProject.id + '/goals/0',
         payload: {
           goal: validGoal
         },
@@ -235,7 +235,7 @@ var exports = function (server, Code, lab, sessionCookie) {
     lab.test('Update goal endpoint should return error if project with given id doesn\'t exists', function (done) {
       var options = {
         method: 'PUT',
-        url: "/projects/" + 11111 + '/goals/' + 999999,
+        url: '/projects/' + 11111 + '/goals/' + 999999,
         payload: {
           goal: validGoal
         },
@@ -253,7 +253,7 @@ var exports = function (server, Code, lab, sessionCookie) {
     lab.test('Update goal endpoint should return 400 error if goal id is wrong', function (done) {
       var options = {
         method: 'PUT',
-        url: "/projects/" + coreProject.id + '/goals/-1',
+        url: '/projects/' + coreProject.id + '/goals/-1',
         payload: {
           goal: validGoal
         },
@@ -272,7 +272,7 @@ var exports = function (server, Code, lab, sessionCookie) {
     lab.test('Delete goal endpoint should delete given goal', function (done) {
       var options = {
         method: 'DELETE',
-        url: "/projects/" + coreProject.id + '/goals/' + goalRecordId,
+        url: '/projects/' + coreProject.id + '/goals/' + goalRecordId,
         headers: {
           cookie: 'sid=' + sessionCookie.value
         }
@@ -283,7 +283,7 @@ var exports = function (server, Code, lab, sessionCookie) {
 
         Code.expect(response.statusCode).to.equal(200);
         Code.expect(result).to.be.an.object();
-        Code.expect(result.message).to.equal("Goal deleted successfully");
+        Code.expect(result.message).to.equal('Goal deleted successfully');
 
         done();
       });
@@ -292,7 +292,7 @@ var exports = function (server, Code, lab, sessionCookie) {
     lab.test('Delete goal endpoint should return error if goal with given id doesn\'t exists', function (done) {
       var options = {
         method: 'DELETE',
-        url: "/projects/" + coreProject.id + '/goals/0',
+        url: '/projects/' + coreProject.id + '/goals/0',
         headers: {
           cookie: 'sid=' + sessionCookie.value
         }
@@ -307,7 +307,7 @@ var exports = function (server, Code, lab, sessionCookie) {
     lab.test('Delete goal endpoint should return 400 error if goal id is wrong', function (done) {
       var options = {
         method: 'DELETE',
-        url: "/projects/" + coreProject.id + '/goals/-1',
+        url: '/projects/' + coreProject.id + '/goals/-1',
         headers: {
           cookie: 'sid=' + sessionCookie.value
         }

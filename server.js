@@ -87,6 +87,15 @@ models.sequelize.sync().then(function () {
     routes.init(server, agenda);
     methods.init(server);
 
+    server.state('exps', {
+      ttl: 30 * 24 * 60 * 60 * 1000, // 30 days
+      isSecure: true,
+      isHttpOnly: false,
+      encoding: 'base64json',
+      clearInvalid: true,
+      strictHeader: true // don't allow violations of RFC 6265
+    });
+
     if(!module.parent) {
       // do not start agenda for tests...
       agenda.start();

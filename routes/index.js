@@ -7,6 +7,7 @@ var crypto        = require('crypto');
 var Boom          = require('boom');
 var Joi           = require('joi');
 var Project       = require('../models').Project;
+var Experiment    = require('../models').Experiment;
 var sqlEvent      = require('../models').Event;
 var fileUtilities = require('../helpers/fileGeneration.js');
 
@@ -159,7 +160,7 @@ exports.init = function (server, agenda) {
   // return gathered user info
   server.route({
     method: 'GET',
-    path: '/laborant/{eventType}/{expId}/{variant}',
+    path: '/laborant/{eventType}/{expId}',
     config: {
       validate: {
         query: {
@@ -223,15 +224,42 @@ exports.init = function (server, agenda) {
         // assigned to user. Decoding should be extreemly simple
         var callbackName = request.query.callback;
 
-        var response = wrapJsonp(callbackName, {
-          status: 'success',
-          experiments: {
-            'green_button': 1,
-            'footer_text': 0
+        Project.findOne({
+          where: {
+            apiKey: request.query.apiKey
           },
-        });
+          include: [ Experiment ]
+        }).then(function (project) {
 
-        reply(response).header('Content-Type', 'application/javascript');
+          if (!project) {
+            return reply(Boom.notFound());
+          }
+
+          var clientExps = request.state.exps;
+          var experimentsList = {};
+
+          console.log(request.state);
+
+          project.Experiments.forEach(function(experiment, index) {
+            console.log('if exp in cookie allready set');
+            if (clientExps && clientExps[experiment.tag]) {
+              console.log('use existing data');
+              experimentsList[experiment.tag] = clientExps[experiment.tag];
+            } else {
+              console.log('nope, not set, using new data');
+              experimentsList[experiment.tag] = Math.floor(Math.random() * (experiment.variantCount));
+            }
+          })
+
+          var response = wrapJsonp(callbackName, {
+            status: 'success',
+            experiments: experimentsList,
+          });
+
+          reply(response).header('Content-Type', 'application/javascript').state('exps', experimentsList);
+        }, function (err) {
+          reply(Boom.badImplementation(err));
+        });
       }
     }
   });

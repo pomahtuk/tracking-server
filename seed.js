@@ -61,7 +61,7 @@ models.sequelize.sync().then(function () {
     console.log('your api key is:', project.apiKey);
     // create few experiments
     // TBD!
-    
+
     project.getExperiments().then(function (experiments) {
       var newExperiments = [];
       var exp, i;
@@ -82,7 +82,7 @@ models.sequelize.sync().then(function () {
         }
 
         Experiment.bulkCreate(newExperiments).then(function (createdExps) {
-          project.setExperiments(createdExps).then(function (assignedExps) {
+          project.setExperiments(createdExps).then(function () {
             process.exit(0);
           }, function (err) {
             console.log(err);
@@ -91,7 +91,7 @@ models.sequelize.sync().then(function () {
         }, function () {
           console.log('bulk creation failed');
           process.exit(-1);
-        })
+        });
       }
     }, function () {
       process.exit(-1);

@@ -1,4 +1,4 @@
-/*jslint node: true, es5: true, indent: 2, nomen: true*/
+/*jslint node: true, indent: 2, nomen: true*/
 
 'use strict';
 
@@ -73,6 +73,10 @@ if (env === 'development') {
 
 models.sequelize.sync().then(function () {
   server.register(packagesToRegister, function (err) {
+    if (err) {
+      throw err;
+    }
+
     server.auth.strategy('session', 'cookie', {
       password: 'T7XxT3nnkX',
       ttl: 14 * 24 * 60 * 60 * 1000, // 14 days

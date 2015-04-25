@@ -2,6 +2,7 @@
 
 'use strict';
 
+var Bcrypt        = require('bcrypt');              // for future password comparison
 var fs            = require('fs');
 var crypto        = require('crypto');
 var Boom          = require('boom');
@@ -159,7 +160,6 @@ exports.init = function (server, agenda) {
   });
 
   // add route to write all statistics
-  // return gathered user info
   server.route({
     method: 'GET',
     path: '/laborant/{eventType}/{expId}',
@@ -186,7 +186,7 @@ exports.init = function (server, agenda) {
 
         // assuming that this parameters let us identify visitor
         // BOTTLENECK! coud be, md5 is syncronus and UA string could be sent enormously big
-        var visiorIdentity = crypto.createHash('md5').update(visitorUaData.toString() + request.info.referrer + request.info.remoteAddress).digest('hex');
+        var visiorIdentity = crypto.createHash('md5').update(visitorUaData.toString() + request.info.referrer + request.info.remoteAddress + request.state._lvid).digest('hex');
         // geoip should run in background!
 
         trackingEventsCache.push({
@@ -221,6 +221,9 @@ exports.init = function (server, agenda) {
         }
       },
       handler: function (request, reply) {
+
+        // also set  some uniq identifier to usr if it is not set, so we will be able to detect visitor easily
+
         // reply all initial exps
         // also we could just write a server-side cookie with encoded experiments,
         // assigned to user. Decoding should be extreemly simple
@@ -239,6 +242,7 @@ exports.init = function (server, agenda) {
 
           var clientExps = request.state.exps;
           var experimentsList = {};
+          var lvId = request.state._lvid || Bcrypt.genSaltSync(20);
 
           project.Experiments.forEach(function (experiment) {
             if (clientExps && clientExps.hasOwnProperty && clientExps.hasOwnProperty(experiment.tag)) {
@@ -253,7 +257,11 @@ exports.init = function (server, agenda) {
             experiments: experimentsList
           });
 
-          reply(response).header('Content-Type', 'application/javascript').state('exps', experimentsList);
+          reply(response)
+            .header('Content-Type', 'application/javascript')
+            .state('exps', experimentsList)
+            .state('_lvid', lvId);
+
         }, function (err) {
           reply(Boom.badImplementation(err));
         });

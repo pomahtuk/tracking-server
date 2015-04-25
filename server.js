@@ -91,7 +91,17 @@ models.sequelize.sync().then(function () {
     routes.init(server, agenda);
     methods.init(server);
 
+    // cookie storage fot experiments
     server.state('exps', {
+      ttl: 30 * 24 * 60 * 60 * 1000, // 30 days
+      isHttpOnly: false,
+      encoding: 'base64json',
+      clearInvalid: true,
+      strictHeader: true // don't allow violations of RFC 6265
+    });
+
+    // cookie storage for visitor id part
+    server.state('_lvid', {
       ttl: 30 * 24 * 60 * 60 * 1000, // 30 days
       isHttpOnly: false,
       encoding: 'base64json',

@@ -10,7 +10,7 @@ User-facing API for Laborant tracking solution
 Just some thoughts about event processing - process every: 5m
 First - calculate data for 5 minutes, store to results db
 Then summ all 5m calculations done with allready stored total and save it as total
-If this metric is not targert metric for experiment and/or project - wipe 5m data 
+If this metric is not targert metric for experiment and/or project - wipe 5m data
 
 
 ### Deploy
@@ -42,14 +42,14 @@ If this metric is not targert metric for experiment and/or project - wipe 5m dat
   - ~~Event model~~
   - ~~Save event route~~
   - Events background processing
-  - Identification of user
-  - Collecting stats
+  - ~~Identification of user~~
+  - ~~Collecting stats~~
   - Tests
 
 * Clientside script
   - ~~Genereation of resulting js~~
-  - Regenaration if template was changed meanwhile
-  - Tests
+  - ~~Regenaration if template was changed meanwhile~~
+  - ~~Tests~~
 
 * Auth
   - ~~Do ot expose a password - use hashes~~
@@ -87,7 +87,7 @@ If this metric is not targert metric for experiment and/or project - wipe 5m dat
 
 * Tests
   - ~~Test unauthentificated access to routes~~
-  - add more checks, test JOI validations and passing invalid params
+  - ~~add more checks, test JOI validations and passing invalid params~~
 
 
 To be able to use it - run in browser console first (this will actuallu create a user for you)

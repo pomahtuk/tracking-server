@@ -2,6 +2,7 @@
 [![Dependecies Status](https://david-dm.org/pomahtuk/tracking-server.svg)](https://david-dm.org/pomahtuk/tracking-server)
 [![Code Climate](https://codeclimate.com/github/pomahtuk/tracking-server/badges/gpa.svg)](https://codeclimate.com/github/pomahtuk/tracking-server)
 
+
 ## Laborant-server
 
 User-facing API for Laborant tracking solution
